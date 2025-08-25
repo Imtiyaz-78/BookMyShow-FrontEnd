@@ -1,0 +1,149 @@
+<div class="auth-wrapper">
+  <div class="d-flex justify-content-center align-items-center">
+    <div
+      class="auth-card shadow-lg p-4 rounded-4 animate__animated animate__fadeIn"
+    >
+      <div class="text-center mb-4">
+        <img
+          src="assets/images/logo_bookMyShow.webp"
+          height="60px"
+          alt="Logo"
+        />
+      </div>
+
+      <!-- Login Form -->
+      @if (!openSignuForm) {
+      <form [formGroup]="userLogin" (ngSubmit)="onLogin()">
+        <h4 class="text-center mb-3">Welcome Back</h4>
+
+        <div class="mb-3 input-group">
+          <span class="input-group-text bg-light">
+            <i-feather name="mail"></i-feather>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter username"
+            formControlName="username"
+          />
+        </div>
+
+        <div class="mb-3 input-group">
+          <span class="input-group-text bg-light">
+            <i-feather name="lock"></i-feather>
+          </span>
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Enter your password"
+            formControlName="password"
+          />
+        </div>
+
+        <button
+          [disabled]="userLogin.invalid"
+          type="submit"
+          class="btn-submit w-100"
+        >
+          <i-feather name="log-in" class="me-1"></i-feather> Login
+        </button>
+
+        <div class="text-center mt-3">
+          <span>
+            Don't have an account?
+            <a class="signup" (click)="onToggleForm()">Signup</a>
+          </span>
+        </div>
+      </form>
+      }
+
+      <!-- Signup Form -->
+      @if (openSignuForm) {
+      <form [formGroup]="userSignUp" (ngSubmit)="onSignupSubmit()">
+        <h4 class="text-center mb-3">Create Account</h4>
+
+        <!-- Name -->
+        <div class="mb-3 input-group">
+          <span class="input-group-text bg-light">
+            <i-feather name="user"></i-feather>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Full Name"
+            formControlName="name"
+          />
+        </div>
+
+        <!-- Username -->
+        <div class="mb-3 input-group">
+          <span class="input-group-text bg-light">
+            <i-feather name="at-sign"></i-feather>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Username"
+            formControlName="username"
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3 input-group">
+          <span class="input-group-text bg-light">
+            <i-feather name="mail"></i-feather>
+          </span>
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Enter your email"
+            formControlName="email"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3 input-group">
+          <span class="input-group-text bg-light">
+            <i-feather name="lock"></i-feather>
+          </span>
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Enter your password"
+            formControlName="password"
+          />
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-3 input-group">
+          <span class="input-group-text bg-light">
+            <i-feather name="phone"></i-feather>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Phone Number"
+            formControlName="phoneNumber"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="btn-submit w-100"
+          [disabled]="userSignUp.invalid"
+        >
+          <i-feather name="user-plus" class="me-1"></i-feather>
+          <span>Register</span>
+        </button>
+
+        <div class="text-center mt-3">
+          <span>
+            Already have an account?
+            <a class="signin" (click)="onToggleForm()">Signin</a>
+          </span>
+        </div>
+      </form>
+      }
+    </div>
+  </div>
+</div>
