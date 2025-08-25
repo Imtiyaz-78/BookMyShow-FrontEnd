@@ -42,10 +42,11 @@ export class UserAuthComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
-      roleName: [''],
+      roleName: ['USER'],
     });
   }
 
+  // This is Login Methods
   onLogin() {
     if (this.userLogin.invalid) {
       return;
@@ -63,11 +64,23 @@ export class UserAuthComponent implements OnInit {
     });
   }
 
-  onSignupSubmit() {
-    if (this.userSignUp.valid) {
-      console.log('Signup Data:', this.userSignUp.value);
-      this.userSignUp.reset();
+  // This Method is used for Create New User
+  onSignupSubmit(): void {
+    if (this.userSignUp.invalid) {
+      this.userSignUp.markAllAsTouched();
+      return;
     }
+
+    this.authService.createNewUser(this.userSignUp.value).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        alert('Account created successfully!');
+        this.userSignUp.reset();
+      },
+      error: (err) => {
+        console.error(' Signup Failed:', err);
+      },
+    });
   }
 
   onToggleForm() {
