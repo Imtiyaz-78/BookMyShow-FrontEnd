@@ -5,6 +5,7 @@ import {
   OnInit,
   TemplateRef,
   ViewChild,
+  Input,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -15,6 +16,7 @@ import {
 import { FeatherModule } from 'angular-feather';
 import { AuthService } from '../AuthService/auth.service';
 import { jwtDecode } from 'jwt-decode';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-user-auth',
@@ -27,9 +29,17 @@ export class UserAuthComponent implements OnInit {
   openSignuForm = false;
   userLogin!: FormGroup;
   userSignUp!: FormGroup;
-  @ViewChild('model') model!: ElementRef<any>;
+  @Input() modalRef!: BsModalRef;
+  @ViewChild('model') model!: TemplateRef<any>;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private modalService: BsModalService
+  ) {}
+  openModal() {
+    this.modalRef = this.modalService.show(this.model);
+  }
 
   ngOnInit(): void {
     this.OnInitLoginForm();
@@ -50,7 +60,7 @@ export class UserAuthComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required]],
-      roleName: ['USER'],
+      roleName: ['', [Validators.required]],
     });
   }
 
@@ -62,6 +72,9 @@ export class UserAuthComponent implements OnInit {
         this.decodeToken(res.token);
         localStorage.setItem('token', res.token);
         this.userLogin.reset();
+        if (this.modalRef) {
+          this.modalRef.hide();
+        }
       });
     }
   }
@@ -69,7 +82,6 @@ export class UserAuthComponent implements OnInit {
   // This Method is used for Create New User
   onSignupSubmit(): void {
     if (this.userSignUp.invalid) {
-      this.userSignUp.markAllAsTouched();
       return;
     }
 

@@ -13,9 +13,9 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { cities, citiesJson } from '../../../../../db';
-import { UserAuthComponent } from '../../../auth/user-auth/user-auth.component';
 import { CommonService } from '../../../services/common.service';
 import { Router } from '@angular/router';
+import { BsModalService } from 'ngx-bootstrap/modal';
 export class NgbdModalContent {
   activeModal = inject(NgbActiveModal);
 }
@@ -27,6 +27,7 @@ export class NgbdModalContent {
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('content', { static: true }) content!: TemplateRef<any>;
+  @ViewChild('userAuthModal') userAuthModal!: TemplateRef<any>;
   cityData: any[] = [];
   citiesJson: any = null;
   showCities = false;
@@ -34,65 +35,55 @@ export class HeaderComponent implements OnInit {
   city = false;
   viewCitiesText: string = 'View All Cities';
   showProfileheader: any;
-  constructor(private modalService: NgbModal, public service: CommonService, private route: Router) {
-
+  modalRef: any;
+  constructor(
+    private modalService: NgbModal,
+    public service: CommonService,
+    private route: Router,
+    private modalSrv: BsModalService
+  ) {
     this.cityData = cities;
-    this.selectedCity = this.service._selectCity()
+    this.selectedCity = this.service._selectCity();
   }
 
   ngOnInit(): void {
-    // Open modal Without City Selected 
-    this.showProfileheader = this.service._profileHeader()
+    this.showProfileheader = this.service._profileHeader();
     if (!this.selectedCity) {
-      this.open(this.content)
     }
-
   }
 
-  open(content: TemplateRef<any>) {
-    this.modalService.open(content, {
-      modalDialogClass: 'dialog',
-      ariaLabelledBy: 'modal-basic-title',
+  openModal(userAuthModal: any): void {
+    this.modalRef = this.modalSrv.show(userAuthModal, {
+      class: 'modal-dialog-centered dialog',
+      keyboard: false,
+      ignoreBackdropClick: true,
     });
-
   }
 
   viewAllCities() {
     this.showCities = !this.showCities;
-    this.viewCitiesText = this.showCities ? 'Hide All Cities' : 'View All Cities';
+    this.viewCitiesText = this.showCities
+      ? 'Hide All Cities'
+      : 'View All Cities';
     this.citiesJson = this.showCities ? citiesJson : null;
   }
 
-
-
-  openLoginModal(): void {
-    const modalOptions: NgbModalOptions = {
-      centered: true,
-    };
-    const modalRef = this.modalService.open(UserAuthComponent, modalOptions);
-    modalRef.result.then((result) => {
-      console.log('Modal closed with result:', result);
-    }, (reason) => {
-      console.log('Modal dismissed with reason:', reason);
+  openLoginModal(userAuthModal: any): void {
+    this.modalRef = this.modalSrv.show(userAuthModal, {
+      class: 'modal-dialog-centered dialog',
+      keyboard: false,
+      ignoreBackdropClick: true,
     });
   }
 
-
   selectCity(city: any, modalRef: NgbModalRef) {
-    this.service._selectCity.set(city)
-    this.selectedCity = this.service._selectCity()
-    sessionStorage.setItem('selectedCity', JSON.stringify(this.selectedCity))
+    this.service._selectCity.set(city);
+    this.selectedCity = this.service._selectCity();
+    sessionStorage.setItem('selectedCity', JSON.stringify(this.selectedCity));
     if (modalRef) {
-      modalRef.close()
+      modalRef.close();
     }
   }
 
-
-
-  editProfile() {
-
-  }
-
-
-
+  editProfile() {}
 }

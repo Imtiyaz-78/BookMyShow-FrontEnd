@@ -16,6 +16,7 @@ import { FeatherModule } from 'angular-feather';
 import { allIcons } from 'angular-feather/icons';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './auth/interceptor/auth.interceptor';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -37,10 +38,14 @@ import { authInterceptor } from './auth/interceptor/auth.interceptor';
     CarouselModule,
     FeatherModule,
     FeatherModule.pick(allIcons),
+    UserAuthComponent,
   ],
 
   exports: [FeatherModule],
-  providers: [provideHttpClient(withInterceptors([authInterceptor]))],
+  providers: [
+    provideHttpClient(withInterceptors([authInterceptor])),
+    BsModalService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
