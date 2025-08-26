@@ -16,6 +16,7 @@ import { cities, citiesJson } from '../../../../../db';
 import { CommonService } from '../../../services/common.service';
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 export class NgbdModalContent {
   activeModal = inject(NgbActiveModal);
 }
@@ -28,6 +29,7 @@ export class NgbdModalContent {
 export class HeaderComponent implements OnInit {
   @ViewChild('content', { static: true }) content!: TemplateRef<any>;
   @ViewChild('userAuthModal') userAuthModal!: TemplateRef<any>;
+  @ViewChild('cityModal') cityModal!: TemplateRef<any>;
   cityData: any[] = [];
   citiesJson: any = null;
   showCities = false;
@@ -35,12 +37,15 @@ export class HeaderComponent implements OnInit {
   city = false;
   viewCitiesText: string = 'View All Cities';
   showProfileheader: any;
+  loadData: boolean = false;
+
   modalRef: any;
   constructor(
     private modalService: NgbModal,
     public service: CommonService,
     private route: Router,
-    private modalSrv: BsModalService
+    private modalSrv: BsModalService,
+    private sanitizer: DomSanitizer
   ) {
     this.cityData = cities;
     this.selectedCity = this.service._selectCity();
@@ -52,12 +57,15 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  openModal(userAuthModal: any): void {
-    this.modalRef = this.modalSrv.show(userAuthModal, {
-      class: 'modal-dialog-centered dialog',
-      keyboard: false,
-      ignoreBackdropClick: true,
-    });
+  openModal(cityModal: any): void {
+    this.onGetAllCity();
+    if (this.loadData) {
+      this.modalRef = this.modalSrv.show(cityModal, {
+        class: 'modal-dialog-centered width_800',
+        keyboard: false,
+        ignoreBackdropClick: true,
+      });
+    }
   }
 
   viewAllCities() {
@@ -86,4 +94,39 @@ export class HeaderComponent implements OnInit {
   }
 
   editProfile() {}
+
+  convertBase64ToSafeUrl(imageUrl: string) {
+    let imgData = imageUrl;
+    if (imgData.startsWith('"') && imgData.endsWith('"')) {
+      imgData = imgData.slice(1, -1);
+    }
+    // Remove outer curly braces
+    if (imgData.startsWith('{') && imgData.endsWith('}')) {
+      imgData = imgData.slice(1, -1);
+    }
+
+    try {
+      const parsed = JSON.parse(imgData);
+      imgData = typeof parsed === 'string' ? parsed : imgData;
+    } catch (e) {}
+    return this.sanitizer.bypassSecurityTrustUrl(imgData);
+  }
+
+  // get all city
+  onGetAllCity() {
+    this.service.getAllCity().subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.cityData = res.map((city: any) => ({
+            ...city,
+            safeImageUrl: this.convertBase64ToSafeUrl(city.imageUrl),
+          }));
+          this.loadData = true;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
 }
