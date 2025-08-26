@@ -55,17 +55,15 @@ export class HeaderComponent implements OnInit {
     this.showProfileheader = this.service._profileHeader();
     if (!this.selectedCity) {
     }
+    this.onGetAllCity();
   }
 
   openModal(cityModal: any): void {
-    this.onGetAllCity();
-    if (this.loadData) {
-      this.modalRef = this.modalSrv.show(cityModal, {
-        class: 'modal-dialog-centered width_800',
-        keyboard: false,
-        ignoreBackdropClick: true,
-      });
-    }
+    this.modalRef = this.modalSrv.show(cityModal, {
+      class: 'modal-dialog-centered width_800',
+      keyboard: false,
+      ignoreBackdropClick: true,
+    });
   }
 
   viewAllCities() {
