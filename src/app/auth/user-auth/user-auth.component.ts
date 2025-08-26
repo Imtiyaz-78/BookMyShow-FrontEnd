@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,6 +14,7 @@ import {
 } from '@angular/forms';
 import { FeatherModule } from 'angular-feather';
 import { AuthService } from '../AuthService/auth.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-user-auth',
@@ -20,6 +27,7 @@ export class UserAuthComponent implements OnInit {
   openSignuForm = false;
   userLogin!: FormGroup;
   userSignUp!: FormGroup;
+  @ViewChild('model') model!: ElementRef<any>;
 
   constructor(private fb: FormBuilder, private authService: AuthService) {}
 
@@ -48,20 +56,14 @@ export class UserAuthComponent implements OnInit {
 
   // This is Login Methods
   onLogin() {
-    if (this.userLogin.invalid) {
-      return;
+    if (this.userLogin.valid) {
+      const data = this.userLogin.value;
+      this.authService.login(data).subscribe((res) => {
+        this.decodeToken(res.token);
+        localStorage.setItem('token', res.token);
+        this.userLogin.reset();
+      });
     }
-    this.authService.login(this.userLogin.value).subscribe({
-      next: (decoded) => {
-        if (decoded) {
-          console.log('Login Success:', decoded['sub']);
-          alert('Login Successful!');
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
   }
 
   // This Method is used for Create New User
@@ -85,5 +87,11 @@ export class UserAuthComponent implements OnInit {
 
   onToggleForm() {
     this.openSignuForm = !this.openSignuForm;
+  }
+
+  decodeToken(token: string): void {
+    const decoded: any = jwtDecode(token);
+    console.log('Decoded Token:', decoded);
+    return decoded;
   }
 }
