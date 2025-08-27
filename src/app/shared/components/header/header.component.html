@@ -27,7 +27,10 @@
               {{ selectedCity || " Select City" }}
               <i class="fa fa-angle-down ms-2" aria-hidden="true"></i
             ></span>
-            <button class="badge ms-3" (click)="openAuthModal(userAuthModal)">
+            <button
+              class="badge ms-3"
+              (click)="openAuthModal(authModalTemplate)"
+            >
               Sign in
             </button>
             <span class="ms-3">
@@ -275,6 +278,6 @@
   </div>
 </ng-template>
 
-<ng-template #userAuthModal>
+<ng-template #authModalTemplate>
   <app-user-auth [modalRef]="modalRef"></app-user-auth>
 </ng-template>
