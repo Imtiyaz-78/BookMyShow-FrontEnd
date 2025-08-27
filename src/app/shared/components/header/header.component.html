@@ -8,12 +8,12 @@
           class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"
         >
           <div class="col-md-3 mb-2 mb-md-0 d-flex">
-            <a
-              href="/"
-              class="d-inline-flex link-body-emphasis text-decoration-none"
-            >
-              <img src="assets/images/logo.png" alt="" class="logo" />
-            </a>
+            <img
+              [routerLink]="['explore/home/delhi']"
+              class="app_logo"
+              src="/assets/images/BookMyShow_logo.webp"
+              alt="logo"
+            />
             <div class="d-flex align-items-center">
               <app-searcbox></app-searcbox>
             </div>
@@ -220,10 +220,10 @@
         required=""
       />
     </div>
-    <span class="detect_my_location_text text-danger mt-2">
-      <i class="fa fa-map-marker me-2" aria-hidden="true"></i> Detect my
-      location</span
-    >
+    <div class="detect_my_location_text text-danger mt-2">
+      <i-feather class="location" name="map-pin"></i-feather>
+      <span>Detect my location</span>
+    </div>
   </div>
   <div class="modal-body p-0">
     <p class="text-center mt-1">Popular Cities</p>
@@ -239,7 +239,8 @@
           class="flex_direction d-flex flex-column justify-content-center align-items-center"
         >
           <img
-            [src]="item.safeImageUrl"
+            [ngClass]="item.name === selectedCity ? 'active_img' : ''"
+            [src]="getImageFromBase64(item?.imageUrl)"
             alt="{{ item.name }}"
             class="img-fluid city_section"
           />

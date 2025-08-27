@@ -233,6 +233,20 @@ span {
   margin: 0;
   padding: 0;
   font-size: medium;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+
+  span {
+    color: red;
+  }
+
+  .location {
+    height: 15px;
+    width: 15px;
+    display: flex;
+  }
 }
 .dialog {
   max-width: 800px;
@@ -255,8 +269,9 @@ span {
   max-width: fit-content;
 }
 .other_cities_list {
-  height: 160px;
+  max-height: 160px;
   overflow-y: auto;
+  overflow: auto;
 }
 .list_cities {
   display: grid;
@@ -285,4 +300,17 @@ span {
 }
 .active {
   background-color: rgb(0, 102, 192);
+}
+
+.active_img {
+  mix-blend-mode: difference;
+}
+
+.app_logo {
+  width: 115px;
+  height: 50px;
+  margin-right: 21px;
+  padding: 8px 0;
+  object-fit: cover;
+  cursor: pointer;
 }

@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit {
     if (!this.selectedCity) {
     }
     this.fetchPopularCities();
-    this.fetchAllCities();
+    // this.fetchAllCities();
   }
 
   openCitySelectionModal(modalTemplate: TemplateRef<any>): void {
@@ -56,6 +56,8 @@ export class HeaderComponent implements OnInit {
     this.viewCitiesText = this.showCities
       ? 'Hide All Cities'
       : 'View All Cities';
+
+    this.fetchAllCities();
   }
 
   openAuthModal(authModalTemplate: TemplateRef<any>): void {
@@ -66,9 +68,9 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  handleCitySelection(city: any, modalRef?: BsModalRef): void {
+  handleCitySelection(city: string, modalRef?: BsModalRef): void {
+    this.selectedCity = city;
     this.service.selectedCitySignal.set(city);
-    this.selectedCity = this.service.selectedCitySignal();
     if (modalRef) {
       modalRef.hide();
     }
@@ -76,21 +78,15 @@ export class HeaderComponent implements OnInit {
 
   editProfile() {}
 
-  convertBase64ToSafeUrl(imageUrl: string): SafeUrl {
-    let imgData = imageUrl;
-    if (imgData.startsWith('"') && imgData.endsWith('"')) {
-      imgData = imgData.slice(1, -1);
-    }
-    // Remove outer curly braces
-    if (imgData.startsWith('{') && imgData.endsWith('}')) {
-      imgData = imgData.slice(1, -1);
-    }
+  // Formating image
+  getImageFromBase64(base64string: string): any {
+    if (base64string) {
+      let imageType = base64string;
 
-    try {
-      const parsed = JSON.parse(imgData);
-      imgData = typeof parsed === 'string' ? parsed : imgData;
-    } catch (e) {}
-    return this.sanitizer.bypassSecurityTrustUrl(imgData);
+      const fullBase64String = `data:${imageType};base64,${base64string}`;
+      console.log(fullBase64String);
+      return this.sanitizer.bypassSecurityTrustUrl(fullBase64String);
+    }
   }
 
   // get all popular city
@@ -98,11 +94,8 @@ export class HeaderComponent implements OnInit {
     this.service.getAllPopularCity().subscribe({
       next: (res: any) => {
         if (res) {
-          this.cityData = res.map((city: any) => ({
-            ...city,
-            safeImageUrl: this.convertBase64ToSafeUrl(city.imageUrl),
-          }));
-          this.loadData = true;
+          this.cityData = res;
+          console.log(this.cityData);
         }
       },
       error: (err) => {

@@ -15,15 +15,13 @@ export class CommonService {
     this.selectedCity ? this.selectedCity : null
   );
   profileHeaderSignal = signal<any>(false);
-  private baseApiUrl = 'http://172.31.252.101:8080/bookmyshow/api/api/cities/';
+  private baseApiUrl = 'http://172.31.252.101:8080/bookmyshow/city/';
   constructor() {}
 
   http = inject(HttpClient);
 
   getAllCity() {
-    return this.http.get(
-      'http://172.31.252.101:8080/bookmyshow/api/cities/all'
-    );
+    return this.http.get(`${this.baseApiUrl}all`);
   }
 
   getAllPopularCity() {

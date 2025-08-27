@@ -9,26 +9,25 @@ import { movies } from '../../../../../../db';
 })
 export class HomeComponent {
   dummyMoviesdata: any[] = [];
-  dummyMoviesdatafiltered: any[] = []
-  originalMovies = movies
+  dummyMoviesdatafiltered: any[] = [];
+  originalMovies = movies;
   pageNo = 0;
   itemsperpage = 6;
-  start = 0
-  end = 0
+  start = 0;
+  end = 0;
   constructor() {
     this.dummyMoviesdata = movies;
-    this.getVisibleMovieCard()
+    this.getVisibleMovieCard();
   }
-
-
 
   getVisibleMovieCard() {
     this.start = this.itemsperpage * this.pageNo;
-    this.end = this.start + this.itemsperpage
-    this.dummyMoviesdatafiltered = this.originalMovies.slice(this.start, this.end);
+    this.end = this.start + this.itemsperpage;
+    this.dummyMoviesdatafiltered = this.originalMovies.slice(
+      this.start,
+      this.end
+    );
   }
-
-
 
   next() {
     if (this.end < this.originalMovies.length) {
@@ -43,6 +42,4 @@ export class HomeComponent {
       this.getVisibleMovieCard();
     }
   }
-
-
 }
