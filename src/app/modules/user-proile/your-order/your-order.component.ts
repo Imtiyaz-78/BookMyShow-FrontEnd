@@ -5,18 +5,15 @@ import { CommonService } from '../../../services/common.service';
   selector: 'app-your-order',
   standalone: false,
   templateUrl: './your-order.component.html',
-  styleUrl: './your-order.component.scss'
+  styleUrl: './your-order.component.scss',
 })
 export class YourOrderComponent {
-  constructor(private service: CommonService) {
-
-  }
+  constructor(private service: CommonService) {}
   ngOnInit(): void {
-    this.service._profileHeader.set(true)
-
+    this.service.profileHeaderSignal.set(true);
   }
 
   ngOnDestroy() {
-    this.service._profileHeader.set(false)
+    this.service.profileHeaderSignal.set(false);
   }
 }

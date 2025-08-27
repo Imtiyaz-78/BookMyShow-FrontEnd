@@ -5,17 +5,12 @@ import { CommonService } from '../../../services/common.service';
   selector: 'app-profile',
   standalone: false,
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
-
+  styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-
-
-  constructor(private service: CommonService) {
-
-  }
+  constructor(private service: CommonService) {}
   preview: any;
-  base64String: any
+  base64String: any;
   test(event: any) {
     // console.log(event.target.files)
     const file = event.target.files[0];
@@ -25,22 +20,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.preview = reader.result;
       this.base64String = (reader.result as string).split(',')[1];
       console.log('Base64:', this.base64String);
-
-    }
+    };
   }
 
   ngOnInit(): void {
-    // console.log(this.service._profileHeader().show
+    // console.log(this.service.profileHeaderSignal().show
 
-    this.service._profileHeader.set(true)
-
+    this.service.profileHeaderSignal.set(true);
   }
 
   ngOnDestroy() {
-    this.service._profileHeader.set(false)
+    this.service.profileHeaderSignal.set(false);
   }
 }
-
-
-
-

@@ -6,16 +6,27 @@ import { BehaviorSubject, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class CommonService {
-  city = sessionStorage.getItem('selectedCity');
-  _selectCity = signal<any>(this.city ? this.city : null);
-  _profileHeader = signal<any>(false);
+  // city = sessionStorage.getItem('selectedCity');
+  // _selectCity = signal<any>(this.city ? this.city : null);
+  // _profileHeader = signal<any>(false);
 
+  selectedCity = sessionStorage.getItem('selectedCity');
+  selectedCitySignal = signal<any>(
+    this.selectedCity ? this.selectedCity : null
+  );
+  profileHeaderSignal = signal<any>(false);
   private baseApiUrl = 'http://172.31.252.101:8080/bookmyshow/api/api/cities/';
   constructor() {}
 
   http = inject(HttpClient);
 
   getAllCity() {
+    return this.http.get(
+      'http://172.31.252.101:8080/bookmyshow/api/cities/all'
+    );
+  }
+
+  getAllPopularCity() {
     return this.http.get(`${this.baseApiUrl}popular`);
   }
 }

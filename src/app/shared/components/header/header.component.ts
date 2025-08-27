@@ -1,99 +1,82 @@
-import {
-  Component,
-  computed,
-  inject,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
-import {
-  NgbActiveModal,
-  NgbModal,
-  NgbModalOptions,
-  NgbModalRef,
-} from '@ng-bootstrap/ng-bootstrap';
-import { cities, citiesJson } from '../../../../../db';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonService } from '../../../services/common.service';
 import { Router } from '@angular/router';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-export class NgbdModalContent {
-  activeModal = inject(NgbActiveModal);
-}
+import { AuthService } from '../../../auth/AuthService/auth.service';
 @Component({
   selector: 'app-header',
   standalone: false,
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('content', { static: true }) content!: TemplateRef<any>;
   @ViewChild('userAuthModal') userAuthModal!: TemplateRef<any>;
   @ViewChild('cityModal') cityModal!: TemplateRef<any>;
   cityData: any[] = [];
-  citiesJson: any = null;
+  cityList: any[] = [];
   showCities = false;
   selectedCity: any;
   city = false;
   viewCitiesText: string = 'View All Cities';
   showProfileheader: any;
   loadData: boolean = false;
+  selectedCitySignal: any;
 
-  modalRef: any;
+  modalRef!: BsModalRef;
   constructor(
-    private modalService: NgbModal,
     public service: CommonService,
     private route: Router,
     private modalSrv: BsModalService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private authService: AuthService
   ) {
-    this.cityData = cities;
-    this.selectedCity = this.service._selectCity();
+    this.selectedCitySignal = this.service.selectedCitySignal;
   }
 
   ngOnInit(): void {
-    this.showProfileheader = this.service._profileHeader();
+    this.showProfileheader = this.service.profileHeaderSignal();
     if (!this.selectedCity) {
     }
-    this.onGetAllCity();
+    this.fetchPopularCities();
+    this.fetchAllCities();
   }
 
-  openModal(cityModal: any): void {
-    this.modalRef = this.modalSrv.show(cityModal, {
+  openCitySelectionModal(modalTemplate: TemplateRef<any>): void {
+    this.modalRef = this.modalSrv.show(modalTemplate, {
       class: 'modal-dialog-centered width_800',
-      keyboard: false,
-      ignoreBackdropClick: true,
+      keyboard: true,
+      ignoreBackdropClick: false,
     });
   }
 
-  viewAllCities() {
+  toggleCityListVisibility(): void {
     this.showCities = !this.showCities;
     this.viewCitiesText = this.showCities
       ? 'Hide All Cities'
       : 'View All Cities';
-    this.citiesJson = this.showCities ? citiesJson : null;
   }
 
-  openLoginModal(userAuthModal: any): void {
-    this.modalRef = this.modalSrv.show(userAuthModal, {
+  openAuthModal(authModalTemplate: TemplateRef<any>): void {
+    this.modalRef = this.modalSrv.show(authModalTemplate, {
       class: 'modal-dialog-centered dialog',
-      keyboard: false,
-      ignoreBackdropClick: true,
+      keyboard: true,
+      ignoreBackdropClick: false,
     });
   }
 
-  selectCity(city: any, modalRef: NgbModalRef) {
-    this.service._selectCity.set(city);
-    this.selectedCity = this.service._selectCity();
-    sessionStorage.setItem('selectedCity', JSON.stringify(this.selectedCity));
+  handleCitySelection(city: any, modalRef?: BsModalRef): void {
+    this.service.selectedCitySignal.set(city);
+    this.selectedCity = this.service.selectedCitySignal();
     if (modalRef) {
-      modalRef.close();
+      modalRef.hide();
     }
   }
 
   editProfile() {}
 
-  convertBase64ToSafeUrl(imageUrl: string) {
+  convertBase64ToSafeUrl(imageUrl: string): SafeUrl {
     let imgData = imageUrl;
     if (imgData.startsWith('"') && imgData.endsWith('"')) {
       imgData = imgData.slice(1, -1);
@@ -110,9 +93,9 @@ export class HeaderComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(imgData);
   }
 
-  // get all city
-  onGetAllCity() {
-    this.service.getAllCity().subscribe({
+  // get all popular city
+  fetchPopularCities(): void {
+    this.service.getAllPopularCity().subscribe({
       next: (res: any) => {
         if (res) {
           this.cityData = res.map((city: any) => ({
@@ -126,5 +109,22 @@ export class HeaderComponent implements OnInit {
         console.log(err);
       },
     });
+  }
+
+  fetchAllCities(): void {
+    this.service.getAllCity().subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.cityList = res;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
