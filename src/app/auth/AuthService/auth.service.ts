@@ -11,14 +11,13 @@ type JwtPayload = Record<string, any>;
 })
 export class AuthService {
   private apiUrl = 'http://172.31.252.101:8080/bookmyshow/auth';
-  isLoggedIn$ = new BehaviorSubject<boolean>(this.hasToken());
   isLoggedIn = signal<boolean>(this.hasToken());
   userDetails = signal<UserToken | null>(null);
+
   constructor(private http: HttpClient) {}
 
   loginSuccess(token: string) {
     localStorage.setItem('token', token);
-    // this.isLoggedIn$.next(true);
     this.isLoggedIn.set(true);
 
     // decode token and store user details
@@ -30,10 +29,15 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  decodeToken(token: string): void {
-    const decoded: any = jwtDecode(token);
-    console.log('Decoded Token:', decoded);
-    return decoded;
+  decodeToken(token: string): UserToken | null {
+    try {
+      const decoded: any = jwtDecode(token);
+      console.log('Decoded Token:', decoded);
+      return decoded as UserToken;
+    } catch (err) {
+      console.error('Token decode error:', err);
+      return null;
+    }
   }
 
   // login API Method
@@ -43,8 +47,8 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
-    // this.isLoggedIn$.next(false);
     this.isLoggedIn.set(false);
+    this.userDetails.set(null);
   }
 
   // Register API Method
@@ -54,8 +58,8 @@ export class AuthService {
 }
 
 export interface UserToken {
-  sub: string; // username
-  role: string; // role
-  iat: number; // issued at
-  exp: number; // expiry
+  sub: string;
+  role: string;
+  iat: number;
+  exp: number;
 }

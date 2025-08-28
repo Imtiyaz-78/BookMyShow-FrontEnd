@@ -1,0 +1,38 @@
+<div class="toast-container">
+  @for (toast of toastsArray; track $index) {
+  <div class="toast" [ngClass]="toast.type">
+    <div class="link_icon">
+      @switch (toast.type) { @case('delete') {
+      <span><img src="assets/images/toast/Delete.svg" /></span>
+      } @case('save') {
+      <span><img src="assets/images/toast/Save.svg" /></span>
+      } @case('success') {
+      <span><img src="assets/images/toast/Success.svg" /></span>
+      } @case('notification') {
+      <span><img src="assets/images/toast/Notofication.svg" /></span>
+      } @case('processing') {
+      <span><img src="assets/images/toast/Processing.svg" /></span>
+      } @case('warning') {
+      <span><img src="assets/images/toast/Warning.svg" /></span>
+      } @case('error') {
+      <span><img src="assets/images/toast/Error.svg" /></span>
+      } @case('generic') {
+      <span><img src="assets/images/toast/Generic.svg" /></span>
+      } @default {
+      <span><img src="assets/images/toast/Generic.svg" /></span>
+      } }
+    </div>
+    <div class="new_connection">
+      <p class="header">
+        {{ toast.message || "Message is not provided." }}
+      </p>
+      <p class="desc">
+        {{ toast.description || "Description is not provided." }}
+      </p>
+    </div>
+    <div class="cross" (click)="remove(toast)">
+      <i-feather name="x"></i-feather>
+    </div>
+  </div>
+  }
+</div>

@@ -18,6 +18,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './auth/interceptor/auth.interceptor';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { ToastComponent } from './shared/components/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
     // UserAuthComponent,
     ErrorpageComponent,
     MainLayoutComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,

@@ -125,112 +125,119 @@
 }
 
 <!-- SideBar Offcanvas  -->
-<div
-  class="offcanvas offcanvas-end p-0"
-  tabindex="-1"
-  id="offcanvasExample"
-  aria-labelledby="offcanvasExampleLabel"
->
-  <div class="offcanvas-header px-2">
-    <div class="full_with d-flex justify-content-between align-items-center">
-      <div class="hey_text">
-        <h5 class="offcanvas-title fw-bold" id="offcanvasExampleLabel">Hey!</h5>
-        <span
-          class="edit_profile"
-          routerLink="my-profile"
-          data-bs-toggle="offcanvas"
-          (click)="editProfile()"
-          >Edit-Profile
-          <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
-        </span>
-      </div>
-      <div class="user_icon">
-        <i class="fa fa-user-circle" aria-hidden="true"></i>
+@if(hideOnLogout){
+<ng-container>
+  <div
+    class="offcanvas offcanvas-end p-0"
+    tabindex="-1"
+    id="offcanvasExample"
+    aria-labelledby="offcanvasExampleLabel"
+  >
+    <div class="offcanvas-header px-2 d-none">
+      <div class="full_with d-flex justify-content-between align-items-center">
+        <div class="hey_text">
+          <h5 class="offcanvas-title fw-bold" id="offcanvasExampleLabel">
+            Hey!
+          </h5>
+          <span
+            class="edit_profile"
+            routerLink="my-profile"
+            data-bs-toggle="offcanvas"
+            (click)="editProfile()"
+            >Edit-Profile
+            <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
+          </span>
+        </div>
+        <div class="user_icon">
+          <i class="fa fa-user-circle" aria-hidden="true"></i>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="offcanvas-body p-0">
-    <div class="unlock_special_offer_box border-top">
-      <div
-        height="40px"
-        width="40px"
-        class="unlock_special_offer_img"
-        style="background: none"
-      >
-        <img
-          alt="rewards"
-          width="40px"
+    <div class="offcanvas-body p-0">
+      <div class="unlock_special_offer_box border-top">
+        <div
           height="40px"
-          class="sc-eykeme-1 iVbwwW"
-          src="assets/images/rewards_login.png"
-          style="opacity: 1"
-        />
+          width="40px"
+          class="unlock_special_offer_img"
+          style="background: none"
+        >
+          <img
+            alt="rewards"
+            width="40px"
+            height="40px"
+            class="sc-eykeme-1 iVbwwW"
+            src="assets/images/rewards_login.png"
+            style="opacity: 1"
+          />
+        </div>
+        <p class="unlock_special_offer_text m-0">
+          Unlock special offers &amp; great benefits
+        </p>
+        <button
+          class="unlock_special_offer_button"
+          (click)="openAuthModal(userAuthModal)"
+          data-bs-toggle="offcanvas"
+        >
+          Login / Register
+        </button>
       </div>
-      <p class="unlock_special_offer_text m-0">
-        Unlock special offers &amp; great benefits
-      </p>
-      <button
-        class="unlock_special_offer_button"
-        (click)="openAuthModal(userAuthModal)"
-        data-bs-toggle="offcanvas"
-      >
-        Login / Register
-      </button>
-    </div>
-    <div class="main_sidebar_data">
-      <div class="d-flex flex-column grow-2 py-2">
-        <a
-          href=""
-          class="d-flex justify-content-between align-items-center info_conatiner"
-        >
-          <div class="d-flex gap-2 align-items-center">
-            <i class="fa fa-info-circle" aria-hidden="true"></i>
+      <div class="main_sidebar_data">
+        <div class="d-flex flex-column grow-2 py-2">
+          <a
+            href=""
+            class="d-flex justify-content-between align-items-center info_conatiner"
+          >
+            <div class="d-flex gap-2 align-items-center">
+              <i class="fa fa-info-circle" aria-hidden="true"></i>
 
-            <div class="info_text">
-              <p class="m-0">Get tickets on Whatsapp/SMS!</p>
-              <span>Add your Mobile Number</span>
+              <div class="info_text">
+                <p class="m-0">Get tickets on Whatsapp/SMS!</p>
+                <span>Add your Mobile Number</span>
+              </div>
             </div>
-          </div>
-          <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
-        </a>
-        <a
-          href=""
-          class="d-flex justify-content-between align-items-center links_sidebar"
-        >
-          <div class="d-flex gap-2 align-items-center">
-            <i class="fa fa-bell-o" aria-hidden="true"></i>
+            <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
+          </a>
+          <a
+            href=""
+            class="d-flex justify-content-between align-items-center links_sidebar"
+          >
+            <div class="d-flex gap-2 align-items-center">
+              <i class="fa fa-bell-o" aria-hidden="true"></i>
 
-            <div class="info_text">
-              <p class="m-0">Notifications</p>
+              <div class="info_text">
+                <p class="m-0">Notifications</p>
+              </div>
             </div>
-          </div>
-          <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
-        </a>
-        <a
-          href=""
-          class="d-flex justify-content-between align-items-center links_sidebar"
-        >
-          <div class="d-flex gap-2 align-items-center">
-            <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-            <div class="info_text">
-              <p class="m-0">Your Orders</p>
-              <span>View all your bookings & purchases</span>
+            <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
+          </a>
+          <a
+            href=""
+            class="d-flex justify-content-between align-items-center links_sidebar"
+          >
+            <div class="d-flex gap-2 align-items-center">
+              <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+              <div class="info_text">
+                <p class="m-0">Your Orders</p>
+                <span>View all your bookings & purchases</span>
+              </div>
             </div>
-          </div>
-          <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
-        </a>
-      </div>
+            <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
+          </a>
+        </div>
 
-      <div class="button_section">
-        <div class="sc-zgl7vj-7 ifHHkE">
-          <button class="button_sign_out w-100" (click)="logout()">
-            Sign out
-          </button>
+        <div class="button_section">
+          <div class="sc-zgl7vj-7 ifHHkE">
+            <button class="button_sign_out w-100" (click)="logout()">
+              Sign out
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</ng-container>
+
+}
 
 <!-- City-Dropdown-modal  -->
 <ng-template #cityModal let-modal>

@@ -1,6 +1,4 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import * as CryptoJS from 'crypto-js';
-import { AuthService } from '../AuthService/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const encryptedToken = localStorage.getItem('token');

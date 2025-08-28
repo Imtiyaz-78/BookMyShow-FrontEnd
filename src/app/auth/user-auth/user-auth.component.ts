@@ -17,6 +17,7 @@ import { FeatherModule } from 'angular-feather';
 import { AuthService } from '../AuthService/auth.service';
 import { jwtDecode } from 'jwt-decode';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ToastService } from '../../shared/components/toast/toast.service';
 
 @Component({
   selector: 'app-user-auth',
@@ -35,7 +36,8 @@ export class UserAuthComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private toastService: ToastService
   ) {}
   openModal() {
     this.modalRef = this.modalService.show(this.model);
@@ -68,16 +70,33 @@ export class UserAuthComponent implements OnInit {
   onLogin() {
     if (this.userLogin.valid) {
       const data = this.userLogin.value;
-      this.authService.login(data).subscribe((res) => {
-        this.authService.decodeToken(res.token);
-        // this.decodeToken(res.token);
-        // localStorage.setItem('token', res.token);
-        this.authService.loginSuccess(res.token);
+      this.authService.login(data).subscribe({
+        next: (res) => {
+          if ((res && res.content) || res.success) {
+            this.authService.decodeToken(res.content);
+            this.authService.loginSuccess(res.content);
 
-        this.userLogin.reset();
-        if (this.modalRef) {
-          this.modalRef.hide();
-        }
+            if (res.success) {
+              this.toastService.startToast(res.message);
+              this.userLogin.reset();
+
+              if (this.modalRef) {
+                this.modalRef.hide();
+              }
+            }
+          } else {
+            console.error('No token received from API', res);
+            this.toastService.startToast(
+              'No token received from API',
+              'error',
+              'Login'
+            );
+          }
+        },
+        error: (err) => {
+          console.error('Login failed:', err);
+          this.toastService.startToast('Login failed', 'error', 'Login');
+        },
       });
     }
   }

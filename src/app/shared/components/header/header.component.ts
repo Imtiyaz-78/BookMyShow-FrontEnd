@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   effect,
   OnInit,
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit {
   isLoggedIn = false;
   isLoggedInSignalValue = signal(false);
   userProfileDetails = signal<UserToken | null>(null);
+  hideOnLogout: boolean = true;
 
   modalRef!: BsModalRef;
   constructor(
@@ -83,10 +85,12 @@ export class HeaderComponent implements OnInit {
 
   openAuthModal(authModalTemplate: TemplateRef<any>): void {
     this.modalRef = this.modalSrv.show(authModalTemplate, {
-      class: 'modal-dialog-centered dialog',
+      class: ' dialog',
       keyboard: true,
       ignoreBackdropClick: false,
     });
+
+    this.hideOnLogout = true;
   }
 
   handleCitySelection(city: string, modalRef?: BsModalRef): void {
@@ -140,5 +144,6 @@ export class HeaderComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+    this.hideOnLogout = false;
   }
 }

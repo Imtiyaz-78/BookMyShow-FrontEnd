@@ -123,3 +123,11 @@ body {
 
   /* Center image has no rotation */
 }
+
+.offcanvas-backdrop.show {
+  background-color: rgba(0, 0, 0, 0.75) !important; // darker
+}
+
+.offcanvas-backdrop.show.my-custom-backdrop {
+  backdrop-filter: blur(5px);
+}
