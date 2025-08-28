@@ -5,6 +5,7 @@
   font-size: 14px;
   cursor: pointer;
   margin-top: 3px;
+  margin-right: 12px;
 }
 .badge {
   border: none;
@@ -311,6 +312,14 @@ span {
   height: 50px;
   margin-right: 21px;
   padding: 8px 0;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.user_profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
 }

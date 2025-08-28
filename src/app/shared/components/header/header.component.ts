@@ -1,9 +1,16 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  effect,
+  OnInit,
+  signal,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { CommonService } from '../../../services/common.service';
 import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { AuthService } from '../../../auth/AuthService/auth.service';
+import { AuthService, UserToken } from '../../../auth/AuthService/auth.service';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -23,6 +30,9 @@ export class HeaderComponent implements OnInit {
   showProfileheader: any;
   loadData: boolean = false;
   selectedCitySignal: any;
+  isLoggedIn = false;
+  isLoggedInSignalValue = signal(false);
+  userProfileDetails = signal<UserToken | null>(null);
 
   modalRef!: BsModalRef;
   constructor(
@@ -30,9 +40,15 @@ export class HeaderComponent implements OnInit {
     private route: Router,
     private modalSrv: BsModalService,
     private sanitizer: DomSanitizer,
-    private authService: AuthService
+    public authService: AuthService
   ) {
     this.selectedCitySignal = this.service.selectedCitySignal;
+
+    // Effect runs whenever authService.isLoggedIn() changes
+    effect(() => {
+      this.isLoggedInSignalValue.set(this.authService.isLoggedIn());
+      this.userProfileDetails.set(this.authService.userDetails());
+    });
   }
 
   ngOnInit(): void {
@@ -41,6 +57,11 @@ export class HeaderComponent implements OnInit {
     }
     this.fetchPopularCities();
     // this.fetchAllCities();
+
+    // By ubject
+    // this.authService.isLoggedIn$.subscribe((status) => {
+    //   this.isLoggedIn = status;
+    // });
   }
 
   openCitySelectionModal(modalTemplate: TemplateRef<any>): void {

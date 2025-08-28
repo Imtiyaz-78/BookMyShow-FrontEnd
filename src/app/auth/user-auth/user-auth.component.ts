@@ -69,8 +69,11 @@ export class UserAuthComponent implements OnInit {
     if (this.userLogin.valid) {
       const data = this.userLogin.value;
       this.authService.login(data).subscribe((res) => {
-        this.decodeToken(res.token);
-        localStorage.setItem('token', res.token);
+        this.authService.decodeToken(res.token);
+        // this.decodeToken(res.token);
+        // localStorage.setItem('token', res.token);
+        this.authService.loginSuccess(res.token);
+
         this.userLogin.reset();
         if (this.modalRef) {
           this.modalRef.hide();
@@ -101,9 +104,9 @@ export class UserAuthComponent implements OnInit {
     this.openSignuForm = !this.openSignuForm;
   }
 
-  decodeToken(token: string): void {
-    const decoded: any = jwtDecode(token);
-    console.log('Decoded Token:', decoded);
-    return decoded;
-  }
+  // decodeToken(token: string): void {
+  //   const decoded: any = jwtDecode(token);
+  //   console.log('Decoded Token:', decoded);
+  //   return decoded;
+  // }
 }
