@@ -17,6 +17,7 @@ import { allIcons } from 'angular-feather/icons';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './auth/interceptor/auth.interceptor';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
     SearcboxComponent,
     // UserAuthComponent,
     ErrorpageComponent,
+    MainLayoutComponent,
   ],
   imports: [
     BrowserModule,

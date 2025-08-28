@@ -6,10 +6,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class CommonService {
-  // city = sessionStorage.getItem('selectedCity');
-  // _selectCity = signal<any>(this.city ? this.city : null);
-  // _profileHeader = signal<any>(false);
-
   selectedCity = sessionStorage.getItem('selectedCity');
   selectedCitySignal = signal<any>(
     this.selectedCity ? this.selectedCity : null
