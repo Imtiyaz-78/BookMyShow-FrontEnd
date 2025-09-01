@@ -111,7 +111,6 @@ export class HeaderComponent implements OnInit {
       let imageType = base64string;
 
       const fullBase64String = `data:${imageType};base64,${base64string}`;
-      console.log(fullBase64String);
       return this.sanitizer.bypassSecurityTrustUrl(fullBase64String);
     }
   }
@@ -123,7 +122,6 @@ export class HeaderComponent implements OnInit {
         if (res) {
           this.cityData = res;
           this.filterCityData = [...this.cityData];
-          console.log('Popular Cities:', this.cityData);
         }
       },
       error: (err) => {
@@ -137,8 +135,7 @@ export class HeaderComponent implements OnInit {
       next: (res: any) => {
         if (res) {
           this.cityList = res;
-          this.filterCityList = [...this.cityList]; // initialize filter
-          console.log('All Cities:', this.cityList);
+          this.filterCityList = [...this.cityList];
         }
       },
       error: (err) => {

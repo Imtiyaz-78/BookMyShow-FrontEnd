@@ -14,7 +14,14 @@ export class AuthService {
   isLoggedIn = signal<boolean>(this.hasToken());
   userDetails = signal<UserToken | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decoded = this.decodeToken(token);
+      this.userDetails.set(decoded);
+      this.isLoggedIn.set(true);
+    }
+  }
 
   loginSuccess(token: string) {
     localStorage.setItem('token', token);
