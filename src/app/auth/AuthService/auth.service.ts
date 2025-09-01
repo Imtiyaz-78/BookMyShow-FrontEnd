@@ -23,6 +23,7 @@ export class AuthService {
     // decode token and store user details
     const decoded: any = this.decodeToken(token);
     this.userDetails.set(decoded);
+    console.log(decoded);
   }
 
   hasToken(): boolean {

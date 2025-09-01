@@ -35,6 +35,8 @@ export class HeaderComponent implements OnInit {
   isLoggedInSignalValue = signal(false);
   userProfileDetails = signal<UserToken | null>(null);
   hideOnLogout: boolean = true;
+  filterCityData: any[] = [];
+  filterCityList: any[] = [];
 
   modalRef!: BsModalRef;
   constructor(
@@ -58,7 +60,7 @@ export class HeaderComponent implements OnInit {
     if (!this.selectedCity) {
     }
     this.fetchPopularCities();
-    // this.fetchAllCities();
+    this.fetchAllCities();
 
     // By ubject
     // this.authService.isLoggedIn$.subscribe((status) => {
@@ -80,7 +82,7 @@ export class HeaderComponent implements OnInit {
       ? 'Hide All Cities'
       : 'View All Cities';
 
-    this.fetchAllCities();
+    // this.fetchAllCities();
   }
 
   openAuthModal(authModalTemplate: TemplateRef<any>): void {
@@ -120,7 +122,8 @@ export class HeaderComponent implements OnInit {
       next: (res: any) => {
         if (res) {
           this.cityData = res;
-          console.log(this.cityData);
+          this.filterCityData = [...this.cityData];
+          console.log('Popular Cities:', this.cityData);
         }
       },
       error: (err) => {
@@ -134,6 +137,8 @@ export class HeaderComponent implements OnInit {
       next: (res: any) => {
         if (res) {
           this.cityList = res;
+          this.filterCityList = [...this.cityList]; // initialize filter
+          console.log('All Cities:', this.cityList);
         }
       },
       error: (err) => {
@@ -145,5 +150,19 @@ export class HeaderComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.hideOnLogout = false;
+  }
+
+  // Common search
+  onCitySearch(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const term = input.value.toLowerCase().trim();
+
+    this.filterCityData = this.cityData.filter((city) =>
+      city.name.toLowerCase().includes(term)
+    );
+
+    this.filterCityList = this.cityList.filter((city) =>
+      city.name.toLowerCase().includes(term)
+    );
   }
 }

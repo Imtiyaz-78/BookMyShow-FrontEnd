@@ -72,17 +72,14 @@ export class UserAuthComponent implements OnInit {
       const data = this.userLogin.value;
       this.authService.login(data).subscribe({
         next: (res) => {
-          if ((res && res.content) || res.success) {
-            this.authService.decodeToken(res.content);
-            this.authService.loginSuccess(res.content);
-
-            if (res.success) {
-              this.toastService.startToast(res.message);
-              this.userLogin.reset();
-
-              if (this.modalRef) {
-                this.modalRef.hide();
-              }
+          const token = res?.data?.token;
+          if (token) {
+            this.authService.decodeToken(token);
+            this.authService.loginSuccess(token);
+            this.toastService.startToast(res?.message || 'Login successful');
+            this.userLogin.reset();
+            if (this.modalRef) {
+              this.modalRef.hide();
             }
           } else {
             console.error('No token received from API', res);

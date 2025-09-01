@@ -1,8 +1,13 @@
-<div class="no-data-container">
-  <div class="icon-box">
-    <img src="assets/images/no-data.svg" alt="No Data" />
+<div
+  class="notfound-container d-flex flex-column align-items-center justify-content-center text-center"
+>
+  <h1 class="error-code">404</h1>
+  <h2 class="error-title">Page Not Found</h2>
+  <p class="error-desc">
+    Sorry, the page you are looking for doesn’t exist or has been moved.
+  </p>
+
+  <div class="d-flex gap-3 mt-3">
+    <a routerLink="/" class="btn btn-primary px-4">Go Home</a>
   </div>
-  <h2>No Data Found</h2>
-  <p>Try adjusting your filters or search to find what you’re looking for.</p>
-  <button class="btn-refresh">Refresh</button>
 </div>
