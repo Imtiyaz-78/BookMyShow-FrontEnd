@@ -49,9 +49,7 @@
                 aria-controls="offcanvasExample"
               />
               <div class="d-flex align-items-center gap-2">
-                <small class="text-muted">{{
-                  userProfileDetails()?.role
-                }}</small>
+                <small class="text-muted">{{ userProfileDetails?.role }}</small>
               </div>
             </div>
             } @if (!isLoggedInSignalValue) {
@@ -96,15 +94,15 @@
               <a>Plays</a>
               <a>Sports</a>
               <a>Activities</a>
-              @if (userProfileDetails()?.role == 'ADMIN') {
-              <a [routerLink]="['/user/dashboard']">Users</a>
+              @if (userProfileDetails?.role == 'ADMIN') {
+              <a [routerLink]="['/admin/users']">Users</a>
               }
             </div>
           </div>
           <div class="sub_header_right">
             @if (authService.userDetails()?.role == 'ADMIN') {
             <div class="sub_heder_right_links">
-              <a [routerLink]="['/list-your-show']">ListYourShow</a>
+              <a [routerLink]="['/admin/list-your-show']">ListYourShow</a>
               <a>Corporates</a>
               <a>Offers</a>
               <a>GiftCards</a>

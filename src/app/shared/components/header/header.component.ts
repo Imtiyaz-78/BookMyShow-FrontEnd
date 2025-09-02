@@ -11,7 +11,7 @@ import { CommonService } from '../../../services/common.service';
 import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { AuthService, UserToken } from '../../../auth/AuthService/auth.service';
+import { AuthService } from '../../../auth/AuthService/auth.service';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -33,7 +33,6 @@ export class HeaderComponent implements OnInit {
   selectedCitySignal: any;
   isLoggedIn = false;
   isLoggedInSignalValue = signal(false);
-  userProfileDetails = signal<UserToken | null>(null);
   hideOnLogout: boolean = true;
   filterCityData: any[] = [];
   filterCityList: any[] = [];
@@ -50,8 +49,7 @@ export class HeaderComponent implements OnInit {
 
     // Effect runs whenever authService.isLoggedIn() changes
     effect(() => {
-      this.isLoggedInSignalValue.set(this.authService.isLoggedIn());
-      this.userProfileDetails.set(this.authService.userDetails());
+      this.isLoggedInSignalValue.set(this.authService.isLoggedIn()); // Read signal value using ()
     });
   }
 
@@ -66,6 +64,10 @@ export class HeaderComponent implements OnInit {
     // this.authService.isLoggedIn$.subscribe((status) => {
     //   this.isLoggedIn = status;
     // });
+  }
+
+  get userProfileDetails() {
+    return this.authService.userDetails();
   }
 
   openCitySelectionModal(modalTemplate: TemplateRef<any>): void {

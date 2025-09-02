@@ -11,8 +11,8 @@ type JwtPayload = Record<string, any>;
 })
 export class AuthService {
   private apiUrl = 'http://172.31.252.101:8080/bookmyshow/auth';
-  isLoggedIn = signal<boolean>(this.hasToken());
-  userDetails = signal<UserToken | null>(null);
+  isLoggedIn = signal<boolean>(false);
+  userDetails = signal<any>(null);
 
   constructor(private http: HttpClient) {
     const token = localStorage.getItem('token');
@@ -33,15 +33,11 @@ export class AuthService {
     console.log(decoded);
   }
 
-  hasToken(): boolean {
-    return !!localStorage.getItem('token');
-  }
-
-  decodeToken(token: string): UserToken | null {
+  decodeToken(token: string): any {
     try {
       const decoded: any = jwtDecode(token);
       console.log('Decoded Token:', decoded);
-      return decoded as UserToken;
+      return decoded;
     } catch (err) {
       console.error('Token decode error:', err);
       return null;
@@ -63,11 +59,4 @@ export class AuthService {
   createNewUser(obj: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, obj);
   }
-}
-
-export interface UserToken {
-  sub: string;
-  role: string;
-  iat: number;
-  exp: number;
 }

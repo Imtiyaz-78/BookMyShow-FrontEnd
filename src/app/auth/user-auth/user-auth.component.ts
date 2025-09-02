@@ -83,11 +83,7 @@ export class UserAuthComponent implements OnInit {
             }
           } else {
             console.error('No token received from API', res);
-            this.toastService.startToast(
-              'No token received from API',
-              'error',
-              'Login'
-            );
+            this.toastService.startToast('No token received from API');
           }
         },
         error: (err) => {
@@ -106,12 +102,18 @@ export class UserAuthComponent implements OnInit {
 
     this.authService.createNewUser(this.userSignUp.value).subscribe({
       next: (res: any) => {
-        console.log(res);
-        alert('Account created successfully!');
-        this.userSignUp.reset();
+        if (res.success) {
+          this.toastService.startToast(
+            res?.message || 'Account created successfully!'
+          );
+          this.userSignUp.reset();
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
+        }
       },
       error: (err) => {
-        console.error(' Signup Failed:', err);
+        this.toastService.startToast(err.message || 'Signup failed');
       },
     });
   }
@@ -126,3 +128,4 @@ export class UserAuthComponent implements OnInit {
   //   return decoded;
   // }
 }
+// No local signal for user details needed. Use AuthService signal for user details.

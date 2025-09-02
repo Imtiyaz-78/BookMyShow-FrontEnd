@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { UserProfileModule } from './modules/user-proile/user-profile.module';
 import { ErrorpageComponent } from './shared/components/erorpage/errorpage.component';
 import { MoviesDetailsComponent } from './shared/components/movies-details/movies-details.component';
-import { ListYourShowModule } from './modules/list-your-show/list-your-show.module';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 
 // const routes: Routes = [
@@ -62,12 +59,13 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'list-your-show',
+        path: 'admin',
         loadChildren: () =>
-          import('./modules/list-your-show/list-your-show.module').then(
-            (m) => m.ListYourShowModule
+          import('./modules/admin-access/admin-access.module').then(
+            (m) => m.AdminAccessModule
           ),
       },
+
       {
         path: 'movies/:city/:name/:id',
         component: MoviesDetailsComponent,

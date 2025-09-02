@@ -19,6 +19,7 @@ import { authInterceptor } from './auth/interceptor/auth.interceptor';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { ToastComponent } from './shared/components/toast/toast.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ToastComponent } from './shared/components/toast/toast.component';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     NgbModule,
     ReactiveFormsModule,
