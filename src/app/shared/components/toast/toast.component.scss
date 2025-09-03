@@ -9,7 +9,7 @@
 
   .toast {
     display: flex;
-    align-items: center;
+    align-items: start;
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 12px;
@@ -35,6 +35,8 @@
       .header {
         font-weight: 600;
         margin: 0;
+        text-wrap: wrap;
+        word-break: break-all;
       }
       .desc {
         margin: 0;
@@ -45,6 +47,11 @@
 
     .cross {
       cursor: pointer;
+      min-width: 42px;
+      min-height: 42px;
+      display: flex;
+      justify-content: end;
+      align-items: start;
     }
 
     &.success {

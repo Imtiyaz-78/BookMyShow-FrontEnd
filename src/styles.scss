@@ -51,7 +51,6 @@ button {
 .modal-dialog.dialog {
   min-width: 552px;
   position: relative;
-  top: 100px;
 }
 .modal-dialog-centered.width_800 {
   min-width: 800px;
@@ -91,19 +90,19 @@ body {
 .carousel-image.right {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%); /* Vertically center the image */
+  transform: translateY(-50%);
 
   transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .carousel-image.left {
-  left: 87%; /* Move the left image off-screen */
-  transform: translateY(-50%); /* Slightly rotate the left image */
+  left: 87%;
+  transform: translateY(-50%);
 }
 
 .carousel-image.right {
-  right: 87%; /* Move the right image off-screen */
-  transform: translateY(-50%) rotateY(-10deg); /* Slightly rotate the right image */
+  right: 87%;
+  transform: translateY(-50%) rotateY(-10deg);
 }
 
 .carousel-item-next,
@@ -112,20 +111,17 @@ body {
   transition: transform 0.5s ease;
 }
 
-/* Optional: Controls for Carousel Navigation */
 .carousel-control-prev,
 .carousel-control-next {
-  z-index: 1; /* Ensure controls are clickable on top of the carousel */
+  z-index: 1;
 }
 .carousel-item.active .carousel-image.center {
-  opacity: 1; /* Fully visible in the center */
+  opacity: 1;
   transform: translateY(0) rotateY(0);
-
-  /* Center image has no rotation */
 }
 
 .offcanvas-backdrop.show {
-  background-color: rgba(0, 0, 0, 0.75) !important; // darker
+  background-color: rgba(0, 0, 0, 0.75) !important;
 }
 
 .offcanvas-backdrop.show.my-custom-backdrop {

@@ -89,7 +89,7 @@ export class HeaderComponent implements OnInit {
 
   openAuthModal(authModalTemplate: TemplateRef<any>): void {
     this.modalRef = this.modalSrv.show(authModalTemplate, {
-      class: ' dialog',
+      class: ' dialog modal-dialog-centered',
       keyboard: true,
       ignoreBackdropClick: false,
     });

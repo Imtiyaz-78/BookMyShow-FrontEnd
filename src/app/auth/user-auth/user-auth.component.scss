@@ -66,3 +66,44 @@
   color: #666;
   cursor: not-allowed;
 }
+
+.form-control {
+  border-radius: 0;
+  box-shadow: none;
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.signup_input {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  &:focus {
+    box-shadow: none;
+    border: 0;
+    border-color: transparent;
+    box-shadow: none;
+  }
+}
+.input-group-text.bg-light {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.username {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.aye_wrapper {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  cursor: pointer;
+
+  i-feather {
+    height: 20px;
+    width: 20px;
+    display: flex;
+  }
+}

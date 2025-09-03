@@ -7,10 +7,4 @@ import { Location } from '@angular/common';
   templateUrl: './errorpage.component.html',
   styleUrl: './errorpage.component.scss',
 })
-export class ErrorpageComponent {
-  constructor(private location: Location) {}
-
-  goBack() {
-    this.location.back();
-  }
-}
+export class ErrorpageComponent {}

@@ -32,6 +32,7 @@ export class UserAuthComponent implements OnInit {
   userSignUp!: FormGroup;
   @Input() modalRef!: BsModalRef;
   @ViewChild('model') model!: TemplateRef<any>;
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -39,15 +40,31 @@ export class UserAuthComponent implements OnInit {
     private modalService: BsModalService,
     private toastService: ToastService
   ) {}
+
+  /**
+   * @description Opens the signup/login modal.
+   * @author Md Imtiyaz
+   * @returns void
+   */
   openModal() {
     this.modalRef = this.modalService.show(this.model);
   }
 
+  /**
+   * @description Angular lifecycle hook - initializes login and signup forms.
+   * @author Md Imtiyaz
+   * @returns void
+   */
   ngOnInit(): void {
     this.OnInitLoginForm();
     this.OnInitSignUpForm();
   }
 
+  /**
+   * @description Initializes the login form with validation rules.
+   * @author Md Imtiyaz
+   * @returns void
+   */
   OnInitLoginForm(): void {
     this.userLogin = this.fb.group({
       username: ['', [Validators.required]],
@@ -55,6 +72,11 @@ export class UserAuthComponent implements OnInit {
     });
   }
 
+  /**
+   * @description Initializes the signup form with validation rules.
+   * @author Md Imtiyaz
+   * @returns void
+   */
   OnInitSignUpForm(): void {
     this.userSignUp = this.fb.group({
       name: ['', [Validators.required]],
@@ -66,7 +88,11 @@ export class UserAuthComponent implements OnInit {
     });
   }
 
-  // This is Login Methods
+  /**
+   * @description Handles user login by validating form, calling API, decoding token, and showing toasts.
+   * @author Md Imtiyaz
+   * @returns void
+   */
   onLogin() {
     if (this.userLogin.valid) {
       const data = this.userLogin.value;
@@ -82,19 +108,21 @@ export class UserAuthComponent implements OnInit {
               this.modalRef.hide();
             }
           } else {
-            console.error('No token received from API', res);
             this.toastService.startToast('No token received from API');
           }
         },
         error: (err) => {
-          console.error('Login failed:', err);
-          this.toastService.startToast('Login failed', 'error', 'Login');
+          this.toastService.startToast(err?.message || 'Login failed');
         },
       });
     }
   }
 
-  // This Method is used for Create New User
+  /**
+   * @description Handles user signup by validating form, sending API request, and showing success/error messages.
+   * @author Md Imtiyaz
+   * @returns void
+   */
   onSignupSubmit(): void {
     if (this.userSignUp.invalid) {
       return;
@@ -113,11 +141,16 @@ export class UserAuthComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.toastService.startToast(err.message || 'Signup failed');
+        this.toastService.startToast(err?.message);
       },
     });
   }
 
+  /**
+   * @description Toggles between login and signup forms inside modal.
+   * @author Md Imtiyaz
+   * @returns void
+   */
   onToggleForm() {
     this.openSignuForm = !this.openSignuForm;
   }
@@ -127,5 +160,13 @@ export class UserAuthComponent implements OnInit {
   //   console.log('Decoded Token:', decoded);
   //   return decoded;
   // }
+
+  /**
+   * @description Toggles password visibility between plain text and hidden input type.
+   * @author Md Imtiyaz
+   * @returns void
+   */
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 }
-// No local signal for user details needed. Use AuthService signal for user details.

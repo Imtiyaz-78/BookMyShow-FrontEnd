@@ -16,28 +16,76 @@
       <form [formGroup]="userLogin" (ngSubmit)="onLogin()">
         <h4 class="text-center mb-3">Welcome Back</h4>
 
-        <div class="mb-3 input-group">
-          <span class="input-group-text bg-light">
-            <i-feather name="mail"></i-feather>
-          </span>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter username"
-            formControlName="username"
-          />
+        <div class="mb-3 input-group d-flex flex-column">
+          <div
+            class="d-flex flex-grow-1 border rounded"
+            [ngClass]="{
+              'border-danger':
+                userLogin.controls['username'].invalid &&
+                (userLogin.controls['username'].dirty ||
+                  userLogin.controls['username'].touched)
+            }"
+          >
+            <span class="input-group-text bg-light">
+              <i-feather name="mail"></i-feather>
+            </span>
+            <input
+              type="text"
+              class="form-control username"
+              placeholder="Enter username"
+              formControlName="username"
+            />
+          </div>
+
+          @if ( userLogin.controls['username'].invalid &&
+          (userLogin.controls['username'].dirty ||
+          userLogin.controls['username'].touched)) {
+          <div class="text-danger mt-1">
+            <small *ngIf="userLogin.controls['username'].errors?.['required']">
+              Username is required.
+            </small>
+          </div>
+          }
         </div>
 
-        <div class="mb-3 input-group">
-          <span class="input-group-text bg-light">
-            <i-feather name="lock"></i-feather>
-          </span>
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Enter your password"
-            formControlName="password"
-          />
+        <div class="mb-3 input-group d-flex flex-column">
+          <div
+            class="d-flex flex-grow-1 border rounded"
+            [ngClass]="{
+              'border-danger':
+                userLogin.controls['password'].invalid &&
+                (userLogin.controls['password'].dirty ||
+                  userLogin.controls['password'].touched)
+            }"
+          >
+            <span class="input-group-text bg-light">
+              <i-feather name="lock"></i-feather>
+            </span>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-control"
+              placeholder="Enter your password"
+              formControlName="password"
+            />
+
+            <span class="input-group-text bg-white aye_wrapper">
+              <i-feather
+                (click)="togglePassword()"
+                [name]="!showPassword ? 'eye-off' : 'eye'"
+              >
+              </i-feather>
+            </span>
+          </div>
+
+          @if ( userLogin.controls['password'].invalid &&
+          (userLogin.controls['password'].dirty ||
+          userLogin.controls['password'].touched)) {
+          <div class="text-danger mt-1">
+            <small *ngIf="userLogin.controls['password'].errors?.['required']">
+              Password is required.
+            </small>
+          </div>
+          }
         </div>
 
         <button
@@ -63,81 +111,206 @@
         <h4 class="text-center mb-3">Create Account</h4>
 
         <!-- Name -->
-        <div class="mb-3 input-group">
-          <span class="input-group-text bg-light">
-            <i-feather name="user"></i-feather>
-          </span>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Full Name"
-            formControlName="name"
-          />
+        <div class="mb-3 input-group d-flex flex-column">
+          <div
+            class="d-flex flex-grow-1 border rounded"
+            [ngClass]="{
+              'border-danger':
+                userSignUp.controls['name'].invalid &&
+                (userSignUp.controls['name'].dirty ||
+                  userSignUp.controls['name'].touched)
+            }"
+          >
+            <span class="input-group-text bg-light">
+              <i-feather name="user"></i-feather>
+            </span>
+            <input
+              type="text"
+              class="form-control signup_input"
+              placeholder="Full Name"
+              formControlName="name"
+            />
+          </div>
+
+          @if ( userSignUp.controls['name'].invalid &&
+          (userSignUp.controls['name'].dirty ||
+          userSignUp.controls['name'].touched)) {
+          <div class="text-danger mt-1">
+            <small *ngIf="userSignUp.controls['name'].errors?.['required']">
+              Name is required.
+            </small>
+          </div>
+          }
         </div>
 
         <!-- Username -->
-        <div class="mb-3 input-group">
-          <span class="input-group-text bg-light">
-            <i-feather name="at-sign"></i-feather>
-          </span>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Username"
-            formControlName="username"
-          />
+        <div class="mb-3 input-group d-flex flex-column">
+          <div
+            class="d-flex flex-grow-1 border rounded"
+            [ngClass]="{
+              'border-danger':
+                userSignUp.controls['username'].invalid &&
+                (userSignUp.controls['username'].dirty ||
+                  userSignUp.controls['username'].touched)
+            }"
+          >
+            <span class="input-group-text bg-light">
+              <i-feather name="at-sign"></i-feather>
+            </span>
+            <input
+              type="text"
+              class="form-control signup_input"
+              placeholder="Username"
+              formControlName="username"
+            />
+          </div>
+
+          @if ( userSignUp.controls['username'].invalid &&
+          (userSignUp.controls['username'].dirty ||
+          userSignUp.controls['username'].touched)) {
+          <div class="text-danger mt-1">
+            <small *ngIf="userSignUp.controls['username'].errors?.['required']">
+              Username is required.
+            </small>
+          </div>
+          }
         </div>
 
         <!-- Email -->
-        <div class="mb-3 input-group">
-          <span class="input-group-text bg-light">
-            <i-feather name="mail"></i-feather>
-          </span>
-          <input
-            type="email"
-            class="form-control"
-            placeholder="Enter your email"
-            formControlName="email"
-          />
+        <div class="mb-3 input-group d-flex flex-column">
+          <div
+            class="d-flex flex-grow-1 border rounded"
+            [ngClass]="{
+              'border-danger':
+                userSignUp.controls['email'].invalid &&
+                (userSignUp.controls['email'].dirty ||
+                  userSignUp.controls['email'].touched)
+            }"
+          >
+            <span class="input-group-text bg-light">
+              <i-feather name="mail"></i-feather>
+            </span>
+            <input
+              type="email"
+              class="form-control signup_input"
+              placeholder="Enter your email"
+              formControlName="email"
+            />
+          </div>
+
+          @if ( userSignUp.controls['email'].invalid &&
+          (userSignUp.controls['email'].dirty ||
+          userSignUp.controls['email'].touched)) {
+          <div class="text-danger mt-1">
+            <small *ngIf="userSignUp.controls['email'].errors?.['required']">
+              Email is required.
+            </small>
+            <small *ngIf="userSignUp.controls['email'].errors?.['email']">
+              Enter a valid email.
+            </small>
+          </div>
+          }
         </div>
 
         <!-- Password -->
-        <div class="mb-3 input-group">
-          <span class="input-group-text bg-light">
-            <i-feather name="lock"></i-feather>
-          </span>
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Enter your password"
-            formControlName="password"
-          />
+        <div class="mb-3 input-group d-flex flex-column">
+          <div
+            class="d-flex flex-grow-1 border rounded"
+            [ngClass]="{
+              'border-danger':
+                userSignUp.controls['password'].invalid &&
+                (userSignUp.controls['password'].dirty ||
+                  userSignUp.controls['password'].touched)
+            }"
+          >
+            <span class="input-group-text bg-light">
+              <i-feather name="lock"></i-feather>
+            </span>
+            <input
+              type="password"
+              class="form-control signup_input"
+              placeholder="Enter your password"
+              formControlName="password"
+            />
+          </div>
+
+          @if ( userSignUp.controls['password'].invalid &&
+          (userSignUp.controls['password'].dirty ||
+          userSignUp.controls['password'].touched)) {
+          <div class="text-danger mt-1">
+            <small *ngIf="userSignUp.controls['password'].errors?.['required']">
+              Password is required.
+            </small>
+          </div>
+          }
         </div>
 
         <!-- Phone -->
-        <div class="mb-3 input-group">
-          <span class="input-group-text bg-light">
-            <i-feather name="phone"></i-feather>
-          </span>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Phone Number"
-            formControlName="phoneNumber"
-          />
+        <div class="mb-3 input-group d-flex flex-column">
+          <div
+            class="d-flex flex-grow-1 border rounded"
+            [ngClass]="{
+              'border-danger':
+                userSignUp.controls['phoneNumber'].invalid &&
+                (userSignUp.controls['phoneNumber'].dirty ||
+                  userSignUp.controls['phoneNumber'].touched)
+            }"
+          >
+            <span class="input-group-text bg-light">
+              <i-feather name="phone"></i-feather>
+            </span>
+            <input
+              type="text"
+              class="form-control signup_input"
+              placeholder="Phone Number"
+              formControlName="phoneNumber"
+            />
+          </div>
+
+          @if ( userSignUp.controls['phoneNumber'].invalid &&
+          (userSignUp.controls['phoneNumber'].dirty ||
+          userSignUp.controls['phoneNumber'].touched)) {
+          <div class="text-danger mt-1">
+            <small
+              *ngIf="userSignUp.controls['phoneNumber'].errors?.['required']"
+            >
+              Phone number is required.
+            </small>
+          </div>
+          }
         </div>
 
         <!-- Role -->
-        <div class="mb-3 input-group">
-          <span class="input-group-text bg-light">
-            <i-feather name="users"></i-feather>
-          </span>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter your Role"
-            formControlName="roleName"
-          />
+        <div class="mb-3 input-group d-flex flex-column">
+          <div
+            class="d-flex flex-grow-1 border rounded"
+            [ngClass]="{
+              'border-danger':
+                userSignUp.controls['roleName'].invalid &&
+                (userSignUp.controls['roleName'].dirty ||
+                  userSignUp.controls['roleName'].touched)
+            }"
+          >
+            <span class="input-group-text bg-light">
+              <i-feather name="users"></i-feather>
+            </span>
+            <input
+              type="text"
+              class="form-control signup_input"
+              placeholder="Enter your Role"
+              formControlName="roleName"
+            />
+          </div>
+
+          @if ( userSignUp.controls['roleName'].invalid &&
+          (userSignUp.controls['roleName'].dirty ||
+          userSignUp.controls['roleName'].touched)) {
+          <div class="text-danger mt-1">
+            <small *ngIf="userSignUp.controls['roleName'].errors?.['required']">
+              Role is required.
+            </small>
+          </div>
+          }
         </div>
 
         <button
@@ -156,6 +329,7 @@
           </span>
         </div>
       </form>
+
       }
     </div>
   </div>
