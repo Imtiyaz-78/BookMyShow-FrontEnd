@@ -6,10 +6,8 @@ import { BehaviorSubject, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class CommonService {
-  selectedCity = sessionStorage.getItem('selectedCity');
-  selectedCitySignal = signal<any>(
-    this.selectedCity ? this.selectedCity : null
-  );
+  storedCity = sessionStorage.getItem('selectedCity');
+  selectedCitySignal = signal<string | null>(this.storedCity);
   profileHeaderSignal = signal<any>(false);
   private baseApiUrl = 'http://172.31.252.101:8080/bookmyshow/city/';
   constructor() {}

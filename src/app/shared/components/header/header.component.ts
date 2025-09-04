@@ -50,6 +50,7 @@ export class HeaderComponent implements OnInit {
     // Effect runs whenever authService.isLoggedIn() changes
     effect(() => {
       this.isLoggedInSignalValue.set(this.authService.isLoggedIn()); // Read signal value using ()
+      this.selectedCity = this.service.selectedCitySignal;
     });
   }
 
@@ -98,8 +99,8 @@ export class HeaderComponent implements OnInit {
   }
 
   handleCitySelection(city: string, modalRef?: BsModalRef): void {
-    this.selectedCity = city;
-    this.service.selectedCitySignal.set(city);
+    sessionStorage.setItem('selectedCity', city); // Save city into session storage
+    this.service.selectedCitySignal.set(city); // Update signal in common service
     if (modalRef) {
       modalRef.hide();
     }
