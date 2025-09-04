@@ -5,15 +5,14 @@ import { HomeComponent } from './landingpage/landingpage.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'delhi',
+    redirectTo: 'dashboard',
     pathMatch: 'full',
   },
-  { path: 'delhi', component: HomeComponent },
-  { path: 'home/:city', component: HomeComponent },
+  { path: ':city', component: HomeComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class HomeRoutingModule { }
+export class HomeRoutingModule {}

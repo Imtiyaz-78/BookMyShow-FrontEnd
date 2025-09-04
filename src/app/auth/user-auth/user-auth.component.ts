@@ -83,9 +83,24 @@ export class UserAuthComponent implements OnInit {
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
+      phoneNumber: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$'),
+        ],
+      ],
+
       roleName: ['', [Validators.required]],
     });
+  }
+
+  allowOnlyDigits(event: KeyboardEvent): void {
+    if (!/^[0-9]$/.test(event.key)) {
+      event.preventDefault(); // block if not a digit
+    }
   }
 
   /**

@@ -43,7 +43,8 @@ export class HeaderComponent implements OnInit {
     private route: Router,
     private modalSrv: BsModalService,
     private sanitizer: DomSanitizer,
-    public authService: AuthService
+    public authService: AuthService,
+    private router: Router
   ) {
     this.selectedCitySignal = this.service.selectedCitySignal;
 
@@ -74,8 +75,8 @@ export class HeaderComponent implements OnInit {
   openCitySelectionModal(modalTemplate: TemplateRef<any>): void {
     this.modalRef = this.modalSrv.show(modalTemplate, {
       class: 'modal-dialog-centered width_800',
-      keyboard: true,
-      ignoreBackdropClick: false,
+      keyboard: false,
+      ignoreBackdropClick: true,
     });
   }
 
@@ -84,8 +85,6 @@ export class HeaderComponent implements OnInit {
     this.viewCitiesText = this.showCities
       ? 'Hide All Cities'
       : 'View All Cities';
-
-    // this.fetchAllCities();
   }
 
   openAuthModal(authModalTemplate: TemplateRef<any>): void {
@@ -101,6 +100,8 @@ export class HeaderComponent implements OnInit {
   handleCitySelection(city: string, modalRef?: BsModalRef): void {
     sessionStorage.setItem('selectedCity', city); // Save city into session storage
     this.service.selectedCitySignal.set(city); // Update signal in common service
+    this.router.navigate(['explore', 'home', city]);
+
     if (modalRef) {
       modalRef.hide();
     }
@@ -125,6 +126,7 @@ export class HeaderComponent implements OnInit {
         if (res) {
           this.cityData = res;
           this.filterCityData = [...this.cityData];
+          this.openCitySelectionModal(this.cityModal);
         }
       },
       error: (err) => {

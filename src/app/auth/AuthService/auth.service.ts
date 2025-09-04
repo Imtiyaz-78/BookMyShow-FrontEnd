@@ -80,15 +80,16 @@ export class AuthService {
    * @returns {string} Encrypted string
    */
   encryptUsingAES256(val: string) {
-    const _key = CryptoJS.enc.Utf8.parse(this.secretKey.substring(0, 16));
-    const _iv = CryptoJS.enc.Utf8.parse(this.secretKey.substring(0, 16));
+    const _key = CryptoJS.enc.Base64.parse(this.secretKey);
+    const _iv = CryptoJS.enc.Base64.parse(this.secretKey);
     let encrypted = CryptoJS.AES.encrypt(val, _key, {
-      keySize: 16,
+      keySize: 32,
       iv: _iv,
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.Pkcs7,
     });
     this.encrypted = encrypted.toString();
+    console.log(this.encrypted);
     return this.encrypted;
   }
 

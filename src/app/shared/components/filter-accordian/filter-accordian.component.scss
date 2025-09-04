@@ -25,23 +25,35 @@
   gap: 3px;
   background-color: white;
 }
-.toggleFilter button {
-  transition: 3s;
-  word-break: break-word;
-  color: rgb(220, 53, 75);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.43;
-}
-.tranform_icon {
-  transform: rotate(180deg);
-}
+
 .text_changColor {
   color: rgb(220, 53, 88);
 }
-.filter_button_box button {
-  background-color: white;
+
+.chevron_icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+}
+
+.filter_btn {
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0px 12px;
+  height: 32px;
+  background-color: rgb(255, 255, 255);
   border: 1px solid rgb(229, 229, 229);
-  margin: 2px;
-  padding: 5px;
+  opacity: 1;
+  border-radius: 4px;
+  word-break: break-word;
+  color: rgb(220, 53, 75);
+  font-size: 16px;
+
+  line-height: 1.43;
+
+  &.active {
+    background-color: #eb4e62;
+    color: white;
+  }
 }

@@ -10,6 +10,7 @@ export class CommonService {
   selectedCitySignal = signal<string | null>(this.storedCity);
   profileHeaderSignal = signal<any>(false);
   private baseApiUrl = 'http://172.31.252.101:8080/bookmyshow/city/';
+
   constructor() {}
 
   http = inject(HttpClient);

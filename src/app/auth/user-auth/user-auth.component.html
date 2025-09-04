@@ -260,7 +260,7 @@
               <i-feather name="phone"></i-feather>
             </span>
             <input
-              type="text"
+              type="tel"
               class="form-control signup_input"
               placeholder="Phone Number"
               formControlName="phoneNumber"
@@ -275,6 +275,27 @@
               *ngIf="userSignUp.controls['phoneNumber'].errors?.['required']"
             >
               Phone number is required.
+            </small>
+
+            <small
+              *ngIf="
+             userSignUp.controls['phoneNumber'].errors?.['pattern']"
+            >
+              Only numbers are allowed.
+            </small>
+
+            <small
+              *ngIf="!userSignUp.controls['phoneNumber'].errors?.['pattern'] 
+             && userSignUp.controls['phoneNumber'].errors?.['minlength']"
+            >
+              Phone number must be at least 10 digits.
+            </small>
+
+            <small
+              *ngIf="!userSignUp.controls['phoneNumber'].errors?.['pattern'] 
+             && userSignUp.controls['phoneNumber'].errors?.['maxlength']"
+            >
+              Phone number cannot exceed 10 digits.
             </small>
           </div>
           }
