@@ -73,7 +73,7 @@
     ></button>
   </div>
 
-  <form [formGroup]="userForm">
+  <form [formGroup]="userForm" (ngSubmit)="onUpdtateUser()">
     <div class="modal-body">
       <div class="mb-3">
         <label>User Name</label>
@@ -106,7 +106,7 @@
         Cancel
       </button>
       <button
-        type="button"
+        type="submit"
         class="btn btn-primary"
         [disabled]="userForm.invalid"
       >

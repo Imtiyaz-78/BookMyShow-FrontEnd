@@ -3,6 +3,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AdminService } from '../service/admin.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastService } from '../../../shared/components/toast/toast.service';
 
 @Component({
   selector: 'app-users',
@@ -17,9 +18,10 @@ export class UsersComponent implements OnInit {
   checkState: any;
   constructor(
     private http: HttpClient,
-    private admin: AdminService,
+    private adminService: AdminService,
     private modalService: BsModalService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -32,7 +34,7 @@ export class UsersComponent implements OnInit {
 
   initilizeUserForm() {
     this.userForm = this.fb.group({
-      userId: [{ value: '', disabled: true }],
+      userId: [''],
       username: ['', Validators.required],
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -42,7 +44,7 @@ export class UsersComponent implements OnInit {
   }
 
   ongetAllUsers() {
-    this.admin.getUsers().subscribe({
+    this.adminService.getUsers().subscribe({
       next: (res: any) => {
         if (res.success) {
           console.log(res.data.users);
@@ -58,7 +60,7 @@ export class UsersComponent implements OnInit {
   }
 
   onEditUserByID(updateUser: TemplateRef<void>, user: any): void {
-    this.admin.getUserById(user.userId).subscribe({
+    this.adminService.getUserById(user.userId).subscribe({
       next: (res) => {
         if (res.success) {
           this.userForm.patchValue({
@@ -87,5 +89,23 @@ export class UsersComponent implements OnInit {
     if (this.modalRef) {
       this.modalRef?.hide();
     }
+  }
+
+  onUpdtateUser(): void {
+    this.adminService
+      .updateUserRole(this.userForm.value.userId, this.userForm.value.roleName)
+      .subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.toastService.startToast(res.message);
+            this.userForm.reset();
+            this.onCancel();
+            this.ongetAllUsers();
+          }
+        },
+        error: (err) => {
+          console.error('Error updating user:', err);
+        },
+      });
   }
 }

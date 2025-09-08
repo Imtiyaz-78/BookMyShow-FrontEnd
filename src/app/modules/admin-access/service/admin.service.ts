@@ -26,4 +26,16 @@ export class AdminService {
   getUserById(userId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/users/${userId}`);
   }
+
+  /**
+   * @description   Update User by userId and UserRole
+   * @param {number} userId - ID of the user
+   * @returns {Observable<any>}
+   */
+  updateUserRole(userId: number, roleName: string): Observable<any> {
+    return this.http.put<any>(
+      `${this.apiUrl}/users/${userId}/role?roleName=${roleName}`,
+      {}
+    );
+  }
 }
