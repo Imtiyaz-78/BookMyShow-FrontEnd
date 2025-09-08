@@ -37,3 +37,16 @@ tbody tr:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-height: 550px;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+}

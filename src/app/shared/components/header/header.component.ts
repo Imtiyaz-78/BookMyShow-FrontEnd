@@ -55,6 +55,11 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  /**
+   * @description Lifecycle hook for initialization tasks like fetching cities and setting profile header visibility.
+   * @author Md Imtiyaz
+   * @returns void
+   */
   ngOnInit(): void {
     this.showProfileheader = this.service.profileHeaderSignal();
     if (!this.selectedCity) {
@@ -68,10 +73,21 @@ export class HeaderComponent implements OnInit {
     // });
   }
 
+  /**
+   * @description Getter to retrieve authenticated user profile details from AuthService.
+   * @author Md Imtiyaz
+   * @returns {any} User profile details
+   */
   get userProfileDetails() {
     return this.authService.userDetails();
   }
 
+  /**
+   * @description Opens the city selection modal for choosing city location.
+   * @author Md Imtiyaz
+   * @param {TemplateRef<any>} modalTemplate - Modal template reference
+   * @returns void
+   */
   openCitySelectionModal(modalTemplate: TemplateRef<any>): void {
     this.modalRef = this.modalSrv.show(modalTemplate, {
       class: 'modal-dialog-centered width_800',
@@ -80,6 +96,11 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  /**
+   * @description Toggles visibility of full city list between "View All Cities" and "Hide All Cities".
+   * @author Md Imtiyaz
+   * @returns void
+   */
   toggleCityListVisibility(): void {
     this.showCities = !this.showCities;
     this.viewCitiesText = this.showCities
@@ -87,6 +108,12 @@ export class HeaderComponent implements OnInit {
       : 'View All Cities';
   }
 
+  /**
+   * @description Opens the authentication modal (Login/Signup popup).
+   * @author Md Imtiyaz
+   * @param {TemplateRef<any>} authModalTemplate - Modal template reference
+   * @returns void
+   */
   openAuthModal(authModalTemplate: TemplateRef<any>): void {
     this.modalRef = this.modalSrv.show(authModalTemplate, {
       class: ' dialog modal-dialog-centered',
@@ -123,14 +150,16 @@ export class HeaderComponent implements OnInit {
   fetchPopularCities(): void {
     this.service.getAllPopularCity().subscribe({
       next: (res: any) => {
-        if (res) {
-          this.cityData = res;
+        if (res.success) {
+          this.cityData = res.data;
           this.filterCityData = [...this.cityData];
-          this.openCitySelectionModal(this.cityModal);
+          if (!this.service.selectedCitySignal()) {
+            this.openCitySelectionModal(this.cityModal);
+          }
         }
       },
       error: (err) => {
-        console.log(err);
+        console.log(err.message);
       },
     });
   }
@@ -138,13 +167,13 @@ export class HeaderComponent implements OnInit {
   fetchAllCities(): void {
     this.service.getAllCity().subscribe({
       next: (res: any) => {
-        if (res) {
-          this.cityList = res;
+        if (res.success) {
+          this.cityList = res.data;
           this.filterCityList = [...this.cityList];
         }
       },
       error: (err) => {
-        console.log(err);
+        console.log(err.message);
       },
     });
   }
@@ -160,11 +189,11 @@ export class HeaderComponent implements OnInit {
     const term = input.value.toLowerCase().trim();
 
     this.filterCityData = this.cityData.filter((city) =>
-      city.name.toLowerCase().includes(term)
+      city.cityName.toLowerCase().includes(term)
     );
 
     this.filterCityList = this.cityList.filter((city) =>
-      city.name.toLowerCase().includes(term)
+      city.cityName.toLowerCase().includes(term)
     );
   }
 }

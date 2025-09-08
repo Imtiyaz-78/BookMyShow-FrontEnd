@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../core/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +11,19 @@ export class AdminService {
   constructor(private http: HttpClient) {}
 
   getUsers() {
-    return this.http.get(this.apiUrl);
+    return this.http.get(`${this.apiUrl}/users`);
   }
 
   editUserById(userId: string, userData: any) {
     return this.http.put(`${this.apiUrl}/${userId}`, userData);
+  }
+
+  /**
+   * @description Get user by userId
+   * @param {number} userId - ID of the user
+   * @returns {Observable<any>}
+   */
+  getUserById(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/users/${userId}`);
   }
 }

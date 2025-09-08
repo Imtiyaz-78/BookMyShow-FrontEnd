@@ -51,7 +51,7 @@ export class UserAuthComponent implements OnInit {
   }
 
   /**
-   * @description Angular lifecycle hook - initializes login and signup forms.
+   * @description Angular lifecycle hook initializes login and signup forms.
    * @author Md Imtiyaz
    * @returns void
    */
@@ -93,7 +93,7 @@ export class UserAuthComponent implements OnInit {
         ],
       ],
 
-      roleName: ['', [Validators.required]],
+      roleName: ['USER', [Validators.required]],
     });
   }
 

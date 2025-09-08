@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AdminService } from '../service/admin.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -12,21 +13,39 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class UsersComponent implements OnInit {
   userData: any[] = [];
   modalRef?: BsModalRef;
-
+  userForm!: FormGroup;
+  checkState: any;
   constructor(
     private http: HttpClient,
     private admin: AdminService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.ongetAllUsers();
+    this.checkState = history.state.data;
+    if (this.checkState) {
+      this.ongetAllUsers();
+    }
+    this.initilizeUserForm();
+  }
+
+  initilizeUserForm() {
+    this.userForm = this.fb.group({
+      userId: [{ value: '', disabled: true }],
+      username: ['', Validators.required],
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', Validators.required],
+      roleName: ['', Validators.required],
+    });
   }
 
   ongetAllUsers() {
     this.admin.getUsers().subscribe({
       next: (res: any) => {
         if (res.success) {
+          console.log(res.data.users);
           this.userData = res.data.users.sort(
             (a: any, b: any) => a.userId - b.userId
           );
@@ -38,11 +57,35 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  onEditUser(template: TemplateRef<void>, user: any) {
-    this.modalRef = this.modalService.show(template, {
-      class: 'largeModel',
-      keyboard: false,
-      ignoreBackdropClick: true,
+  onEditUserByID(updateUser: TemplateRef<void>, user: any): void {
+    this.admin.getUserById(user.userId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.userForm.patchValue({
+            userId: res.data.user.userId,
+            username: res.data.user.username,
+            name: res.data.user.name,
+            email: res.data.user.email,
+            phoneNumber: res.data.user.phoneNumber,
+            roleName: res.data.user.roleName,
+          });
+        }
+
+        this.modalRef = this.modalService.show(updateUser, {
+          class: 'modal-dialog-centered ',
+          keyboard: false,
+          ignoreBackdropClick: true,
+        });
+      },
+      error: (err) => {
+        console.error('Error fetching user:', err.message);
+      },
     });
+  }
+
+  onCancel(): void {
+    if (this.modalRef) {
+      this.modalRef?.hide();
+    }
   }
 }

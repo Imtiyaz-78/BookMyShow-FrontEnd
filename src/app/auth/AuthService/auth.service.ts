@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../core/environments/environment';
 type JwtPayload = Record<string, any>;
 
 @Injectable({
@@ -23,7 +24,7 @@ export class AuthService {
       this.isLoggedIn.set(true);
     }
 
-    this.secretKey = 'U29tZVNlY3JldEtleVRoYXRJc1ZlcnlTZWN1cmUhISE=';
+    this.secretKey = environment.secretKey;
   }
 
   /**
@@ -70,7 +71,11 @@ export class AuthService {
       username: credentials.username,
       password: this.encryptUsingAES256(credentials.password),
     };
-    return this.http.post<any>(`${this.apiUrl}/login`, payload);
+    return this.http.post<any>(
+      `${this.apiUrl}/login
+`,
+      payload
+    );
   }
 
   /**
@@ -79,17 +84,18 @@ export class AuthService {
    * @param {string} val - Plain text value to encrypt
    * @returns {string} Encrypted string
    */
-  encryptUsingAES256(val: string) {
+
+  encryptUsingAES256(val: any): string {
     const _key = CryptoJS.enc.Base64.parse(this.secretKey);
     const _iv = CryptoJS.enc.Base64.parse(this.secretKey);
     let encrypted = CryptoJS.AES.encrypt(val, _key, {
       keySize: 32,
       iv: _iv,
-      mode: CryptoJS.mode.CBC,
+      mode: CryptoJS.mode.ECB,
       padding: CryptoJS.pad.Pkcs7,
     });
     this.encrypted = encrypted.toString();
-    console.log(this.encrypted);
+    console.log(this.secretKey);
     return this.encrypted;
   }
 

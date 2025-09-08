@@ -1,0 +1,20 @@
+<div class="custom-select" [class.open]="isOpen">
+  <!-- Selected Value -->
+  <div class="selected" (click)="toggleDropdown()">
+    <span>
+      {{ selectedLabel }}
+    </span>
+    <i-feather [name]="!isOpen ? 'chevron-right' : 'chevron-down'"></i-feather>
+  </div>
+
+  <!-- Dropdown List -->
+  @if (isOpen) {
+  <ul class="options">
+    @for (item of optionList; track $index) {
+    <li (click)="selectOption(item)">
+      {{ item }}
+    </li>
+    }
+  </ul>
+  }
+</div>

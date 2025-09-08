@@ -1,0 +1,20 @@
+<div class="seach_input">
+  <div class="icon_warpper">
+    <i-feather name="search" class="search_icon"></i-feather>
+  </div>
+
+  <input
+    type="text"
+    [placeholder]="placeholder"
+    [value]="searchParam"
+    (input)="onInputChange($event)"
+    (blur)="onTouched()"
+  />
+
+  @if (searchParam.length > 0) {
+  <div class="cross_icon_wrapper cross_icon">
+    <i-feather name="x" (click)="closeSearchBar()" />
+  </div>
+
+  }
+</div>

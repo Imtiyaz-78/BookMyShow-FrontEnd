@@ -20,6 +20,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { CommonModule } from '@angular/common';
+import { SearchFilterComponent } from './shared/components/search-filter/search-filter.component';
+import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { CommonModule } from '@angular/common';
     ErrorpageComponent,
     MainLayoutComponent,
     ToastComponent,
+    ClickOutsideDirective,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { environment } from '../core/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,17 +10,17 @@ export class CommonService {
   storedCity = sessionStorage.getItem('selectedCity');
   selectedCitySignal = signal<string | null>(this.storedCity);
   profileHeaderSignal = signal<any>(false);
-  private baseApiUrl = 'http://172.31.252.101:8080/bookmyshow/city/';
+  private baseApiUrl = environment.baseUrl;
 
   constructor() {}
 
   http = inject(HttpClient);
 
   getAllCity() {
-    return this.http.get(`${this.baseApiUrl}all`);
+    return this.http.get(`${this.baseApiUrl}/city/all`);
   }
 
   getAllPopularCity() {
-    return this.http.get(`${this.baseApiUrl}popular`);
+    return this.http.get(`${this.baseApiUrl}/city/popular`);
   }
 }

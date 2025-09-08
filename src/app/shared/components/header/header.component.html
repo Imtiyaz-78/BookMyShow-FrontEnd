@@ -95,7 +95,9 @@
               <a>Sports</a>
               <a>Activities</a>
               @if (userProfileDetails?.role == 'ADMIN') {
-              <a [routerLink]="['/admin/users']">Users</a>
+              <a [routerLink]="['/admin/users']" [state]="{ data: true }"
+                >Users</a
+              >
               }
             </div>
           </div>
@@ -268,18 +270,18 @@
 
       <div
         class="main-view-city-container d-flex"
-        (click)="handleCitySelection(item.name, modalRef)"
+        (click)="handleCitySelection(item.cityName, modalRef)"
       >
         <div
           class="flex_direction d-flex flex-column justify-content-center align-items-center"
         >
           <img
-            [ngClass]="item.name === selectedCity ? 'active_img' : ''"
+            [ngClass]="item.cityName === selectedCity ? 'active_img' : ''"
             [src]="getImageFromBase64(item?.imageUrl)"
-            alt="{{ item.name }}"
+            alt="{{ item.cityName }}"
             class="img-fluid city_section"
           />
-          <p class="p-0 m-0">{{ item.name }}</p>
+          <p class="p-0 m-0">{{ item.cityName }}</p>
         </div>
       </div>
       } } @else {
@@ -297,8 +299,8 @@
         <div class="list_cities py-2 w-100">
           @if (filterCityList.length > 0) { @for (item of filterCityList; track
           $index) {
-          <p class="m-0" (click)="handleCitySelection(item.name, modalRef)">
-            {{ item.name }}
+          <p class="m-0" (click)="handleCitySelection(item.cityName, modalRef)">
+            {{ item.cityName }}
           </p>
           }} @else {
           <h5 class="text-center no_data_found w-100 col-md-12">

@@ -1,0 +1,57 @@
+.custom-select {
+  position: relative;
+  width: 220px;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  user-select: none;
+  height: 36px;
+
+  .selected {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+
+  .options {
+    position: absolute;
+    top: 37px;
+    list-style: none;
+    background: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    width: 100%;
+
+    li {
+      padding: 10px;
+      cursor: pointer;
+      width: 100%;
+
+      &:hover {
+        background: #f8f9fa;
+      }
+
+      &.active {
+        background: #0d6efd;
+        color: #fff;
+      }
+    }
+  }
+
+  &.open .selected {
+    border-radius: 6px 6px 0 0;
+  }
+}
+
+i-feather {
+  display: flex;
+  height: 20px;
+  width: 20px;
+}
