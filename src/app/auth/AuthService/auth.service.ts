@@ -123,4 +123,11 @@ export class AuthService {
     };
     return this.http.post(`${this.apiUrl}/register`, payload);
   }
+
+  // Validate Exiting User
+  validateUser(username: any): Observable<any> {
+    return this.http.get(
+      `${this.apiUrl}/validate/username?username=${username}`
+    );
+  }
 }

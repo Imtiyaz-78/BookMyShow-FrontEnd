@@ -38,4 +38,8 @@ export class AdminService {
       {}
     );
   }
+
+  searchUserByUserName(value: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/users/search?value=${value}`);
+  }
 }

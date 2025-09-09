@@ -1,15 +1,18 @@
 <div class="animated-table-container bg-white p-3">
   <div class="header">
     <div class="left">
-      <h5 class="text-start">User Table List</h5>
+      <h5 class="text-start">User Details List</h5>
     </div>
 
     <div class="right">
-      <app-search-filter
-        [borderRequired]="true"
-        [placeholder]="'Search here..'"
-      >
-      </app-search-filter>
+      <div class="search_filter">
+        <app-search-filter
+          [borderRequired]="true"
+          [placeholder]="'Search here..'"
+          [formControl]="searchVal"
+        >
+        </app-search-filter>
+      </div>
       <form [formGroup]="userForm">
         <app-single-select
           formControlName="roleName"
@@ -35,7 +38,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (item of userData; track $index) {
+        @if (userData.length > 0) { @for (item of userData; track $index) {
         <tr>
           <td>{{ item.userId }}</td>
           <td>{{ item.username }}</td>
@@ -54,6 +57,10 @@
               <button class="btn btn-danger btn-sm">Delete User</button>
             </div>
           </td>
+        </tr>
+        } }@else {
+        <tr class="no_data_found_row">
+          <td colspan="7" class="text-center no_data_found">No data found</td>
         </tr>
         }
       </tbody>

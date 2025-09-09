@@ -18,6 +18,13 @@ import { AuthService } from '../AuthService/auth.service';
 import { jwtDecode } from 'jwt-decode';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastService } from '../../shared/components/toast/toast.service';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+} from 'rxjs';
 
 @Component({
   selector: 'app-user-auth',
@@ -58,6 +65,7 @@ export class UserAuthComponent implements OnInit {
   ngOnInit(): void {
     this.OnInitLoginForm();
     this.OnInitSignUpForm();
+    this.onValidateExixtUser();
   }
 
   /**
@@ -183,5 +191,35 @@ export class UserAuthComponent implements OnInit {
    */
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  // Validate Exist User
+  isUserExit: any;
+  onValidateExixtUser(): void {
+    const usernameControl = this.userSignUp.get('username');
+
+    if (!usernameControl) {
+      return;
+    }
+
+    usernameControl.valueChanges
+      .pipe(
+        debounceTime(1000),
+        map((val) => val?.trim() || ''),
+        filter((val) => val.length > 0),
+        distinctUntilChanged(),
+        switchMap((value: string) => this.authService.validateUser(value))
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res.success) {
+            this.isUserExit = res.message;
+            this.toastService.startToast(res.message);
+          }
+        },
+        error: (err) => {
+          this.toastService.startToast(err.message || 'Validation failed');
+        },
+      });
   }
 }

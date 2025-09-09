@@ -14,6 +14,14 @@ import { FeatherModule } from 'angular-feather';
   templateUrl: './search-filter.component.html',
   styleUrl: './search-filter.component.scss',
   imports: [FeatherModule],
+
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SearchFilterComponent),
+      multi: true,
+    },
+  ],
 })
 export class SearchFilterComponent implements ControlValueAccessor {
   searchParam: string = '';
@@ -37,8 +45,8 @@ export class SearchFilterComponent implements ControlValueAccessor {
   onInputChange(event: any) {
     const value = (event.target as HTMLInputElement)?.value;
     this.searchParam = value;
-    this.onChange(value); // propagate to reactive form
-    this.searchParamValue.emit(value); // still emit for your custom usage
+    this.onChange(value);
+    this.searchParamValue.emit(value);
   }
 
   closeSearchBar(): void {

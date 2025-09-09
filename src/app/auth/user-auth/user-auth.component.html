@@ -165,7 +165,16 @@
             />
           </div>
 
-          @if ( userSignUp.controls['username'].invalid &&
+          @if(userSignUp.get('username')?.value){
+          <span
+            [ngClass]="{
+              'text-danger': isUserExit == 'Username already exists',
+              'text-success': isUserExit == 'Username available'
+            }"
+          >
+            {{ isUserExit }}
+          </span>
+          } @if ( userSignUp.controls['username'].invalid &&
           (userSignUp.controls['username'].dirty ||
           userSignUp.controls['username'].touched)) {
           <div class="text-danger mt-1">

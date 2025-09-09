@@ -1,9 +1,21 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { AdminService } from '../service/admin.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ToastService } from '../../../shared/components/toast/toast.service';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+} from 'rxjs';
 
 @Component({
   selector: 'app-users',
@@ -16,8 +28,9 @@ export class UsersComponent implements OnInit {
   modalRef?: BsModalRef;
   userForm!: FormGroup;
   checkState: any;
+  searchVal = new FormControl();
+
   constructor(
-    private http: HttpClient,
     private adminService: AdminService,
     private modalService: BsModalService,
     private fb: FormBuilder,
@@ -30,6 +43,7 @@ export class UsersComponent implements OnInit {
       this.ongetAllUsers();
     }
     this.initilizeUserForm();
+    this.onSearchUserByUserName();
   }
 
   initilizeUserForm() {
@@ -104,7 +118,34 @@ export class UsersComponent implements OnInit {
           }
         },
         error: (err) => {
-          console.error('Error updating user:', err);
+          this.toastService.startToast(err.message);
+        },
+      });
+  }
+
+  //  Search User By UserName
+  onSearchUserByUserName(): void {
+    this.searchVal.valueChanges
+      .pipe(
+        debounceTime(500),
+        map((value) => value.trim()),
+        distinctUntilChanged(),
+        switchMap((value) => {
+          if (!value) {
+            return this.adminService.getUsers();
+          }
+          return this.adminService.searchUserByUserName(value);
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res.success) {
+            this.userData = res.data.users;
+            return;
+          }
+        },
+        error: () => {
+          this.userData = [];
         },
       });
   }
