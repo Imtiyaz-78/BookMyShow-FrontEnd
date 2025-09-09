@@ -44,6 +44,18 @@ export class UsersComponent implements OnInit {
     }
     this.initilizeUserForm();
     this.onSearchUserByUserName();
+
+    //gettign role
+    this.userForm
+      .get('roleName')
+      ?.valueChanges.pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((role: string) => {
+        if (role) {
+          this.onFilterUserByRole(role);
+        } else {
+          this.userData = [];
+        }
+      });
   }
 
   initilizeUserForm() {
@@ -148,5 +160,19 @@ export class UsersComponent implements OnInit {
           this.userData = [];
         },
       });
+  }
+
+  // Filter Users By UserRole
+  onFilterUserByRole(role: string) {
+    this.adminService.getUserByUserRole(role).subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.userData = res.data.users;
+        }
+      },
+      error: () => {
+        this.userData = [];
+      },
+    });
   }
 }

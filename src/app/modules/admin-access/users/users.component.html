@@ -60,7 +60,7 @@
         </tr>
         } }@else {
         <tr class="no_data_found_row">
-          <td colspan="7" class="text-center no_data_found">No data found</td>
+          <td colspan="7" class="text-center no_data_found">No User found</td>
         </tr>
         }
       </tbody>
@@ -84,22 +84,42 @@
     <div class="modal-body">
       <div class="mb-3">
         <label>User Name</label>
-        <input type="text" class="form-control" formControlName="username" />
+        <input
+          readonly
+          type="text"
+          class="form-control"
+          formControlName="username"
+        />
       </div>
 
       <div class="mb-3">
         <label>Name</label>
-        <input type="text" class="form-control" formControlName="name" />
+        <input
+          readonly
+          type="text"
+          class="form-control"
+          formControlName="name"
+        />
       </div>
 
       <div class="mb-3">
         <label>Email</label>
-        <input type="email" class="form-control" formControlName="email" />
+        <input
+          readonly
+          type="email"
+          class="form-control"
+          formControlName="email"
+        />
       </div>
 
       <div class="mb-3">
         <label>Phone</label>
-        <input type="text" class="form-control" formControlName="phoneNumber" />
+        <input
+          readonly
+          type="text"
+          class="form-control"
+          formControlName="phoneNumber"
+        />
       </div>
 
       <div class="mb-3">

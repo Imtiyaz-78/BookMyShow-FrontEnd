@@ -42,4 +42,8 @@ export class AdminService {
   searchUserByUserName(value: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/users/search?value=${value}`);
   }
+
+  getUserByUserRole(roleName: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/users/role/${roleName}`);
+  }
 }
