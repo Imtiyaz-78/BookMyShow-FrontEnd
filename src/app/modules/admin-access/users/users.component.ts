@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
 import { AdminService } from '../service/admin.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import {
@@ -164,6 +164,11 @@ export class UsersComponent implements OnInit {
 
   // Filter Users By UserRole
   onFilterUserByRole(role: string) {
+    if (role === 'ALL') {
+      this.ongetAllUsers();
+      return;
+    }
+
     this.adminService.getUserByUserRole(role).subscribe({
       next: (res: any) => {
         if (res.success) {
@@ -174,5 +179,27 @@ export class UsersComponent implements OnInit {
         this.userData = [];
       },
     });
+  }
+
+  onDeleteUser(userId: number): void {
+    this.adminService.deleteUserById(userId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          debugger;
+        }
+        this.toastService.startToast(res.message);
+        this.ongetAllUsers();
+      },
+    });
+  }
+
+  openedDropdownId: number | null = null;
+
+  toggleDropdown(userId: number) {
+    if (this.openedDropdownId === userId) {
+      this.openedDropdownId = null;
+    } else {
+      this.openedDropdownId = userId;
+    }
   }
 }

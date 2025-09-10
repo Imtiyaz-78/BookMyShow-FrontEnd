@@ -1,70 +1,130 @@
 <div class="animated-table-container bg-white p-3">
-  <div class="header">
-    <div class="left">
-      <h5 class="text-start">User Details List</h5>
-    </div>
-
-    <div class="right">
-      <div class="search_filter">
-        <app-search-filter
-          [borderRequired]="true"
-          [placeholder]="'Search here..'"
-          [formControl]="searchVal"
+  <div class="container-fluid">
+    <div class="row main_table_container">
+      <div class="col-10">
+        <div
+          class="col-12 d-flex justify-content-between align-items-center d-none"
         >
-        </app-search-filter>
-      </div>
-      <form [formGroup]="userForm">
-        <app-single-select
-          formControlName="roleName"
-          [placeholder]="'Select Role'"
-          [optionList]="['User', 'Admin']"
-        >
-        </app-single-select>
-      </form>
-    </div>
-  </div>
-
-  <div class="table-container">
-    <table class="table table-hover align-middle mb-0">
-      <thead class="table-primary">
-        <tr>
-          <th>ID</th>
-          <th>User Name</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone Number</th>
-          <th>Role</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        @if (userData.length > 0) { @for (item of userData; track $index) {
-        <tr>
-          <td>{{ item.userId }}</td>
-          <td>{{ item.username }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.email }}</td>
-          <td>{{ item.phoneNumber }}</td>
-          <td>{{ item.roleName }}</td>
-          <td>
-            <div class="d-flex gap-2">
-              <button
-                class="btn btn-primary btn-sm"
-                (click)="onEditUserByID(updateUser, item)"
-              >
-                Edit User
-              </button>
-              <button class="btn btn-danger btn-sm">Delete User</button>
+          <h4>All Users List</h4>
+          <div class="col-4 py-3 px-2 gap-2 d-flex">
+            <div class="col-3">
+              <select class="form-select" aria-label="Default select example">
+                <option value="All" selected>All</option>
+                <option value="ADMIN">Admin</option>
+                <option value="USER">User</option>
+              </select>
             </div>
-          </td>
-        </tr>
-        } }@else {
-        <tr class="no_data_found_row">
-          <td colspan="7" class="text-center no_data_found">No User found</td>
-        </tr>
-        }
-      </tbody>
-    </table>
+            <input
+              type="text"
+              class="search_input form-control"
+              placeholder="Search by name, username, email & phoneNumber"
+            />
+          </div>
+        </div>
+
+        <div class="header">
+          <div class="left">
+            <h5 class="text-start">All Users List</h5>
+          </div>
+
+          <div class="right">
+            <div class="search_filter">
+              <app-search-filter
+                [borderRequired]="true"
+                [placeholder]="'Search here..'"
+                [formControl]="searchVal"
+              >
+              </app-search-filter>
+            </div>
+            <form [formGroup]="userForm">
+              <app-single-select
+                formControlName="roleName"
+                [placeholder]="'Select Role'"
+                [optionList]="['ALL', 'User', 'Admin']"
+              >
+              </app-single-select>
+            </form>
+          </div>
+        </div>
+        <!-- Users Table -->
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>UserName</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>RoleName</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (userData.length > 0) { @for (user of userData; track $index) {
+            <tr>
+              <td>{{ user.userId }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.phoneNumber }}</td>
+              <td>
+                <div
+                  class="rolename badge"
+                  [ngClass]="{
+                    admin: user.roleName === 'ADMIN',
+                    user: user.roleName === 'USER'
+                  }"
+                >
+                  {{ user.roleName }}
+                </div>
+              </td>
+              <td>
+                <button
+                  class="btn btn-secondary"
+                  (click)="toggleDropdown(user.userId)"
+                >
+                  <i-feather name="more-vertical"></i-feather>
+                </button>
+                @if (openedDropdownId === user.userId) {
+                <div
+                  class="position-relative"
+                  appClickOutside
+                  (clickedOutside)="openedDropdownId = null"
+                >
+                  <div class="dropdown">
+                    <label class="label_field">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        [checked]="user.roleName === 'ADMIN'"
+                      />
+                      <span class="label">Make Admin</span>
+                    </label>
+                    <div
+                      class="label_field"
+                      (click)="onDeleteUser(user.userId)"
+                    >
+                      <i-feather name="trash-2"></i-feather>
+
+                      <span class="label">Delete User</span>
+                    </div>
+                  </div>
+                </div>
+
+                }
+              </td>
+            </tr>
+            } } @else {
+            <tr class="no_data_found_row">
+              <td colspan="7">
+                <div class="no_data_found">No User Found</div>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 

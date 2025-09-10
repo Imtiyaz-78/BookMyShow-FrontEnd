@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -21,7 +22,9 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { CommonModule } from '@angular/common';
 import { SearchFilterComponent } from './shared/components/search-filter/search-filter.component';
-import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { LoaderComponent } from './pages/loader/loader.component';
+import { httpInterceptor } from './auth/interceptor/http.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,10 +36,11 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     ErrorpageComponent,
     MainLayoutComponent,
     ToastComponent,
-    ClickOutsideDirective,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     AppRoutingModule,
     NgbModule,
@@ -48,11 +52,12 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     FeatherModule,
     FeatherModule.pick(allIcons),
     UserAuthComponent,
+    BsDropdownModule.forRoot(),
   ],
 
   exports: [FeatherModule],
   providers: [
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, httpInterceptor])),
     BsModalService,
   ],
   bootstrap: [AppComponent],

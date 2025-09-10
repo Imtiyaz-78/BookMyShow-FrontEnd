@@ -10,6 +10,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SingleSelectComponent } from '../../shared/components/single-select/single-select.component';
 import { SearchFilterComponent } from '../../shared/components/search-filter/search-filter.component';
 import { FeatherModule } from 'angular-feather';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ClickOutsideDirective } from '../../shared/directives/click-outside.directive';
 
 @NgModule({
   declarations: [UsersComponent, ListYourShowComponent],
@@ -20,6 +22,9 @@ import { FeatherModule } from 'angular-feather';
     ReactiveFormsModule,
     SingleSelectComponent,
     SearchFilterComponent,
+    FeatherModule,
+    BsDropdownModule,
+    ClickOutsideDirective,
   ],
   providers: [BsModalService],
 })

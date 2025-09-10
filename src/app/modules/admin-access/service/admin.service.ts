@@ -46,4 +46,11 @@ export class AdminService {
   getUserByUserRole(roleName: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/users/role/${roleName}`);
   }
+
+  deleteUserById(userId: number): Observable<any> {
+    return this.http.patch<any>(
+      `${this.apiUrl}/users/delete-user/${userId}`,
+      {}
+    );
+  }
 }
