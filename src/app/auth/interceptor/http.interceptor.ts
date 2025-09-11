@@ -3,15 +3,17 @@ import { inject } from '@angular/core';
 import { LoaderService } from '../../core/service/loader.service';
 import { finalize, Observable } from 'rxjs';
 
-export const httpInterceptor = (
+export function httpInterceptor(
   req: HttpRequest<any>,
   next: HttpHandlerFn
-): Observable<HttpEvent<any>> => {
+): Observable<HttpEvent<any>> {
   const loader = inject(LoaderService);
 
-  // Optionally skip loader for certain requests
-  // if (req.headers.has('skip-loader')) return next(req);
+  loader.startLoader();
 
-  loader.show();
-  return next(req).pipe(finalize(() => loader.hide()));
-};
+  return next(req).pipe(
+    finalize(() => {
+      loader.stopLoader();
+    })
+  );
+}

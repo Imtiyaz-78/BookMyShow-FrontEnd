@@ -185,10 +185,12 @@ export class UsersComponent implements OnInit {
     this.adminService.deleteUserById(userId).subscribe({
       next: (res) => {
         if (res.success) {
-          debugger;
+          this.toastService.startToast(res.message);
+          this.ongetAllUsers();
         }
-        this.toastService.startToast(res.message);
-        this.ongetAllUsers();
+      },
+      error: (err) => {
+        this.toastService.startToast(err.message);
       },
     });
   }

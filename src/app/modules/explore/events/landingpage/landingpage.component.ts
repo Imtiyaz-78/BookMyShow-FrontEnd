@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../../../../services/common.service';
 import { movies } from '../../../../../../db';
+import { EventsService } from '../service/events.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-landingpage',
@@ -8,10 +10,11 @@ import { movies } from '../../../../../../db';
   templateUrl: './landingpage.component.html',
   styleUrl: './landingpage.component.scss',
 })
-export class LandingpageComponent {
+export class LandingpageComponent implements OnInit {
   dummyMoviesdata: any[] = [];
   dummyMoviesdatafiltered: any[] = [];
-  originalMovies = movies;
+  // originalMovies = movies;
+  // allMoviesEvent:[] = [];
   languaageArray: any[] = [
     'Hindi',
     'English',
@@ -22,8 +25,14 @@ export class LandingpageComponent {
 
   selectedLanguages: string[] = [];
 
-  constructor(public commonService: CommonService) {
+  constructor(
+    public commonService: CommonService,
+    private eventService: EventsService
+  ) {
     this.dummyMoviesdata = movies;
+  }
+  ngOnInit(): void {
+    this.onGetAllMoviesDetails;
   }
 
   onLanguagesFilterChange(selected: string[]): void {
@@ -42,5 +51,28 @@ export class LandingpageComponent {
     this.selectedLanguages = [...this.selectedLanguages].sort((a, b) =>
       a.localeCompare(b)
     );
+  }
+
+  // Get all moview Details
+  allMoviesEvent: any[] = [];
+
+  onGetAllMoviesDetails() {
+    const eventTypes = ['Movie', 'Plays', 'Sports', 'Events'];
+
+    const requests = eventTypes.map((type) =>
+      this.eventService.getAllPoplularEvents(type)
+    );
+
+    forkJoin(requests).subscribe({
+      next: (responses) => {
+        debugger;
+        this.allMoviesEvent = responses.flat();
+
+        console.log('All Events:', this.allMoviesEvent);
+      },
+      error: (err) => {
+        console.error('Error while fetching events:', err);
+      },
+    });
   }
 }
