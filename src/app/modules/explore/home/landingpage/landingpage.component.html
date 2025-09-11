@@ -117,38 +117,41 @@
               </div>
               <div class="main_filter_card overflow-hidden">
                 <div class="filter_text d-flex gap-3">
-                  <ng-container
-                    *ngFor="
-                      let item of dummyMoviesdatafiltered;
-                      let $index = index
-                    "
-                    class="overflow-hidden w-50"
-                  >
-                    <div class="col">
-                      <div class="card shadow-sm">
-                        <div class="img_container">
-                          <img [src]="item.Poster" [alt]="item.Poster" />
-                        </div>
-                        <div class="card-body rounded-bottom bg-dark">
-                          <div class="d-flex gap-2">
+                  @for(item of allMoviesEvent['Movie'].data; track $index){
+                  <div class="col">
+                    <div class="card shadow-sm">
+                      <div class="img_container">
+                        <img
+                          [src]="getImageFromBase64(item.imageurl)"
+                          [alt]="item.name"
+                        />
+                      </div>
+                      <div class="card-body rounded-bottom bg-dark">
+                        <div class="d-flex gap-4">
+                          <div class="text-white">
+                            <i-feather name="star"></i-feather>
+                            @if(item.releasedFlag){ }
                             <span>
-                              <i
-                                class="fa fa-thumbs-up text-success"
-                                aria-hidden="true"
-                              ></i>
+                              {{ item.imdbRating }}
                             </span>
-                            <span class="text-white"> 1.5M likes </span>
+                          </div>
+                          <div class="gap-2">
+                            <i
+                              class="fa fa-thumbs-up text-success"
+                              aria-hidden="true"
+                            ></i>
+                            <span class="text-white"> {{ item.likes }}</span>
+                            <span class="text-white"> {{ item.votes }}</span>
                           </div>
                         </div>
                       </div>
-                      <div class="bottom_text_movie_card">
-                        <h6 class="card-text m-0">
-                          {{ item.Title | truncate : 15 }}
-                        </h6>
-                        <span class="m-0">{{ item.Genre }}</span>
-                      </div>
                     </div>
-                  </ng-container>
+                    <div class="bottom_text_movie_card">
+                      <h6 class="card-text m-0">{{ item.name }}</h6>
+                      <span class="m-0">{{ item.genres }}</span>
+                    </div>
+                  </div>
+                  }
                 </div>
               </div>
               <div class="icon_box d-flex justify-content-start ms-3">
@@ -200,7 +203,7 @@
                 <div class="filter_text d-flex gap-3">
                   <ng-container
                     *ngFor="
-                      let item of dummyMoviesdatafiltered;
+                      let item of allMoviesEvent['Movie'].data;
                       let $index = index
                     "
                     class="overflow-hidden w-50"

@@ -11,9 +11,9 @@ export class EventsService {
 
   constructor() {}
 
-  getAllPoplularEvents(moview: any) {
-    this.http.get(
-      `${this.baseUrl}/events/get-popular-events?eventType=${moview}`
+  getAllPoplularEvents(movie: any) {
+    return this.http.get(
+      `${this.baseUrl}/events/get-popular-events?eventType=${movie}`
     );
   }
 }

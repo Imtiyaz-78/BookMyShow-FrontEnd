@@ -1,5 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { movies } from '../../../../../../db';
+import { forkJoin } from 'rxjs';
+import { EventsService } from '../../events/service/events.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -15,9 +18,13 @@ export class HomeComponent {
   itemsperpage = 6;
   start = 0;
   end = 0;
-  constructor() {
+  constructor(
+    private eventService: EventsService,
+    private sanitizer: DomSanitizer
+  ) {
     this.dummyMoviesdata = movies;
     this.getVisibleMovieCard();
+    this.onGetAllMoviesDetails();
   }
 
   getVisibleMovieCard() {
@@ -41,5 +48,40 @@ export class HomeComponent {
       this.pageNo--;
       this.getVisibleMovieCard();
     }
+  }
+
+  getImageFromBase64(base64string: string): any {
+    if (base64string) {
+      let imageType = base64string;
+
+      const fullBase64String = `data:${imageType};base64,${base64string}`;
+      return this.sanitizer.bypassSecurityTrustUrl(fullBase64String);
+    }
+  }
+
+  // Get all moview Details
+  allMoviesEvent: { [key: string]: any } = {};
+
+  onGetAllMoviesDetails() {
+    const eventTypes = ['Movie', 'Plays', 'Sports', 'Activities', 'Events'];
+    const requests = eventTypes.map((type) =>
+      this.eventService.getAllPoplularEvents(type)
+    );
+
+    forkJoin(requests).subscribe({
+      next: (responses) => {
+        eventTypes.forEach((type, i) => {
+          this.allMoviesEvent[type] = responses[i];
+        });
+
+        // console.log('All Events:', this.allMoviesEvent);
+        // var res = this.allMoviesEvent['Movie'].data;
+        // console.log('Moviews Data', res);
+        // console.log('Moviews Id', res[0].imageurl);
+      },
+      error: (err) => {
+        console.error('Error while fetching events:', err);
+      },
+    });
   }
 }

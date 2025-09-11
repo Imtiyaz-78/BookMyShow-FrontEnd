@@ -38,9 +38,14 @@
   max-height: 350px;
   min-height: 350px;
 }
+.img_container {
+  height: 100%;
+  width: 100%;
+}
 .img_container img {
-  min-width: 100%;
-  max-height: 250px;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 .main_box_crasoule {
   width: calc(100%);
@@ -83,4 +88,16 @@
   opacity: 0.5;
   cursor: not-allowed;
   display: none;
+}
+
+.card {
+  width: 222px;
+  height: 378px;
+}
+
+i-feather {
+  fill: red;
+  stroke: red;
+  height: 20px;
+  width: 20px;
 }
