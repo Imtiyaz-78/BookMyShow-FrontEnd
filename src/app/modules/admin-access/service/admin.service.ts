@@ -53,4 +53,11 @@ export class AdminService {
       {}
     );
   }
+
+  // This method is for making a user an admin
+  makeUserAdmin(userId: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/users/${userId}/role`, {
+      roleName: 'ADMIN',
+    });
+  }
 }

@@ -88,14 +88,44 @@
         <div class="sub_header">
           <div class="sub_header_left">
             <div class="sub_heder_left_links">
-              <a [routerLink]="['explore/movies']">Movies</a>
-              <a>Stream</a>
-              <a [routerLink]="['explore/events']">Events</a>
-              <a>Plays</a>
-              <a>Sports</a>
-              <a>Activities</a>
+              <a
+                (click)="getActiveMenu('Movies')"
+                [ngClass]="{ active: activeMenu === 'Movies' }"
+                [routerLink]="['explore/movies']"
+                >Movies</a
+              >
+              <a
+                (click)="getActiveMenu('Stream')"
+                [ngClass]="{ active: activeMenu === 'Stream' }"
+                >Stream</a
+              >
+              <a
+                (click)="getActiveMenu('Events')"
+                [ngClass]="{ active: activeMenu === 'Events' }"
+                [routerLink]="['explore/events']"
+                >Events</a
+              >
+              <a
+                (click)="getActiveMenu('Plays')"
+                [ngClass]="{ active: activeMenu === 'Plays' }"
+                >Plays</a
+              >
+              <a
+                (click)="getActiveMenu('Sports')"
+                [ngClass]="{ active: activeMenu === 'Sports' }"
+                >Sports</a
+              >
+              <a
+                (click)="getActiveMenu('Activities')"
+                [ngClass]="{ active: activeMenu === 'Activities' }"
+                >Activities</a
+              >
               @if (userProfileDetails?.role == 'ADMIN') {
-              <a [routerLink]="['/admin/users']" [state]="{ data: true }"
+              <a
+                (click)="getActiveMenu('Users')"
+                [ngClass]="{ active: activeMenu === 'Users' }"
+                [routerLink]="['/admin/users']"
+                [state]="{ data: true }"
                 >Users</a
               >
               }

@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit {
   hideOnLogout: boolean = true;
   filterCityData: any[] = [];
   filterCityList: any[] = [];
+  activeMenu: string = '';
 
   modalRef!: BsModalRef;
   constructor(
@@ -127,9 +128,9 @@ export class HeaderComponent implements OnInit {
           if (res.success) {
             this.cityData = res.data;
             this.filterCityData = [...this.cityData];
-            if (!this.service.selectedCitySignal()) {
-              this.openCitySelectionModal(this.cityModal);
-            }
+            // if (!this.service.selectedCitySignal()) {
+            //   this.openCitySelectionModal(this.cityModal);
+            // }
           }
         }
       },
@@ -173,5 +174,9 @@ export class HeaderComponent implements OnInit {
     this.filterCityList = this.cityList.filter((city) =>
       city.cityName.toLowerCase().includes(term)
     );
+  }
+
+  getActiveMenu(menu: string) {
+    this.activeMenu = menu;
   }
 }

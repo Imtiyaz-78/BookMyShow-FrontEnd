@@ -92,8 +92,13 @@
                   (clickedOutside)="openedDropdownId = null"
                 >
                   <div class="dropdown">
-                    <label class="label_field">
+                    <label
+                      [ngClass]="{ disabled: user.roleName === 'ADMIN' }"
+                      class="label_field"
+                      (click)="onMakeAdmin(user.userId)"
+                    >
                       <input
+                        [disabled]="user.roleName === 'ADMIN'"
                         class="form-check-input"
                         type="checkbox"
                         [checked]="user.roleName === 'ADMIN'"

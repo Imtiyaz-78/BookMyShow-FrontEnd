@@ -133,6 +133,10 @@ td button {
     gap: 10px;
     cursor: pointer;
 
+    &.disabled {
+      pointer-events: none;
+    }
+
     &:hover {
       background-color: rgb(0 0 0 / 5%);
     }
@@ -153,6 +157,12 @@ td button {
     height: 17px;
     width: 17px;
     border-radius: 4px;
+
+    &:disabled {
+      pointer-events: none;
+      border-color: #ccc;
+      opacity: 0.6;
+    }
   }
 }
 
@@ -195,4 +205,8 @@ i-feather {
   height: 20px;
   width: 20px;
   display: flex;
+}
+
+tbody tr:last-child .dropdown {
+  top: -125px;
 }

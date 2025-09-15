@@ -181,11 +181,24 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  onDeleteUser(userId: number): void {
-    this.adminService.deleteUserById(userId).subscribe({
+  openedDropdownId: number | null = null;
+
+  toggleDropdown(userId: number) {
+    if (this.openedDropdownId === userId) {
+      this.openedDropdownId = null;
+    } else {
+      this.openedDropdownId = userId;
+    }
+  }
+
+  // This method is for making a user an admin
+  onMakeAdmin(userId: number): void {
+    this.adminService.makeUserAdmin(userId).subscribe({
       next: (res) => {
         if (res.success) {
+          debugger;
           this.toastService.startToast(res.message);
+          this.openedDropdownId = null;
           this.ongetAllUsers();
         }
       },
@@ -195,13 +208,20 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  openedDropdownId: number | null = null;
-
-  toggleDropdown(userId: number) {
-    if (this.openedDropdownId === userId) {
-      this.openedDropdownId = null;
-    } else {
-      this.openedDropdownId = userId;
-    }
+  // This method is for deleting a user
+  onDeleteUser(userId: number): void {
+    this.adminService.deleteUserById(userId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          debugger;
+          this.toastService.startToast(res.message);
+          this.openedDropdownId = null;
+          this.ongetAllUsers();
+        }
+      },
+      error: (err) => {
+        this.toastService.startToast(err.message);
+      },
+    });
   }
 }
