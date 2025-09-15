@@ -49,7 +49,7 @@
                 aria-controls="offcanvasExample"
               />
               <div class="d-flex align-items-center gap-2">
-                <small class="text-muted">{{ userProfileDetails?.role }}</small>
+                <small class="text-muted">{{ userProfileDetails?.sub }}</small>
               </div>
             </div>
             } @if (!isLoggedInSignalValue) {
@@ -160,25 +160,24 @@
 }
 
 <!-- SideBar Offcanvas  -->
-@if(hideOnLogout){
-
 <div
   class="offcanvas offcanvas-end p-0"
   tabindex="-1"
   id="offcanvasExample"
   aria-labelledby="offcanvasExampleLabel"
 >
-  <div class="offcanvas-header px-2 d-none">
+  <div class="offcanvas-header px-2">
     <div class="full_with d-flex justify-content-between align-items-center">
       <div class="hey_text">
         <h5 class="offcanvas-title fw-bold" id="offcanvasExampleLabel">Hey!</h5>
+
         <span
           class="edit_profile"
           routerLink="my-profile"
           data-bs-toggle="offcanvas"
-          (click)="editProfile()"
+          data-bs-target="#offcanvasExample"
           >Edit-Profile
-          <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
+          <i-feather class="edit_icon" name="chevron-right"></i-feather>
         </span>
       </div>
       <div class="user_icon">
@@ -187,20 +186,14 @@
     </div>
   </div>
   <div class="offcanvas-body p-0">
-    <div class="unlock_special_offer_box border-top">
-      <div
-        height="40px"
-        width="40px"
-        class="unlock_special_offer_img"
-        style="background: none"
-      >
+    <!-- Unlock special offers & great -->
+    <div class="unlock_special_offer_box border-top d-none">
+      <div height="40px" width="40px" class="unlock_special_offer_img bg-none">
         <img
           alt="rewards"
           width="40px"
           height="40px"
-          class="sc-eykeme-1 iVbwwW"
           src="assets/images/rewards_login.png"
-          style="opacity: 1"
         />
       </div>
       <p class="unlock_special_offer_text m-0">
@@ -208,16 +201,16 @@
       </p>
       <button
         class="unlock_special_offer_button"
-        (click)="openAuthModal(userAuthModal)"
         data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasExample"
       >
         Login / Register
       </button>
     </div>
+
     <div class="main_sidebar_data">
       <div class="d-flex flex-column grow-2 py-2">
         <a
-          href=""
           class="d-flex justify-content-between align-items-center info_conatiner"
         >
           <div class="d-flex gap-2 align-items-center">
@@ -231,7 +224,6 @@
           <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
         </a>
         <a
-          href=""
           class="d-flex justify-content-between align-items-center links_sidebar"
         >
           <div class="d-flex gap-2 align-items-center">
@@ -243,8 +235,9 @@
           </div>
           <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
         </a>
+
+        @if(authService.userDetails()?.role == 'USER'){
         <a
-          href=""
           class="d-flex justify-content-between align-items-center links_sidebar"
         >
           <div class="d-flex gap-2 align-items-center">
@@ -256,11 +249,42 @@
           </div>
           <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
         </a>
+        } @if(authService.userDetails()?.role == 'ADMIN'){
+        <a
+          class="d-flex justify-content-between align-items-center links_sidebar"
+        >
+          <div class="d-flex gap-2 align-items-center">
+            <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+            <div class="info_text">
+              <p class="m-0">User List</p>
+              <!-- <span>View all your Users List </span> -->
+            </div>
+          </div>
+          <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
+        </a>
+        } @if(authService.userDetails()?.role == 'ADMIN'){
+        <a
+          class="d-flex justify-content-between align-items-center links_sidebar"
+        >
+          <div class="d-flex gap-2 align-items-center">
+            <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+            <div class="info_text">
+              <p class="m-0">Your Events</p>
+              <span>View all your Events </span>
+            </div>
+          </div>
+          <i class="fa fa-angle-right ms-1" aria-hidden="true"></i>
+        </a>
+        }
       </div>
-
       <div class="button_section">
-        <div class="sc-zgl7vj-7 ifHHkE">
-          <button class="button_sign_out w-100" (click)="logout()">
+        <div>
+          <button
+            class="button_sign_out w-100"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasExample"
+            (click)="logout()"
+          >
             Sign out
           </button>
         </div>
@@ -268,8 +292,6 @@
     </div>
   </div>
 </div>
-
-}
 
 <!-- City-Dropdown-modal  -->
 <ng-template #cityModal let-modal>
