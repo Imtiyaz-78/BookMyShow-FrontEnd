@@ -5,10 +5,10 @@ import { HomeRoutingModule } from './home-routing.module';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 import { FeatherModule } from 'angular-feather';
-import { LandingPageComponent } from './landingpage/landingpage.component';
+import { HomeLandingPageComponent } from './home-landing-page/home-landing-page.component';
 
 @NgModule({
-  declarations: [LandingPageComponent],
+  declarations: [HomeLandingPageComponent],
   imports: [
     CommonModule,
     HomeRoutingModule,

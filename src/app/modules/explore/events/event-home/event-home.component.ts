@@ -5,12 +5,12 @@ import { EventsService } from '../service/events.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
-  selector: 'app-landingpage',
+  selector: 'app-event-home',
   standalone: false,
-  templateUrl: './landingpage.component.html',
-  styleUrl: './landingpage.component.scss',
+  templateUrl: './event-home.component.html',
+  styleUrl: './event-home.component.scss',
 })
-export class LandingpageComponent implements OnInit {
+export class EventHomeComponent implements OnInit {
   dummyMoviesdata: any[] = [];
   dummyMoviesdatafiltered: any[] = [];
   // originalMovies = movies;

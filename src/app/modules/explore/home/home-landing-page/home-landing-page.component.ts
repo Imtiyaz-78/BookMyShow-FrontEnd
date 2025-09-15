@@ -5,12 +5,12 @@ import { EventsService } from '../../events/service/events.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-landingpage',
+  selector: 'app-home-landing-page',
   standalone: false,
-  templateUrl: './LandingPageComponent.html',
-  styleUrl: './LandingPageComponent.scss',
+  templateUrl: './home-landing-page.component.html',
+  styleUrl: './home-landing-page.component.scss',
 })
-export class LandingPageComponent {
+export class HomeLandingPageComponent {
   dummyMoviesdata: any[] = [];
   dummyMoviesdatafiltered: any[] = [];
   originalMovies = movies;

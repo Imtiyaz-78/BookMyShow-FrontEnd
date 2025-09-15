@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LandingPageComponent } from './landingpage/landingpage.component';
+import { HomeLandingPageComponent } from './home-landing-page/home-landing-page.component';
 
 const routes: Routes = [
   {
@@ -8,7 +8,7 @@ const routes: Routes = [
     redirectTo: 'dashboard',
     pathMatch: 'full',
   },
-  { path: ':city', component: LandingPageComponent },
+  { path: ':city', component: HomeLandingPageComponent },
 ];
 
 @NgModule({

@@ -4,20 +4,15 @@ import { CommonModule } from '@angular/common';
 import { EventsRoutingModule } from './events-routing.module';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 import { FilterAccordianComponent } from '../../../shared/components/filter-accordian/filter-accordian.component';
-import { LandingpageComponent } from './landingpage/landingpage.component';
+import { EventHomeComponent } from './event-home/event-home.component';
 
 @NgModule({
-  declarations: [
-    LandingpageComponent,
-
-  ],
+  declarations: [EventHomeComponent],
   imports: [
     CommonModule,
     EventsRoutingModule,
     FilterAccordianComponent,
-    TruncatePipe
-
-
-  ]
+    TruncatePipe,
+  ],
 })
-export class EventsModule { }
+export class EventsModule {}
