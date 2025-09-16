@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { movies } from '../../../../../../db';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { EventsService } from '../../events/service/events.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonService } from '../../../../services/common.service';
@@ -65,28 +65,68 @@ export class HomeLandingPageComponent {
 
   // Get all moview Details
   allMoviesEvent: { [key: string]: any } = {};
+  paginationState: { [key: string]: any } = {};
 
+  // Fetch all event types
   onGetAllMoviesDetails() {
-    const eventTypes = ['Movie', 'Plays', 'Sports', 'Activities', 'Events'];
-    const requests = eventTypes.map((type) =>
-      this.eventService.getAllPoplularEvents(type)
+    const eventTypes = ['Movie', 'Plays', 'Sports', 'Activities'];
+    const requests = eventTypes.map(
+      (type) =>
+        this.eventService.getAllPoplularEvents(type) as unknown as Observable<
+          ApiResponse<any>
+        >
     );
 
     forkJoin(requests).subscribe({
       next: (responses) => {
         eventTypes.forEach((type, i) => {
-          this.allMoviesEvent[type] = responses[i];
-        });
+          const data = responses[i]?.data || [];
+          this.allMoviesEvent[type] = data;
 
-        // console.log('All Events:', this.allMoviesEvent);
-        // var res = this.allMoviesEvent['Movie'].data;
-        // console.log('Moviews Data', res);
-        // console.log('Moviews Id', res[0].imageurl);
+          this.paginationState[type] = {
+            pageNo: 0,
+            pageSize: 5,
+            start: 0,
+            end: Math.min(5, data.length),
+            total: data.length,
+            visibleItems: data.slice(0, 6),
+          };
+        });
       },
-      error: (err) => {
-        console.error('Error while fetching events:', err);
-      },
+      error: (err) => console.error('Error fetching events:', err),
     });
+  }
+
+  // Handle Next Pagination
+  goToNext(type: string) {
+    const state = this.paginationState[type];
+    if (!state) return;
+
+    if (state.end < state.total) {
+      state.pageNo++;
+      state.start = state.pageNo * state.pageSize;
+      state.end = Math.min(state.start + state.pageSize, state.total);
+      state.visibleItems = this.allMoviesEvent[type].slice(
+        state.start,
+        state.end
+      );
+    }
+  }
+
+  // Handle Previous Pagination
+  goToPrevious(type: string) {
+    const state = this.paginationState[type];
+    if (!state) return;
+
+    if (state.start > 0) {
+      state.pageNo--;
+      state.start = state.pageNo * state.pageSize;
+      state.end = Math.min(state.start + state.pageSize, state.total);
+      state.visibleItems = this.allMoviesEvent[type].slice(
+        state.start,
+        state.end
+      );
+    }
   }
 
   // This method is used for Navigate on Movie Details Page
@@ -94,4 +134,9 @@ export class HomeLandingPageComponent {
     const city = this.commonService.selectedCitySignal();
     this.router.navigate(['/movies', city, item.eventId]);
   }
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  data: T[];
 }

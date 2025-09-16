@@ -106,6 +106,7 @@ export class AuthService {
    */
   logout(): void {
     localStorage.removeItem('token');
+    sessionStorage.removeItem('selectedCity');
     this.isLoggedIn.set(false);
     this.userDetails.set(null);
   }
