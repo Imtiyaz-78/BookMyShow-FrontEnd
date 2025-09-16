@@ -26,6 +26,7 @@
             class="form-control"
             placeholder="Search..."
             aria-label="Search"
+            [formControl]="searchControlInput"
           />
         </form>
       </div>
@@ -48,9 +49,16 @@
       <div class="main_filter_text">
         <div class="filter_text d-flex gap-3">
           @for ( item of getVisibleFilters(); track $index) {
-          <span>
-            <a>{{ item }}</a>
-          </span>
+          <div
+            class="movie_type"
+            [ngClass]="{ movie_active: payload.eventTypes.includes(item) }"
+            (click)="onSendFilterData(item)"
+          >
+            <span>{{ item }}</span>
+            @if (payload.eventTypes.includes(item)) {
+            <i-feather name="x"></i-feather>
+            }
+          </div>
           }
         </div>
       </div>
@@ -66,23 +74,19 @@
     </div>
 
     <div class="trending_serach_list">
-      <p class="m-0">TRENDING SEARCHES</p>
+      <p class="m-0 fw-bold">TRENDING SEARCHES</p>
     </div>
-    <div class="movies_list">
-      <div class="">
-        <span class="movie_name">War 2</span>
+    <div class="movie_list_section">
+      @for (item of movieData; track $index) {
+      <div class="movies_list">
+        <div class="">
+          <span class="movie_name">{{ item }}</span>
+        </div>
+        <span class="movie_icon">
+          <i class="fa fa-film" aria-hidden="true"></i>
+        </span>
       </div>
-      <span class="movie_icon">
-        <i class="fa fa-film" aria-hidden="true"></i>
-      </span>
-    </div>
-    <div class="movies_list">
-      <div class="">
-        <span class="movie_name">Race 2</span>
-      </div>
-      <span class="movie_icon">
-        <i class="fa fa-film" aria-hidden="true"></i>
-      </span>
+      }
     </div>
   </div>
 </ng-template>

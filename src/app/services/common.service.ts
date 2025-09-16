@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { environment } from '../core/environments/environment';
 
 @Injectable({
@@ -22,5 +22,14 @@ export class CommonService {
 
   getAllPopularCity() {
     return this.http.get(`${this.baseApiUrl}/city/popular`);
+  }
+
+  // This Method for GLobal Search events by name and eventTypes
+  searchEvents(payload: {
+    name: string;
+    eventTypes: string[];
+  }): Observable<any> {
+    const url = `${this.baseApiUrl}/events/search`;
+    return this.http.post<any>(url, payload);
   }
 }
