@@ -21,7 +21,7 @@
   </div>
 
   <!-- Accordion Body -->
-  @if (filterShowButtons) {
+  @if (!filterShowButtons) {
   <div>
     <div class="border border-top-0 filter_button_box bg-white">
       @for (option of filters; track option) {
