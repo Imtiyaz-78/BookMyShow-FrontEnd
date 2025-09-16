@@ -84,6 +84,7 @@ export class SearcboxComponent implements OnInit {
     this.searchControlInput.valueChanges
       .pipe(
         debounceTime(300),
+        distinctUntilChanged(),
         tap((query: any) => {
           this.payload.name = query;
         }),
@@ -99,7 +100,7 @@ export class SearcboxComponent implements OnInit {
       });
   }
 
-  // Toggle filters
+  // Add filters
   onSendFilterData(item: any): void {
     const index = this.payload.eventTypes.indexOf(item);
     if (index === -1) {

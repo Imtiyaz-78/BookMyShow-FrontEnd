@@ -3,6 +3,8 @@ import { movies } from '../../../../../../db';
 import { forkJoin } from 'rxjs';
 import { EventsService } from '../../events/service/events.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CommonService } from '../../../../services/common.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-landing-page',
@@ -20,7 +22,9 @@ export class HomeLandingPageComponent {
   end = 0;
   constructor(
     private eventService: EventsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public commonService: CommonService,
+    private router: Router
   ) {
     this.dummyMoviesdata = movies;
     this.getVisibleMovieCard();
@@ -83,5 +87,11 @@ export class HomeLandingPageComponent {
         console.error('Error while fetching events:', err);
       },
     });
+  }
+
+  // This method is used for Navigate on Movie Details Page
+  goToMovieDetails(item: any): void {
+    const city = this.commonService.selectedCitySignal();
+    this.router.navigate(['/movies', city, item.eventId]);
   }
 }

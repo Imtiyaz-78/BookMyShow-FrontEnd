@@ -117,7 +117,7 @@
               <div class="main_filter_card overflow-hidden">
                 <div class="filter_text d-flex gap-3">
                   @for(item of allMoviesEvent['Movie'].data; track $index){
-                  <div class="col">
+                  <div class="col" (click)="goToMovieDetails(item)">
                     <div class="card shadow-sm">
                       <div class="img_container">
                         <img
@@ -205,7 +205,7 @@
               <div class="main_filter_card overflow-hidden">
                 <div class="filter_text d-flex gap-3">
                   @for(item of allMoviesEvent['Plays'].data; track $index){
-                  <div class="col">
+                  <div class="col" (click)="goToMovieDetails(item)">
                     <div class="card shadow-sm">
                       <div class="img_container">
                         <img
@@ -289,7 +289,7 @@
               <div class="main_filter_card overflow-hidden">
                 <div class="filter_text d-flex gap-3">
                   @for(item of allMoviesEvent['Sports'].data; track $index){
-                  <div class="col">
+                  <div class="col" (click)="goToMovieDetails(item)">
                     <div class="card shadow-sm">
                       <div class="img_container">
                         <img
@@ -375,7 +375,7 @@
               <div class="main_filter_card overflow-hidden">
                 <div class="filter_text d-flex gap-3">
                   @for(item of allMoviesEvent['Activities'].data; track $index){
-                  <div class="col">
+                  <div class="col" (click)="goToMovieDetails(item)">
                     <div class="card shadow-sm">
                       <div class="img_container">
                         <img

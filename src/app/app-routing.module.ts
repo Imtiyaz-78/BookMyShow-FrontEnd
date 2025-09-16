@@ -67,7 +67,7 @@ const routes: Routes = [
       },
 
       {
-        path: 'movies/:city/:name/:id',
+        path: 'movies/:city/:id',
         component: MoviesDetailsComponent,
       },
     ],
