@@ -52,7 +52,6 @@ export class AuthService {
   decodeToken(token: string): any {
     try {
       const decoded: any = jwtDecode(token);
-      console.log('Decoded Token:', decoded);
       return decoded;
     } catch (err) {
       console.error('Token decode error:', err);
@@ -130,5 +129,14 @@ export class AuthService {
     return this.http.get(
       `${this.apiUrl}/validate/username?username=${username}`
     );
+  }
+
+  isTokenExpired(): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) return true;
+    const decoded: any = this.decodeToken(token);
+    if (!decoded || !decoded.exp) return true;
+    const now = Math.floor(Date.now() / 1000);
+    return decoded.exp < now;
   }
 }

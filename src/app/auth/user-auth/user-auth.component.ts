@@ -178,12 +178,6 @@ export class UserAuthComponent implements OnInit {
     this.openSignuForm = !this.openSignuForm;
   }
 
-  // decodeToken(token: string): void {
-  //   const decoded: any = jwtDecode(token);
-  //   console.log('Decoded Token:', decoded);
-  //   return decoded;
-  // }
-
   /**
    * @description Toggles password visibility between plain text and hidden input type.
    * @author Md Imtiyaz

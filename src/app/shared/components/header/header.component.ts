@@ -128,9 +128,9 @@ export class HeaderComponent implements OnInit {
           if (res.success) {
             this.cityData = res.data;
             this.filterCityData = [...this.cityData];
-            // if (!this.service.selectedCitySignal()) {
-            //   this.openCitySelectionModal(this.cityModal);
-            // }
+            if (!this.service.selectedCitySignal()) {
+              this.openCitySelectionModal(this.cityModal);
+            }
           }
         }
       },

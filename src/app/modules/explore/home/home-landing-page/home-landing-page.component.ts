@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, ViewChild } from '@angular/core';
 import { movies } from '../../../../../../db';
 import { forkJoin, Observable } from 'rxjs';
 import { EventsService } from '../../events/service/events.service';

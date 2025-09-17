@@ -141,14 +141,15 @@
   border-radius: 2px;
   margin-top: 8px;
   font-size: 16px;
+  gap: 5px;
 }
 
 .format-tags {
-  width: 322px;
+  max-width: 322px;
 }
 
 .language-tags {
-  width: 157px;
+  max-width: 319px;
 }
 
 /* Meta Info */
@@ -185,6 +186,11 @@
 .cast-img {
   border-radius: 100px;
   width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+.img-fluid {
+  object-fit: cover;
 }
 
 .cast-name {

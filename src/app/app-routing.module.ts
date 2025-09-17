@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ErrorpageComponent } from './shared/components/erorpage/errorpage.component';
 import { MoviesDetailsComponent } from './shared/components/movies-details/movies-details.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { AuthGuard } from './auth/gaurds/auth.gaurd';
 
 // const routes: Routes = [
 //   {
@@ -53,6 +54,7 @@ const routes: Routes = [
       },
       {
         path: 'my-profile',
+        canActivate: [AuthGuard],
         loadChildren: () =>
           import('./modules/user-proile/user-profile.module').then(
             (m) => m.UserProfileModule
@@ -60,6 +62,7 @@ const routes: Routes = [
       },
       {
         path: 'admin',
+        canActivate: [AuthGuard],
         loadChildren: () =>
           import('./modules/admin-access/admin-access.module').then(
             (m) => m.AdminAccessModule
