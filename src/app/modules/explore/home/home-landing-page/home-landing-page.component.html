@@ -131,15 +131,24 @@
                       </div>
                       <div class="card-body rounded-bottom bg-dark">
                         <div class="d-flex gap-4">
-                          <div class="text-white" *ngIf="item.releasedFlag">
-                            <i-feather name="star"></i-feather>
+                          @if(item.releasedFlag == true){
+                          <div
+                            class="text-white d-flex gap-2 align-items-center"
+                          >
+                            <i-feather class="d-flex" name="star"></i-feather>
                             <span>{{ item.imdbRating }}</span>
                           </div>
-                          <div class="gap-2" *ngIf="item.releasedFlag">
+                          } @if(item.releasedFlag == true){
+                          <div class="d-flex gap-2 align-items-center gap-2">
                             <i class="fa fa-thumbs-up text-success"></i>
-                            <span class="text-white">{{ item.votes }}</span>
+                            <span class="text-white"
+                              >{{ item.votes | numberSuffix }}
+                            </span>
+                            @if(item.releasedFlag == false){
                             <span class="text-white">{{ item.likes }}</span>
+                            }
                           </div>
+                          }
                         </div>
                       </div>
                     </div>
@@ -220,21 +229,24 @@
                       </div>
                       <div class="card-body rounded-bottom bg-dark">
                         <div class="d-flex gap-4">
-                          <div class="text-white">
-                            <i-feather name="star"></i-feather>
-                            @if(item.releasedFlag){ }
-                            <span>
-                              {{ item.imdbRating }}
+                          @if(item.releasedFlag == true){
+                          <div
+                            class="text-white d-flex gap-2 align-items-center"
+                          >
+                            <i-feather class="d-flex" name="star"></i-feather>
+                            <span>{{ item.imdbRating }}</span>
+                          </div>
+                          } @if(item.releasedFlag == true){
+                          <div class="d-flex gap-2 align-items-center gap-2">
+                            <i class="fa fa-thumbs-up text-success"></i>
+                            <span class="text-white"
+                              >{{ item.votes | numberSuffix }}
                             </span>
+                            @if(item.releasedFlag == false){
+                            <span class="text-white">{{ item.likes }}</span>
+                            }
                           </div>
-                          <div class="gap-2">
-                            <i
-                              class="fa fa-thumbs-up text-success"
-                              aria-hidden="true"
-                            ></i>
-                            <span class="text-white"> {{ item.likes }}</span>
-                            <span class="text-white"> {{ item.votes }}</span>
-                          </div>
+                          }
                         </div>
                       </div>
                     </div>
@@ -317,21 +329,24 @@
                       </div>
                       <div class="card-body rounded-bottom bg-dark">
                         <div class="d-flex gap-4">
-                          <div class="text-white">
-                            <i-feather name="star"></i-feather>
-                            @if(item.releasedFlag){ }
-                            <span>
-                              {{ item.imdbRating }}
+                          @if(item.releasedFlag == true){
+                          <div
+                            class="text-white d-flex gap-2 align-items-center"
+                          >
+                            <i-feather class="d-flex" name="star"></i-feather>
+                            <span>{{ item.imdbRating }}</span>
+                          </div>
+                          } @if(item.releasedFlag == true){
+                          <div class="d-flex gap-2 align-items-center gap-2">
+                            <i class="fa fa-thumbs-up text-success"></i>
+                            <span class="text-white"
+                              >{{ item.votes | numberSuffix }}
                             </span>
+                            @if(item.releasedFlag == false){
+                            <span class="text-white">{{ item.likes }}</span>
+                            }
                           </div>
-                          <div class="gap-2">
-                            <i
-                              class="fa fa-thumbs-up text-success"
-                              aria-hidden="true"
-                            ></i>
-                            <span class="text-white"> {{ item.likes }}</span>
-                            <span class="text-white"> {{ item.votes }}</span>
-                          </div>
+                          }
                         </div>
                       </div>
                     </div>
@@ -417,21 +432,24 @@
                       </div>
                       <div class="card-body rounded-bottom bg-dark">
                         <div class="d-flex gap-4">
-                          <div class="text-white">
-                            <i-feather name="star"></i-feather>
-                            @if(item.releasedFlag){ }
-                            <span>
-                              {{ item.imdbRating }}
+                          @if(item.releasedFlag == true){
+                          <div
+                            class="text-white d-flex gap-2 align-items-center"
+                          >
+                            <i-feather class="d-flex" name="star"></i-feather>
+                            <span>{{ item.imdbRating }}</span>
+                          </div>
+                          } @if(item.releasedFlag == true){
+                          <div class="d-flex gap-2 align-items-center gap-2">
+                            <i class="fa fa-thumbs-up text-success"></i>
+                            <span class="text-white"
+                              >{{ item.votes | numberSuffix }}
                             </span>
+                            @if(item.releasedFlag == false){
+                            <span class="text-white">{{ item.likes }}</span>
+                            }
                           </div>
-                          <div class="gap-2">
-                            <i
-                              class="fa fa-thumbs-up text-success"
-                              aria-hidden="true"
-                            ></i>
-                            <span class="text-white"> {{ item.likes }}</span>
-                            <span class="text-white"> {{ item.votes }}</span>
-                          </div>
+                          }
                         </div>
                       </div>
                     </div>
