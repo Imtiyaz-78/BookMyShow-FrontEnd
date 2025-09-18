@@ -1,194 +1,312 @@
+<!-- Edit Profile -->
 <div class="container-fluid mb-4">
-    <div class="row d-flex justify-content-center">
-        <div class="col-5">
-            <form action="">
-                <section class="upload_image_box">
-                    <section class="d-flex align-items-center gap-2 top_container ">
-                        <div class="circle">
-                            <div class="dropzone">
-                                <img [src]="preview" class="upload-icon" />
-                                <p>+Add</p>
-                                <input type="file" class="upload-input" value="" name="" (change)="test($event)" />
-                            </div>
-                        </div>
-                        <p class="text-white fs-5 fw-500">Hi, Guest</p>
-                    </section>
-                    <br><br>
+  <div class="row d-flex justify-content-center">
+    <div class="col-5">
+      <form [formGroup]="userProfileForm">
+        <section class="upload_image_box">
+          <section class="d-flex align-items-center gap-2 top_container">
+            <div class="circle">
+              <div class="dropzone">
+                <img
+                  [src]="
+                    userProfileForm.get('profileImg')?.value ||
+                    'assets/avatar.jpg'
+                  "
+                  class="upload-icon"
+                />
+                <p>+Add</p>
+                <input type="file" class="upload-input" accept="image/*" />
+              </div>
+            </div>
+            <p class="text-white fs-5 fw-500">
+              Hi, {{ userProfileForm.get("name")?.value || "Guest" }}
+            </p>
+          </section>
+        </section>
 
-                </section>
-                <div class="second_section shadow-sm">
-                    <section class="py-2 mt-5 w-100 h-100">
-                        <p class="second_section_heading">Account Details</p>
-                        <div class=" d-flex justify-content-between ">
-                            <div class="email_section d-flex justify-content-between gap-5">
-                                <span class="form-label">Email Address</span>
-                                <div class="mail_data">
-                                    <span class="fw-bold">manushukla83185gmail.com</span>
-                                    <span class="verified_tag ms-2">Verified</span>
-                                </div>
-                            </div>
-                            <div class="edit_Icons d-flex gap-2 align-items-center">
-                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                <span>Edit</span>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <div class="mobile_section d-flex align-items-center">
-                                <span class="form-label lable_mobile"> Mobile Number</span>
-                                <div class="add_mobile_number d-flex flex-column">
-                                    <a>
-                                        + Add Mobile Number
-                                    </a>
-                                    <span>Get a copy of the tickets on Whatsapp/SMS</span>
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                    </section>
+        <!-- Account Details -->
+        <div class="second_section shadow-sm">
+          <section class="py-2 mt-5 w-100 h-100">
+            <p class="second_section_heading">Account Details</p>
+            <div class="d-flex justify-content-between">
+              <div class="email_section d-flex justify-content-between gap-5">
+                <span class="form-label">Email Address</span>
+                <div class="mail_data px-3">
+                  <span class="fw-bold">{{
+                    userProfileForm.get("email")?.value
+                  }}</span>
+                  <span class="verified_tag ms-2">Verified</span>
                 </div>
-                <div class="third_section px-4 shadow-sm">
-                    <section class="py-2 mt-5 w-100 h-100">
-                        <p class="second_section_heading">Personal Details</p>
+              </div>
+              <div
+                (click)="onEdit('email', editProfileModal)"
+                class="edit_Icons d-flex gap-2 align-items-center"
+              >
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                <span>Edit</span>
+              </div>
+            </div>
 
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">Fisrt Name</label>
-                            </div>
-                            <div class="input_field">
-                                <input type="text" class="form-control" placeholder="Enter your FirstName">
-                            </div>
-                        </div>
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">Fisrt Name</label>
-                            </div>
-                            <div class="input_field">
-                                <input type="text" class="form-control" placeholder="Enter your FirstName">
-                            </div>
-                        </div>
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label"> Last Name</label>
-                            </div>
-                            <div class="input_field">
-                                <input type="text" class="form-control" placeholder="Enter your lastName">
-                            </div>
-                        </div>
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">Birthdate (optional)</label>
-                            </div>
-                            <div class="input_field">
-                                <input type="date" class="form-control" placeholder="Enter your FirstName">
-                            </div>
-                        </div>
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">Identity (optional)</label>
-                            </div>
-                            <div class="input_field d-flex gap-2">
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="women" id="women" value="women"
-                                        checked>
-                                    <label class="form-check-label" for="women">
-                                        Women
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="man" id="man" value="man">
-                                    <label class="form-check-label" for="man">
-                                        Man
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">Married? (optional)</label>
-                            </div>
-                            <div class="input_field d-flex gap-2">
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="yes" id="yes" value="yes"
-                                        checked>
-                                    <label class="form-check-label" for="yes">
-                                        Yes
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="no" id="no" value="no">
-                                    <label class="form-check-label" for="no">
-                                        No
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                    </section>
+            <div class="d-flex justify-content-between">
+              <div class="mobile_section d-flex align-items-center">
+                <span class="form-label lable_mobile"> Mobile Number</span>
+                <div
+                  (click)="onEdit('mobile', editProfileModal)"
+                  class="add_mobile_number d-flex flex-column"
+                >
+                  <div class="d-flex gap-3">
+                    <span class="fw-bold">
+                      +91 {{ userProfileForm.get("phoneNumber")?.value }}
+                    </span>
+                    <span class="verified_tag ms-2">Verified</span>
+                  </div>
+                  <span>Get a copy of the tickets on Whatsapp/SMS</span>
                 </div>
-
-                <div class="fourth_section px-4 shadow-sm">
-                    <section class="py-2 mt-5 w-100 h-100">
-                        <p class="second_section_heading">Address (optional)</p>
-
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">Area Pincode</label>
-                            </div>
-                            <div class="input_field">
-                                <input type="text" class="form-control" placeholder="E.g 560001">
-                            </div>
-                        </div>
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">Address Line 1</label>
-                            </div>
-                            <div class="input_field">
-                                <input type="text" class="form-control" placeholder="Flat no., House no., Building,">
-                            </div>
-                        </div>
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">Address Line 2</label>
-                            </div>
-                            <div class="input_field">
-                                <input type="text" class="form-control"
-                                    placeholder="Area, Colony, Street, Sector, Village">
-                            </div>
-                        </div>
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">Landmark </label>
-                            </div>
-                            <div class="input_field">
-                                <input type="text" class="form-control" placeholder="E.g. Prithvi Theater">
-                            </div>
-                        </div>
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">Town / City</label>
-                            </div>
-                            <div class="input_field">
-                                <input type="text" class="form-control" placeholder="E.g. Mumbai">
-                            </div>
-                        </div>
-                        <div class="input_box">
-                            <div class="title_text">
-                                <label for="form-label">State</label>
-                            </div>
-                            <div class="input_field">
-                                <input type="text" class="form-control" placeholder="E.g. Maharashtra">
-                            </div>
-                        </div>
-
-                    </section>
-                </div>
-
-            </form>
+              </div>
+            </div>
+          </section>
         </div>
+
+        <!-- Personal Details -->
+        <div class="third_section px-4 shadow-sm">
+          <section class="py-2 mt-5 w-100 h-100">
+            <p class="second_section_heading">Personal Details</p>
+
+            <div class="input_box">
+              <div class="title_text"><label>Full Name</label></div>
+              <div class="input_field">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter your Full Name"
+                  formControlName="name"
+                />
+              </div>
+            </div>
+
+            <div class="input_box">
+              <div class="title_text"><label>User Name</label></div>
+              <div class="input_field">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter your User Name"
+                  formControlName="username"
+                />
+              </div>
+            </div>
+
+            <div class="input_box">
+              <div class="title_text"><label>Birthdate (optional)</label></div>
+              <div class="input_field">
+                <input type="date" class="form-control" formControlName="dob" />
+              </div>
+            </div>
+
+            <div class="input_box">
+              <div class="title_text"><label>Identity (optional)</label></div>
+              <div class="input_field d-flex gap-2">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="women"
+                    value="women"
+                    formControlName="identity"
+                  />
+                  <label class="form-check-label" for="women">Women</label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="man"
+                    value="man"
+                    formControlName="identity"
+                  />
+                  <label class="form-check-label" for="man">Man</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="input_box">
+              <div class="title_text"><label>Married? (optional)</label></div>
+              <div class="input_field d-flex gap-2">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="yes"
+                    value="yes"
+                    formControlName="married"
+                  />
+                  <label class="form-check-label" for="yes">Yes</label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="no"
+                    value="no"
+                    formControlName="married"
+                  />
+                  <label class="form-check-label" for="no">No</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="input_box">
+              <div class="title_text">
+                <label>Anniversary Date (optional)</label>
+              </div>
+              <div class="input_field">
+                <input
+                  type="date"
+                  class="form-control"
+                  formControlName="anniversaryDate"
+                />
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Address -->
+        <div class="fourth_section px-4 shadow-sm">
+          <section class="py-2 mt-5 w-100 h-100">
+            <p class="second_section_heading">Address (optional)</p>
+
+            <div class="input_box">
+              <div class="title_text"><label>Area Pincode</label></div>
+              <div class="input_field">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="E.g 560001"
+                  formControlName="pincode"
+                />
+              </div>
+            </div>
+
+            <div class="input_box">
+              <div class="title_text"><label>Address Line 1</label></div>
+              <div class="input_field">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Flat no., House no., Building,"
+                  formControlName="addressLine1"
+                />
+              </div>
+            </div>
+
+            <div class="input_box">
+              <div class="title_text"><label>Address Line 2</label></div>
+              <div class="input_field">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Area, Colony, Street, Sector, Village"
+                  formControlName="addressLine2"
+                />
+              </div>
+            </div>
+
+            <div class="input_box">
+              <div class="title_text"><label>Landmark</label></div>
+              <div class="input_field">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="E.g. Prithvi Theater"
+                  formControlName="landmark"
+                />
+              </div>
+            </div>
+
+            <div class="input_box">
+              <div class="title_text"><label>Town / City</label></div>
+              <div class="input_field">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="E.g. Mumbai"
+                  formControlName="city"
+                />
+              </div>
+            </div>
+
+            <div class="input_box">
+              <div class="title_text"><label>State</label></div>
+              <div class="input_field">
+                <select class="form-select" formControlName="state">
+                  <option value="" disabled>Select State</option>
+                  <option>Maharashtra</option>
+                  <option>Karnataka</option>
+                  <option>Tamil Nadu</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="button_section mt-3 mb-4">
+              <button
+                type="submit"
+                class="btn w-100 btn-submit"
+                [disabled]="userProfileForm.invalid"
+              >
+                Save Changes
+              </button>
+            </div>
+          </section>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
+
+<!-- Edit Profile Model -->
+<ng-template #editProfileModal>
+  <form [formGroup]="userProfileForm">
+    <div class="modal-header">
+      <h5 class="modal-title">
+        Edit {{ editValue === "email" ? "Email Address" : "Mobile Number" }}
+      </h5>
+    </div>
+
+    <div class="modal-body">
+      <!-- Show Email field -->
+      @if (editValue === 'email'){
+      <div>
+        <label for="email" class="form-label">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          placeholder="Enter your email"
+          formControlName="email"
+        />
+      </div>
+      }
+
+      <!-- Show Mobile field -->
+      @if (editValue === 'mobile') {
+      <div>
+        <label for="phone" class="form-label">Mobile Number</label>
+        <input
+          type="text"
+          id="phone"
+          class="form-control"
+          placeholder="Enter your mobile number"
+          formControlName="phoneNumber"
+        />
+      </div>
+      }
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeModel()">Cancel</button>
+      <button class="btn btn-primary">
+        Update {{ editValue === "email" ? "Email " : "Mobile Number" }}
+      </button>
+    </div>
+  </form>
+</ng-template>

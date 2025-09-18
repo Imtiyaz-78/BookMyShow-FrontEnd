@@ -1,5 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonService } from '../../../services/common.service';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { AuthService } from '../../../auth/AuthService/auth.service';
+import { UsersService } from '../services/users.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ToastService } from '../../../shared/components/toast/toast.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-profile',
@@ -7,29 +11,87 @@ import { CommonService } from '../../../services/common.service';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent implements OnInit, OnDestroy {
-  constructor(private service: CommonService) {}
-  preview: any;
-  base64String: any;
-  test(event: any) {
-    // console.log(event.target.files)
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      this.preview = reader.result;
-      this.base64String = (reader.result as string).split(',')[1];
-      console.log('Base64:', this.base64String);
-    };
-  }
+export class ProfileComponent implements OnInit {
+  usersData: any;
+  userDetails: any;
+  userProfileForm!: FormGroup;
+  modalRef?: BsModalRef;
+  editValue: any;
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private users: UsersService,
+    private toastService: ToastService,
+    private modalService: BsModalService
+  ) {}
 
   ngOnInit(): void {
-    // console.log(this.service.profileHeaderSignal().show
-
-    this.service.profileHeaderSignal.set(true);
+    console.log(this.authService.userDetails());
+    this.usersData = this.authService.userDetails();
+    console.log(this.usersData.userId);
+    this.onGetUserDetailsById();
+    this.initForm();
   }
 
-  ngOnDestroy() {
-    this.service.profileHeaderSignal.set(false);
+  initForm(): void {
+    this.userProfileForm = this.fb.group({
+      name: [''],
+      username: [''],
+      email: [''],
+      phoneNumber: [''],
+      profileImg: [null],
+      dob: [null],
+      identity: [null],
+      married: [null],
+      anniversaryDate: [null],
+      pincode: [null],
+      addressLine1: [null],
+      addressLine2: [null],
+      city: [null],
+      state: [null],
+    });
+  }
+
+  onGetUserDetailsById() {
+    this.users.getUserDetailsById(this.usersData.userId).subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.userDetails = res.data;
+          this.userProfileForm.patchValue(this.userDetails);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  onEdit(label: any, editProfileModal: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(editProfileModal, {
+      class: 'modal-dialog-centered',
+      ignoreBackdropClick: true,
+      keyboard: false,
+    });
+    this.editValue = label;
+  }
+
+  // onUpdateUser() {
+  //   this.users
+  //     .updateUserDetails(this.usersData.userId, this.userProfileForm.value)
+  //     .subscribe({
+  //       next: (res: any) => {
+  //         if (res.success) {
+  //         }
+  //       },
+  //       error: (err) => {
+  //         console.log(err);
+  //       },
+  //     });
+  // }
+
+  closeModel() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
   }
 }
