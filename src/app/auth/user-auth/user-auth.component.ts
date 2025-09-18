@@ -88,9 +88,20 @@ export class UserAuthComponent implements OnInit {
   OnInitSignUpForm(): void {
     this.userSignUp = this.fb.group({
       name: ['', [Validators.required]],
-      username: ['', [Validators.required]],
+      username: [
+        '',
+        [Validators.required, Validators.pattern('^[a-zA-Z0-9_]{5,15}$')],
+      ],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$'
+          ),
+        ],
+      ],
       phoneNumber: [
         '',
         [
