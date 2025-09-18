@@ -75,19 +75,19 @@ export class ProfileComponent implements OnInit {
     this.editValue = label;
   }
 
-  // onUpdateUser() {
-  //   this.users
-  //     .updateUserDetails(this.usersData.userId, this.userProfileForm.value)
-  //     .subscribe({
-  //       next: (res: any) => {
-  //         if (res.success) {
-  //         }
-  //       },
-  //       error: (err) => {
-  //         console.log(err);
-  //       },
-  //     });
-  // }
+  onUpdateUser() {
+    this.users
+      .updateUserDetails(this.usersData.userId, this.userProfileForm.value)
+      .subscribe({
+        next: (res: any) => {
+          if (res.success) {
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   closeModel() {
     if (this.modalRef) {
