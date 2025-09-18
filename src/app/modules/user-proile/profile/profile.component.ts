@@ -76,17 +76,28 @@ export class ProfileComponent implements OnInit {
   }
 
   onUpdateUser() {
-    this.users
-      .updateUserDetails(this.usersData.userId, this.userProfileForm.value)
-      .subscribe({
-        next: (res: any) => {
-          if (res.success) {
-          }
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+    if (!this.usersData?.userId) {
+      return;
+    }
+
+    let payload: any = {};
+    if (this.editValue === 'email') {
+      payload = { email: this.userProfileForm.get('email')?.value };
+    } else if (this.editValue === 'mobile') {
+      payload = { phoneNumber: this.userProfileForm.get('phoneNumber')?.value };
+    }
+
+    this.users.updateUserDetails(this.usersData.userId, payload).subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.toastService.startToast(res.message);
+          this.closeModel();
+        }
+      },
+      error: (err) => {
+        this.toastService.startToast(err.message);
+      },
+    });
   }
 
   closeModel() {

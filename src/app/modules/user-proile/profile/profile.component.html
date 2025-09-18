@@ -218,7 +218,6 @@
                   type="text"
                   class="form-control"
                   placeholder="E.g. Prithvi Theater"
-                  formControlName="landmark"
                 />
               </div>
             </div>
@@ -265,7 +264,7 @@
 
 <!-- Edit Profile Model -->
 <ng-template #editProfileModal>
-  <form [formGroup]="userProfileForm">
+  <form [formGroup]="userProfileForm" (ngSubmit)="onUpdateUser()">
     <div class="modal-header">
       <h5 class="modal-title">
         Edit {{ editValue === "email" ? "Email Address" : "Mobile Number" }}
