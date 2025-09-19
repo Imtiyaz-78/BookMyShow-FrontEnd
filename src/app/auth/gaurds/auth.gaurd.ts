@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../AuthService/auth.service';
 import { ToastService } from '../../shared/components/toast/toast.service';
+import { CommonService } from '../../services/common.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
@@ -25,10 +26,23 @@ export class AuthGuard implements CanActivate {
         const expDate = new Date(decoded.exp * 1000);
         console.log('Token expires at:', expDate.toLocaleString());
       }
+      // Role check
+      if (decoded && decoded.role !== 'ADMIN') {
+        this.toast.startToast({
+          message: 'You are not authorized to access this page.',
+          description: 'Please contact the admin for access.',
+          type: 'error',
+        });
+
+        this.router.navigate(['/']);
+        return false;
+      }
     }
     if (this.auth.isTokenExpired()) {
       this.auth.logout();
-      this.toast.startToast('Your session has expired. Please login again.');
+      this.toast.startToast({
+        message: 'Your session has expired. Please login again.',
+      });
       this.router.navigate(['/']);
       return false;
     }

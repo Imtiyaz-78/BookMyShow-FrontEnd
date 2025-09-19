@@ -5,21 +5,34 @@ import { Injectable, signal } from '@angular/core';
 export class ToastService {
   toastSignal = signal<ToastMessage[]>([]);
 
-  startToast(
-    message: string,
-    type: ToastMessage['type'] = 'success',
-    title: string = '',
-    description: string = ''
-  ) {
-    const toast: ToastMessage = {
-      message,
-      type,
-      title,
-      description,
+  // startToast(
+  //   message: string,
+  //   type: ToastMessage['type'] = 'success',
+  //   title: string = '',
+  //   description: string = ''
+  // ) {
+  //   const toast: ToastMessage = {
+  //     message,
+  //     type,
+  //     title,
+  //     description,
+  //     timestamp: Date.now(),
+  //   };
+  //   this.toastSignal.update((list) => [...list, toast]);
+  //   setTimeout(() => this.remove(toast.timestamp!), 8000);
+  // }
+  startToast(toast: Partial<ToastMessage>) {
+    const finalToast: ToastMessage = {
+      message: toast.message ?? '',
+      type: toast.type ?? 'success',
+      title: toast.title ?? '',
+      description: toast.description ?? '',
       timestamp: Date.now(),
     };
-    this.toastSignal.update((list) => [...list, toast]);
-    setTimeout(() => this.remove(toast.timestamp!), 8000);
+
+    this.toastSignal.update((list) => [...list, finalToast]);
+
+    setTimeout(() => this.remove(finalToast.timestamp!), 8000);
   }
 
   // removeByTimestamp(timestamp: number) {

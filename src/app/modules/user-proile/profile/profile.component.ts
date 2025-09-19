@@ -4,6 +4,7 @@ import { UsersService } from '../services/users.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from '../../../shared/components/toast/toast.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-profile',
@@ -22,7 +23,8 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private users: UsersService,
     private toastService: ToastService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    public commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +35,7 @@ export class ProfileComponent implements OnInit {
     this.initForm();
   }
 
+  //
   initForm(): void {
     this.userProfileForm = this.fb.group({
       name: [''],
@@ -52,6 +55,26 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  //
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const base64 = (reader.result as string).split(',')[1];
+      this.userProfileForm.patchValue({ profileImg: base64 });
+    };
+
+    reader.readAsDataURL(file);
+    console.log(file);
+  }
+
+  //
   onGetUserDetailsById() {
     this.users.getUserDetailsById(this.usersData.userId).subscribe({
       next: (res: any) => {
@@ -66,6 +89,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  //
   onEdit(label: any, editProfileModal: TemplateRef<any>) {
     this.modalRef = this.modalService.show(editProfileModal, {
       class: 'modal-dialog-centered',
@@ -75,6 +99,7 @@ export class ProfileComponent implements OnInit {
     this.editValue = label;
   }
 
+  //
   onUpdateUser() {
     if (!this.usersData?.userId) {
       return;
@@ -100,6 +125,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  //
   closeModel() {
     if (this.modalRef) {
       this.modalRef.hide();

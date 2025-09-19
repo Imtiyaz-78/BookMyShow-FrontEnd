@@ -142,7 +142,10 @@ export class UserAuthComponent implements OnInit {
               this.modalRef.hide();
             }
           } else {
-            this.toastService.startToast('No token received from API');
+            this.toastService.startToast({
+              message: res?.message || 'Login failed',
+              type: 'error',
+            });
           }
         },
         error: (err) => {

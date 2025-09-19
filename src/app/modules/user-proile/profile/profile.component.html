@@ -9,13 +9,28 @@
               <div class="dropzone">
                 <img
                   [src]="
-                    userProfileForm.get('profileImg')?.value ||
-                    'assets/avatar.jpg'
+                    userProfileForm.get('profileImg')?.value
+                      ? commonService.getImageFromBase64(
+                          userProfileForm.get('profileImg')?.value
+                        )
+                      : 'assets/images/user-img.png'
                   "
                   class="upload-icon"
                 />
-                <p>+Add</p>
-                <input type="file" class="upload-input" accept="image/*" />
+
+                <p>
+                  {{
+                    userProfileForm.get("profileImg")?.value
+                      ? "Update Photo"
+                      : "Add Photo"
+                  }}
+                </p>
+                <input
+                  type="file"
+                  class="upload-input"
+                  accept="image/*"
+                  (change)="onFileSelected($event)"
+                />
               </div>
             </div>
             <p class="text-white fs-5 fw-500">

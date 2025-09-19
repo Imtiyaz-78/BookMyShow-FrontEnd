@@ -18,7 +18,6 @@ export class AppComponent {
       const decoded = this.authService.decodeToken(token);
       if (decoded && decoded.exp) {
         const expDate = new Date(decoded.exp * 1000);
-        console.log('Token expires at:', expDate.toLocaleString());
       }
     }
   }
