@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { AuthService } from '../../../auth/AuthService/auth.service';
+import { ToastService } from '../toast/toast.service';
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -45,7 +46,8 @@ export class HeaderComponent implements OnInit {
     private modalSrv: BsModalService,
     private sanitizer: DomSanitizer,
     public authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     this.selectedCitySignal = this.service.selectedCitySignal;
 
@@ -156,9 +158,14 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  logout(): void {
+  onLogout(): void {
     this.authService.logout();
     this.hideOnLogout = false;
+    this.toastService.startToast({
+      message: 'Logged out successfully',
+      type: 'success',
+    });
+    this.router.navigate(['/']);
   }
 
   // Common search

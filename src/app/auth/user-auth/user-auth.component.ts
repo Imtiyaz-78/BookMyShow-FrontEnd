@@ -136,7 +136,10 @@ export class UserAuthComponent implements OnInit {
           if (token) {
             this.authService.decodeToken(token);
             this.authService.loginSuccess(token);
-            this.toastService.startToast(res?.message || 'Login successful');
+            this.toastService.startToast({
+              message: res?.message || 'Logged in successfully',
+              type: 'success',
+            });
             this.userLogin.reset();
             if (this.modalRef) {
               this.modalRef.hide();
@@ -222,7 +225,10 @@ export class UserAuthComponent implements OnInit {
         next: (res: any) => {
           if (res.success) {
             this.isUserExit = res.message;
-            this.toastService.startToast(res.message);
+            this.toastService.startToast({
+              message: 'Logged in successfully',
+              type: 'success',
+            });
           }
         },
         error: (err) => {

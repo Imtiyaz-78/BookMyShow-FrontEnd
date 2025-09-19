@@ -115,12 +115,18 @@ export class ProfileComponent implements OnInit {
     this.users.updateUserDetails(this.usersData.userId, payload).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.toastService.startToast(res.message);
+          this.toastService.startToast({
+            message: res.message,
+            type: 'success',
+          });
           this.closeModel();
         }
       },
       error: (err) => {
-        this.toastService.startToast(err.message);
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
       },
     });
   }

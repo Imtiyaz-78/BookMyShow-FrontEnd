@@ -134,9 +134,11 @@ export class AuthService {
   isTokenExpired(): boolean {
     const token = localStorage.getItem('token');
     if (!token) return true;
+
     const decoded: any = this.decodeToken(token);
     if (!decoded || !decoded.exp) return true;
+
     const now = Math.floor(Date.now() / 1000);
-    return decoded.exp < now;
+    return decoded.exp <= now; // if true expired
   }
 }
