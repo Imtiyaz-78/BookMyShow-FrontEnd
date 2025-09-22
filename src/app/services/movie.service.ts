@@ -15,4 +15,15 @@ export class MovieService {
   getMovieDetailsById(movieId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/events/${movieId}`);
   }
+  /**
+   * @description Get languages list by event type (Movie, Events, Sports, etc.)
+   * @author Imtiyaz
+   * @param {string} eventType
+   * @returns Observable<any>
+   */
+  getLanguagesByEventType(eventType: string): Observable<any> {
+    return this.http.get(
+      `${this.baseUrl}/events/languages?eventType=${eventType}`
+    );
+  }
 }

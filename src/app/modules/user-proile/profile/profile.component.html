@@ -2,7 +2,7 @@
 <div class="container-fluid mb-4">
   <div class="row d-flex justify-content-center">
     <div class="col-5">
-      <form [formGroup]="userProfileForm">
+      <form [formGroup]="userProfileForm" (ngSubmit)="onSubmit()">
         <section class="upload_image_box">
           <section class="d-flex align-items-center gap-2 top_container">
             <div class="circle">
@@ -194,7 +194,7 @@
               <div class="title_text"><label>Area Pincode</label></div>
               <div class="input_field">
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   placeholder="E.g 560001"
                   formControlName="pincode"
@@ -226,7 +226,7 @@
               </div>
             </div>
 
-            <div class="input_box">
+            <!-- <div class="input_box">
               <div class="title_text"><label>Landmark</label></div>
               <div class="input_field">
                 <input
@@ -235,7 +235,7 @@
                   placeholder="E.g. Prithvi Theater"
                 />
               </div>
-            </div>
+            </div> -->
 
             <div class="input_box">
               <div class="title_text"><label>Town / City</label></div>
@@ -254,9 +254,10 @@
               <div class="input_field">
                 <select class="form-select" formControlName="state">
                   <option value="" disabled>Select State</option>
-                  <option>Maharashtra</option>
-                  <option>Karnataka</option>
-                  <option>Tamil Nadu</option>
+
+                  @for (state of cityData$ | async; track $index) {
+                  <option [value]="state.stateKey">{{ state.name }}</option>
+                  }
                 </select>
               </div>
             </div>

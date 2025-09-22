@@ -84,7 +84,18 @@
           <div class="col-3">
             <div>
               <div class="app_filter_box">
-                <app-filter-accordian></app-filter-accordian>
+                <app-filter-accordian
+                  [label]="'Languages'"
+                  [filtersList]="LanguageList"
+                  (filterChange)="onLanguageFilterChange($event)"
+                ></app-filter-accordian>
+              </div>
+
+              <div class="app_filter_box">
+                <app-filter-accordian [label]="'Genres'"></app-filter-accordian>
+              </div>
+              <div class="app_filter_box">
+                <app-filter-accordian [label]="'Format'"></app-filter-accordian>
               </div>
             </div>
           </div>

@@ -12,8 +12,15 @@ export class CommonService {
   selectedCitySignal = signal<string | null>(this.storedCity);
   profileHeaderSignal = signal<any>(false);
   private baseApiUrl = environment.baseUrl;
+  eventType = signal<string | null>(null);
 
-  constructor() {}
+  constructor() {
+    // restore from sessionStorage if available
+    const eventValue = sessionStorage.getItem('eventType');
+    if (eventValue) {
+      this.eventType.set(eventValue);
+    }
+  }
 
   http = inject(HttpClient);
   sanitizer = inject(DomSanitizer);
@@ -42,5 +49,25 @@ export class CommonService {
       const fullBase64String = `data:${imageType};base64,${base64string}`;
       return this.sanitizer.bypassSecurityTrustUrl(fullBase64String);
     }
+  }
+
+  // This for Formate the Date
+  formatDateToMMDDYYYY(date: string | null): string | null {
+    if (!date) return null;
+    const d = new Date(date);
+    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // MM
+    const day = d.getDate().toString().padStart(2, '0'); // DD
+    const year = d.getFullYear();
+    return `${month}/${day}/${year}`; // MM/DD/YYYY
+  }
+
+  setEventType(type: string) {
+    this.eventType.set(type);
+    sessionStorage.setItem('eventType', type);
+  }
+
+  clearEventType() {
+    this.eventType.set(null);
+    sessionStorage.removeItem('eventType');
   }
 }

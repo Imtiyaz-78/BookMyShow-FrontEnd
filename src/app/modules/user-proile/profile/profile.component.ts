@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from '../../../shared/components/toast/toast.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CommonService } from '../../../services/common.service';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -18,21 +19,22 @@ export class ProfileComponent implements OnInit {
   userProfileForm!: FormGroup;
   modalRef?: BsModalRef;
   editValue: any;
+  cityData$!: Observable<any>;
+
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private users: UsersService,
+    private usersService: UsersService,
     private toastService: ToastService,
     private modalService: BsModalService,
     public commonService: CommonService
   ) {}
 
   ngOnInit(): void {
-    console.log(this.authService.userDetails());
     this.usersData = this.authService.userDetails();
-    console.log(this.usersData.userId);
     this.onGetUserDetailsById();
     this.initForm();
+    this.onGetStatesData();
   }
 
   //
@@ -47,15 +49,22 @@ export class ProfileComponent implements OnInit {
       identity: [null],
       married: [null],
       anniversaryDate: [null],
-      pincode: [null],
+      pincode: [0],
       addressLine1: [null],
       addressLine2: [null],
       city: [null],
-      state: [null],
+      state: [''],
     });
   }
 
-  //
+  // This is Helper function for MM/DD/YYYY → YYYY-MM-DD (input[type=date] format)
+  convertDateForForm(dateStr: string | null): string | null {
+    if (!dateStr) return null;
+    const [month, day, year] = dateStr.split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  }
+
+  // This Methods is used for Handle File Upload
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) {
@@ -76,20 +85,31 @@ export class ProfileComponent implements OnInit {
 
   //
   onGetUserDetailsById() {
-    this.users.getUserDetailsById(this.usersData.userId).subscribe({
+    this.usersService.getUserDetailsById(this.usersData.userId).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.userDetails = res.data;
-          this.userProfileForm.patchValue(this.userDetails);
+          const user = res.data;
+
+          const patchData = {
+            ...user,
+            dob: this.convertDateForForm(user.dob),
+            anniversaryDate: this.convertDateForForm(user.anniversaryDate),
+          };
+
+          this.userDetails = patchData;
+          this.userProfileForm.patchValue(patchData);
         }
       },
       error: (err) => {
-        console.log(err);
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
       },
     });
   }
 
-  //
+  // This Method is used for Open Email or Contact Number Update
   onEdit(label: any, editProfileModal: TemplateRef<any>) {
     this.modalRef = this.modalService.show(editProfileModal, {
       class: 'modal-dialog-centered',
@@ -99,7 +119,7 @@ export class ProfileComponent implements OnInit {
     this.editValue = label;
   }
 
-  //
+  // This Method is to Update email or Mobile Based Condition
   onUpdateUser() {
     if (!this.usersData?.userId) {
       return;
@@ -112,26 +132,67 @@ export class ProfileComponent implements OnInit {
       payload = { phoneNumber: this.userProfileForm.get('phoneNumber')?.value };
     }
 
-    this.users.updateUserDetails(this.usersData.userId, payload).subscribe({
-      next: (res: any) => {
-        if (res.success) {
+    this.usersService
+      .updateUserDetails(this.usersData.userId, payload)
+      .subscribe({
+        next: (res: any) => {
+          if (res.success) {
+            this.toastService.startToast({
+              message: res.message,
+              type: 'success',
+            });
+            this.closeModel();
+          }
+        },
+        error: (err) => {
           this.toastService.startToast({
-            message: res.message,
-            type: 'success',
+            message: err.message,
+            type: 'error',
           });
-          this.closeModel();
-        }
-      },
-      error: (err) => {
-        this.toastService.startToast({
-          message: err.message,
-          type: 'error',
-        });
-      },
-    });
+        },
+      });
   }
 
-  //
+  // This Method is used To Update Whole Users
+  onSubmit() {
+    let payload = {
+      ...this.userProfileForm.value,
+      dob: this.commonService.formatDateToMMDDYYYY(
+        this.userProfileForm.get('dob')?.value
+      ),
+      anniversaryDate: this.commonService.formatDateToMMDDYYYY(
+        this.userProfileForm.get('anniversaryDate')?.value
+      ),
+    };
+
+    this.usersService
+      .updateUserDetails(this.usersData.userId, payload)
+      .subscribe({
+        next: (res: any) => {
+          if (res.success) {
+            this.toastService.startToast({
+              message: res.message,
+              type: 'success',
+            });
+          }
+        },
+        error: (err) => {
+          this.toastService.startToast({
+            message: err.message,
+            type: 'error',
+          });
+        },
+      });
+  }
+
+  // This Method is used for to Get All States Data
+  onGetStatesData() {
+    this.cityData$ = this.usersService.getAllStates().pipe(
+      map((res: any) => res.data.stateDto) // extract the array
+    );
+  }
+
+  // This Method is used to Close contact or Email Update
   closeModel() {
     if (this.modalRef) {
       this.modalRef.hide();

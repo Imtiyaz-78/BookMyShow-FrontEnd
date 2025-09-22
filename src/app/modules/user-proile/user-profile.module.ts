@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 
 import { UserProfileRoutingModule } from './user-profile-routing.module';
 import { YourOrderComponent } from './your-order/your-order.component';
@@ -9,7 +9,12 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [YourOrderComponent, ProfileComponent],
-  imports: [CommonModule, UserProfileRoutingModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    UserProfileRoutingModule,
+    ReactiveFormsModule,
+    AsyncPipe,
+  ],
   providers: [BsModalService],
 })
 export class UserProfileModule {}

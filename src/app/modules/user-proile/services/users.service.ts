@@ -18,4 +18,9 @@ export class UsersService {
   updateUserDetails(userId: number, obj: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/users/${userId}/profile`, obj);
   }
+
+  // This method is for to all states
+  getAllStates(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/states`);
+  }
 }

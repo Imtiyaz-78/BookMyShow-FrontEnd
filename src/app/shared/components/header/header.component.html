@@ -89,43 +89,39 @@
           <div class="sub_header_left">
             <div class="sub_heder_left_links">
               <a
-                (click)="getActiveMenu('Movies')"
+                (click)="setActiveMenu('Movies')"
                 [ngClass]="{ active: activeMenu === 'Movies' }"
-                [routerLink]="['explore/movies']"
                 >Movies</a
               >
               <a
-                (click)="getActiveMenu('Stream')"
+                (click)="setActiveMenu('Stream')"
                 [ngClass]="{ active: activeMenu === 'Stream' }"
                 >Stream</a
               >
               <a
-                (click)="getActiveMenu('Events')"
+                (click)="setActiveMenu('Events')"
                 [ngClass]="{ active: activeMenu === 'Events' }"
-                [routerLink]="['explore/events']"
                 >Events</a
               >
               <a
-                (click)="getActiveMenu('Plays')"
+                (click)="setActiveMenu('Plays')"
                 [ngClass]="{ active: activeMenu === 'Plays' }"
                 >Plays</a
               >
               <a
-                (click)="getActiveMenu('Sports')"
+                (click)="setActiveMenu('Sports')"
                 [ngClass]="{ active: activeMenu === 'Sports' }"
                 >Sports</a
               >
               <a
-                (click)="getActiveMenu('Activities')"
+                (click)="setActiveMenu('Activities')"
                 [ngClass]="{ active: activeMenu === 'Activities' }"
                 >Activities</a
               >
               @if (userProfileDetails?.role == 'ADMIN') {
               <a
-                (click)="getActiveMenu('Users')"
+                (click)="setActiveMenu('Users')"
                 [ngClass]="{ active: activeMenu === 'Users' }"
-                [routerLink]="['/admin/users']"
-                [state]="{ data: true }"
                 >Users</a
               >
               }
@@ -146,7 +142,7 @@
     </div>
   </div>
 </div>
-@if(service.profileHeaderSignal()){
+@if(commonService.profileHeaderSignal()){
 <div class="sub_profile_header">
   <div class="col-6">
     <div class="sub_header_profile_cotainer">

@@ -41,7 +41,7 @@ export class HeaderComponent implements OnInit {
 
   modalRef!: BsModalRef;
   constructor(
-    public service: CommonService,
+    public commonService: CommonService,
     private route: Router,
     private modalSrv: BsModalService,
     private sanitizer: DomSanitizer,
@@ -49,21 +49,26 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private toastService: ToastService
   ) {
-    this.selectedCitySignal = this.service.selectedCitySignal;
+    this.selectedCitySignal = this.commonService.selectedCitySignal;
 
     // Effect runs whenever authService.isLoggedIn() changes
     effect(() => {
       this.isLoggedInSignalValue.set(this.authService.isLoggedIn()); // Read signal value using ()
-      this.selectedCity = this.service.selectedCitySignal;
+      this.selectedCity = this.commonService.selectedCitySignal;
     });
   }
 
   ngOnInit(): void {
-    this.showProfileheader = this.service.profileHeaderSignal();
+    this.showProfileheader = this.commonService.profileHeaderSignal();
     if (!this.selectedCity) {
     }
     this.fetchPopularCities();
     this.fetchAllCities();
+    // Restore from sessionStorage on refresh
+    const savedMenu = sessionStorage.getItem('eventType');
+    if (savedMenu) {
+      this.activeMenu = savedMenu;
+    }
 
     // By ubject
     // this.authService.isLoggedIn$.subscribe((status) => {
@@ -102,7 +107,7 @@ export class HeaderComponent implements OnInit {
 
   handleCitySelection(city: string, modalRef?: BsModalRef): void {
     sessionStorage.setItem('selectedCity', city); // Save city into session storage
-    this.service.selectedCitySignal.set(city); // Update signal in common service
+    this.commonService.selectedCitySignal.set(city); // Update signal in common service
     this.router.navigate(['explore', 'home', city]);
 
     if (modalRef) {
@@ -124,13 +129,13 @@ export class HeaderComponent implements OnInit {
 
   // get all popular city
   fetchPopularCities(): void {
-    this.service.getAllPopularCity().subscribe({
+    this.commonService.getAllPopularCity().subscribe({
       next: (res: any) => {
         if (res) {
           if (res.success) {
             this.cityData = res.data;
             this.filterCityData = [...this.cityData];
-            if (!this.service.selectedCitySignal()) {
+            if (!this.commonService.selectedCitySignal()) {
               this.openCitySelectionModal(this.cityModal);
             }
           }
@@ -143,7 +148,7 @@ export class HeaderComponent implements OnInit {
   }
 
   fetchAllCities(): void {
-    this.service.getAllCity().subscribe({
+    this.commonService.getAllCity().subscribe({
       next: (res: any) => {
         if (res) {
           if (res.success) {
@@ -185,5 +190,26 @@ export class HeaderComponent implements OnInit {
 
   getActiveMenu(menu: string) {
     this.activeMenu = menu;
+  }
+
+  setActiveMenu(menu: string) {
+    this.commonService.setEventType(menu);
+    sessionStorage.setItem('eventType', menu);
+
+    // Navigate dynamically
+    switch (menu) {
+      case 'Movies':
+        this.router.navigate(['explore/movies']);
+        break;
+      case 'Events':
+        this.router.navigate(['explore/events']);
+        break;
+      case 'Users':
+        this.router.navigate(['/admin/users'], { state: { data: true } });
+        break;
+      default:
+        this.router.navigate([`explore/${menu.toLowerCase()}`]);
+        break;
+    }
   }
 }

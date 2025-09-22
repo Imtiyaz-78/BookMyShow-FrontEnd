@@ -13,14 +13,17 @@ import { ToastService } from '../toast/toast.service';
   styleUrl: './filter-accordian.component.scss',
 })
 export class FilterAccordianComponent {
-  filterShowButtons: boolean = false;
+  filterShowButtons: boolean = true;
   @Input() label: string = '';
-  @Input() filters: string[] = [];
+  @Input() filtersList: string[] = [];
   @Input() clearable: boolean = true;
   @Output() filterChange = new EventEmitter<string[]>();
   selectedFilters: string[] = [];
 
-  constructor(private tostService: ToastService) {}
+  constructor(
+    private tostService: ToastService,
+    private commmonService: CommonService
+  ) {}
 
   toggleAccoridan(): void {
     this.filterShowButtons = !this.filterShowButtons;
@@ -44,5 +47,9 @@ export class FilterAccordianComponent {
       message: 'Filters cleared successfully ',
     });
     this.filterChange.emit(this.selectedFilters);
+  }
+
+  get eventType() {
+    return this.commmonService.eventType();
   }
 }
