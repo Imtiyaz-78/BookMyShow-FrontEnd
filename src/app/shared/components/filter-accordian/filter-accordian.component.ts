@@ -40,6 +40,7 @@ export class FilterAccordianComponent {
 
   clearFilters(): void {
     this.selectedFilters = [];
+    this.filterShowButtons = false;
     this.tostService.startToast({
       message: 'Filters cleared successfully ',
     });

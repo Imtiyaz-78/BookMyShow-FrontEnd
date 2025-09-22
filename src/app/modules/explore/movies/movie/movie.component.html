@@ -94,7 +94,7 @@
               <div class="app_filter_box">
                 <app-filter-accordian
                   [label]="'Genres'"
-                  [filtersList]="GenresList"
+                  [filtersList]="GenreNames"
                   (filterChange)="onFilterChange('Genres', $event)"
                 ></app-filter-accordian>
               </div>
@@ -102,7 +102,7 @@
               <div class="app_filter_box">
                 <app-filter-accordian
                   [label]="'Format'"
-                  [filtersList]="FormatList"
+                  [filtersList]="FormatNames"
                   (filterChange)="onFilterChange('Format', $event)"
                 ></app-filter-accordian>
               </div>
