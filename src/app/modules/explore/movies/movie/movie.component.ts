@@ -13,9 +13,15 @@ export class MovieComponent {
   dummyMoviesdata: any[] = [];
   dummyMoviesdatafiltered: any[] = [];
   originalMovies = movies;
-  LanguageList: string[] = [];
-  GenresList: string[] = ['Action', 'Comedy', 'Drama'];
-  FormatList: string[] = ['2D', '3D', 'IMAX'];
+  LanguageList: any[] = [];
+  GenresList: any[] = [];
+  FormatList: any[] = [];
+  filteredMovies: any[] = [];
+
+  // Display-only arrays for template
+  LanguageNames: string[] = [];
+  GenreNames: string[] = [];
+  FormatNames: string[] = [];
 
   // Store selected filters for all categories
   selectedFiltersSignal = signal<{ [key: string]: string[] }>({
@@ -41,18 +47,17 @@ export class MovieComponent {
     });
   }
 
-  // Fetch Language
+  // Fetch Languages
   fetchLanguages(eventType: string) {
     this.movieService.getLanguagesByEventType(eventType).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.LanguageList = res.data.map((lang: any) => lang.languageName);
-
-          // Set default selected filters for Languages if needed
+          this.LanguageList = res.data; // keep full objects
+          this.LanguageNames = res.data.map((lang: any) => lang.languageName); // only names for UI
           if (!this.selectedFiltersSignal()['Languages']?.length) {
             this.selectedFiltersSignal.update((prev) => ({
               ...prev,
-              ['Languages']: [],
+              Languages: [],
             }));
           }
         }
@@ -66,12 +71,12 @@ export class MovieComponent {
     this.movieService.getGenresByEventType(eventType).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.GenresList = res.data.map((genre: any) => genre.genresName);
-
+          this.GenresList = res.data;
+          this.GenreNames = res.data.map((g: any) => g.genresName);
           if (!this.selectedFiltersSignal()['Genres']?.length) {
             this.selectedFiltersSignal.update((prev) => ({
               ...prev,
-              ['Genres']: [],
+              Genres: [],
             }));
           }
         }
@@ -80,14 +85,13 @@ export class MovieComponent {
     });
   }
 
+  // Fetch Formats
   fetchFormats() {
     this.movieService.getFormats().subscribe({
       next: (res: any) => {
         if (res.success) {
-          // assuming res.data is an array of format objects with formatName
-          this.FormatList = res.data.map((f: any) => f.formatName);
-
-          // Initialize selectedFiltersSignal if needed
+          this.FormatList = res.data;
+          this.FormatNames = res.data.map((f: any) => f.formatName);
           if (!this.selectedFiltersSignal()['Format']?.length) {
             this.selectedFiltersSignal.update((prev) => ({
               ...prev,
@@ -96,25 +100,65 @@ export class MovieComponent {
           }
         }
       },
-      error: (err) => console.error('Failed to fetch formats:', err),
+      error: (err) => console.error(err),
     });
   }
 
-  // Called when a filter is clicked in any accordion
-  onFilterChange(category: string, selected: string[]) {
+  // Handle filter change from accordion
+  onFilterChange(type: 'Languages' | 'Genres' | 'Format', selected: string[]) {
+    // Update signal
     this.selectedFiltersSignal.update((prev) => ({
       ...prev,
-      [category]: selected,
+      [type]: selected,
     }));
 
-    this.callApiForFilter(category, selected);
+    // Prepare payload for API
+    const payload = {
+      type: this.commonService.eventType() || 'Movie',
+      languages: this.getIdsFromNames(selected, 'Languages'),
+      genres: this.getIdsFromNames(selected, 'Genres'),
+      formats: this.getIdsFromNames(selected, 'Format'),
+      tags: [],
+      categories: [],
+      price: [],
+      morefilter: [],
+      releaseMonths: [],
+      dateFilters: [],
+    };
+
+    // Call filter API
+    this.movieService.applyFilters(payload).subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.filteredMovies = res.data;
+        }
+      },
+      error: (err) => console.error('Filter API error:', err),
+    });
   }
 
-  callApiForFilter(category: string, filters: string[]) {
-    // Example: only call if filters length > 0
-    if (filters.length) {
-      console.log(`Call API for ${category}:`, filters);
-      // TODO: implement actual API call based on category and selected filters
-    }
+  // Map names to IDs correctly
+  getIdsFromNames(selectedNames: string[], type: string): number[] {
+    if (!selectedNames?.length) return [];
+
+    return selectedNames
+      .map((name) => {
+        let found: any;
+        if (type === 'Languages')
+          found = this.LanguageList.find(
+            (l) => l.languageName === name || l.name === name
+          );
+        else if (type === 'Genres')
+          found = this.GenresList.find(
+            (g) => g.genresName === name || g.name === name
+          );
+        else if (type === 'Format')
+          found = this.FormatList.find(
+            (f) => f.formatName === name || f.name === name
+          );
+
+        return found?.id; // return undefined if not found
+      })
+      .filter((id) => id !== undefined); // remove invalid ids
   }
 }
