@@ -36,6 +36,7 @@ export class MovieComponent {
       if (type) {
         this.fetchLanguages(type);
         this.fetchGenres(type);
+        this.fetchFormats();
       }
     });
   }
@@ -65,7 +66,7 @@ export class MovieComponent {
     this.movieService.getGenresByEventType(eventType).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.GenresList = res.data.map((genre: any) => genre.genreName);
+          this.GenresList = res.data.map((genre: any) => genre.genresName);
 
           if (!this.selectedFiltersSignal()['Genres']?.length) {
             this.selectedFiltersSignal.update((prev) => ({
@@ -76,6 +77,26 @@ export class MovieComponent {
         }
       },
       error: (err) => console.error(err),
+    });
+  }
+
+  fetchFormats() {
+    this.movieService.getFormats().subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          // assuming res.data is an array of format objects with formatName
+          this.FormatList = res.data.map((f: any) => f.formatName);
+
+          // Initialize selectedFiltersSignal if needed
+          if (!this.selectedFiltersSignal()['Format']?.length) {
+            this.selectedFiltersSignal.update((prev) => ({
+              ...prev,
+              Format: [],
+            }));
+          }
+        }
+      },
+      error: (err) => console.error('Failed to fetch formats:', err),
     });
   }
 

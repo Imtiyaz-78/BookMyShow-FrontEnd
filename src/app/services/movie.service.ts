@@ -38,4 +38,23 @@ export class MovieService {
       `${this.baseUrl}/events/genres?eventType=${eventType}`
     );
   }
+
+  /**
+   * @description Get formats list (2D, 3D, IMAX, etc.)
+   * @author Imtiyaz
+   * @returns Observable<any>
+   */
+  getFormats(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/events/formats`);
+  }
+
+  /**
+   * @description Apply filters for events/movies
+   * @author Imtiyaz
+   * @param filterObj object containing all selected filters
+   * @returns Observable<any>
+   */
+  applyFilters(filterObj: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/events/filter`, filterObj);
+  }
 }
