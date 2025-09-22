@@ -161,3 +161,25 @@ ul {
     transform: none;
   }
 }
+
+.filter_btn {
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0px 12px;
+  height: 32px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(229, 229, 229);
+  opacity: 1;
+  border-radius: 4px;
+  word-break: break-word;
+  color: rgb(220, 53, 75);
+  font-size: 16px;
+
+  line-height: 1.43;
+
+  &.active {
+    background-color: #eb4e62;
+    color: white;
+  }
+}

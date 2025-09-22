@@ -31,13 +31,10 @@ export class FilterAccordianComponent {
 
   onFilterClick(option: string): void {
     if (this.selectedFilters.includes(option)) {
-      this.selectedFilters = this.selectedFilters.filter(
-        (optionValue) => optionValue !== option
-      );
+      this.selectedFilters = this.selectedFilters.filter((o) => o !== option);
     } else {
       this.selectedFilters.push(option);
     }
-
     this.filterChange.emit(this.selectedFilters);
   }
 

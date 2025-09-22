@@ -198,10 +198,10 @@ export class HeaderComponent implements OnInit {
 
     // Navigate dynamically
     switch (menu) {
-      case 'Movies':
+      case 'Movie':
         this.router.navigate(['explore/movies']);
         break;
-      case 'Events':
+      case 'Event':
         this.router.navigate(['explore/events']);
         break;
       case 'Users':

@@ -89,8 +89,9 @@
           <div class="sub_header_left">
             <div class="sub_heder_left_links">
               <a
-                (click)="setActiveMenu('Movies')"
-                [ngClass]="{ active: activeMenu === 'Movies' }"
+                (click)="setActiveMenu('Movie')"
+                routerLink="explore/movies"
+                [ngClass]="{ active: activeMenu === 'Movie' }"
                 >Movies</a
               >
               <a
@@ -99,8 +100,8 @@
                 >Stream</a
               >
               <a
-                (click)="setActiveMenu('Events')"
-                [ngClass]="{ active: activeMenu === 'Events' }"
+                (click)="setActiveMenu('Event')"
+                [ngClass]="{ active: activeMenu === 'Event' }"
                 >Events</a
               >
               <a

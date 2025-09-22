@@ -26,4 +26,16 @@ export class MovieService {
       `${this.baseUrl}/events/languages?eventType=${eventType}`
     );
   }
+
+  /**
+   * @description Get genres list by event type (Movie, Events, Sports, etc.)
+   * @author Imtiyaz
+   * @param {string} eventType
+   * @returns Observable<any>
+   */
+  getGenresByEventType(eventType: string): Observable<any> {
+    return this.http.get(
+      `${this.baseUrl}/events/genres?eventType=${eventType}`
+    );
+  }
 }
