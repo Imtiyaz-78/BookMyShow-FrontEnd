@@ -169,6 +169,8 @@
                 ></a>
               </div>
             </div>
+
+            <!-- Movie Cards -->
             <div class="col-12">
               <div class="d-flex justify-content-center g-0">
                 <div class="main_box_crasoule">
@@ -176,38 +178,55 @@
                     <div
                       class="filter_text d-flex flex-wrap gap-5 py-5 justify-content-start"
                     >
-                      <ng-container
-                        *ngFor="let item of dummyMoviesdata; let $index = index"
-                        class="overflow-hidden w-50"
-                      >
-                        <div
-                          class="col"
-                          style="max-width: 200px; min-width: 200px"
-                        >
-                          <div class="card shadow-sm">
-                            <a class="img_container rounded-4 border">
-                              <img [src]="item.Poster" [alt]="item.Poster" />
-                            </a>
-                            <div class="card-body rounded-bottom bg-dark">
-                              <div class="d-flex gap-2">
-                                <span>
-                                  <i
-                                    class="fa fa-thumbs-up text-success"
-                                    aria-hidden="true"
-                                  ></i>
-                                </span>
-                                <span class="text-white"> 1.5M likes </span>
+                      @for(item of filteredMovies; track $index){
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <div class="img_container">
+                            <img
+                              [src]="
+                                commonService.getImageFromBase64(item.imageurl)
+                              "
+                              [alt]="item.name"
+                            />
+                          </div>
+                          <div class="card-body rounded-bottom bg-dark">
+                            <div class="d-flex gap-4">
+                              @if(item.releasedFlag == true){
+                              <div
+                                class="text-white d-flex gap-2 align-items-center"
+                              >
+                                <i-feather
+                                  class="d-flex"
+                                  name="star"
+                                ></i-feather>
+                                <span>{{ item.imdbRating }}</span>
                               </div>
+                              } @if(item.releasedFlag == true){
+                              <div
+                                class="d-flex gap-2 align-items-center gap-2"
+                              >
+                                <i class="fa fa-thumbs-up text-success"></i>
+                                <span class="text-white"
+                                  >{{ item.votes | numberSuffix }}
+                                </span>
+                                @if(item.releasedFlag == false){
+                                <span class="text-white">{{ item.likes }}</span>
+                                }
+                              </div>
+                              }
                             </div>
                           </div>
-                          <div class="bottom_text_movie_card py-3 px-4">
-                            <h6 class="card-text m-0">
-                              {{ item.Title | truncate : 15 }}
-                            </h6>
-                            <span class="m-0">{{ item.Genre }}</span>
+                        </div>
+                        <div class="bottom_text_movie_card">
+                          <h6 class="card-text m-0">{{ item.name }}</h6>
+                          <div class="d-flex gap-1 flex-wrap">
+                            @for(language of item.languages; track $index) {
+                            <span>{{ language }}</span>
+                            }
                           </div>
                         </div>
-                      </ng-container>
+                      </div>
+                      }
                     </div>
                   </div>
                 </div>

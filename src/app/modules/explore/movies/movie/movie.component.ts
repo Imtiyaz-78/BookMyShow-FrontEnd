@@ -1,4 +1,4 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, OnInit, signal } from '@angular/core';
 import { movies } from '../../../../../../db';
 import { CommonService } from '../../../../services/common.service';
 import { MovieService } from '../../../../services/movie.service';
@@ -9,7 +9,7 @@ import { MovieService } from '../../../../services/movie.service';
   templateUrl: './movie.component.html',
   styleUrl: './movie.component.scss',
 })
-export class MovieComponent {
+export class MovieComponent implements OnInit {
   dummyMoviesdata: any[] = [];
   dummyMoviesdatafiltered: any[] = [];
   originalMovies = movies;
@@ -44,6 +44,38 @@ export class MovieComponent {
         this.fetchGenres(type);
         this.fetchFormats();
       }
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadAllMovies();
+  }
+
+  loadAllMovies(): void {
+    const payload = {
+      type: 'Movie',
+      languages: [],
+      genres: [],
+      formats: [],
+      tags: [],
+      categories: [],
+      price: [],
+      morefilter: [],
+      releaseMonths: [],
+      dateFilters: [],
+    };
+
+    this.movieService.getAllMovies(payload).subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.filteredMovies = res.data;
+        } else {
+          console.warn('API returned without success flag', res);
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching movies:', err);
+      },
     });
   }
 
