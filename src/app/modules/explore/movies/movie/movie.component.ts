@@ -84,7 +84,7 @@ export class MovieComponent implements OnInit {
     this.movieService.getLanguagesByEventType(eventType).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.LanguageList = res.data; // keep full objects
+          this.LanguageList = res.data;
           this.LanguageNames = res.data.map((lang: any) => lang.languageName); // only names for UI
           if (!this.selectedFiltersSignal()['Languages']?.length) {
             this.selectedFiltersSignal.update((prev) => ({
@@ -137,19 +137,21 @@ export class MovieComponent implements OnInit {
   }
 
   // Handle filter change from accordion
-  onFilterChange(type: 'Languages' | 'Genres' | 'Format', selected: string[]) {
+  onFilterChange(type: 'Languages' | 'Genres' | 'Formats', selected: string[]) {
     // Update signal
     this.selectedFiltersSignal.update((prev) => ({
       ...prev,
       [type]: selected,
     }));
 
+    const currentFilters = this.selectedFiltersSignal(); // get latest snapshot
+
     // Prepare payload for API
     const payload = {
       type: this.commonService.eventType() || 'Movie',
-      languages: this.getIdsFromNames(selected, 'Languages'),
-      genres: this.getIdsFromNames(selected, 'Genres'),
-      formats: this.getIdsFromNames(selected, 'Format'),
+      languages: this.getIdsFromNames(currentFilters['Languages'], 'Languages'),
+      genres: this.getIdsFromNames(currentFilters['Genres'], 'Genres'),
+      formats: this.getIdsFromNames(currentFilters['Formats'], 'Formats'),
       tags: [],
       categories: [],
       price: [],
@@ -158,7 +160,8 @@ export class MovieComponent implements OnInit {
       dateFilters: [],
     };
 
-    // Call filter API
+    console.log('Filter Payload:', payload);
+
     this.movieService.applyFilters(payload).subscribe({
       next: (res: any) => {
         if (res.success) {
@@ -170,7 +173,10 @@ export class MovieComponent implements OnInit {
   }
 
   // Map names to IDs correctly
-  getIdsFromNames(selectedNames: string[], type: string): number[] {
+  getIdsFromNames(
+    selectedNames: string[],
+    type: 'Languages' | 'Genres' | 'Formats'
+  ): number[] {
     if (!selectedNames?.length) return [];
 
     return selectedNames
@@ -184,13 +190,16 @@ export class MovieComponent implements OnInit {
           found = this.GenresList.find(
             (g) => g.genresName === name || g.name === name
           );
-        else if (type === 'Format')
+        else if (type === 'Formats')
           found = this.FormatList.find(
             (f) => f.formatName === name || f.name === name
           );
 
-        return found?.id; // return undefined if not found
+        // 👇 check actual keys from API
+        return (
+          found?.languageId || found?.genreId || found?.formatId || found?.id
+        );
       })
-      .filter((id) => id !== undefined); // remove invalid ids
+      .filter((id) => id !== undefined);
   }
 }
