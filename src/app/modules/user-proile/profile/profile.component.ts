@@ -32,8 +32,8 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.usersData = this.authService.userDetails();
-    this.onGetUserDetailsById();
     this.initForm();
+    this.onGetUserDetailsById();
     this.onGetStatesData();
   }
 
@@ -60,8 +60,8 @@ export class ProfileComponent implements OnInit {
   // This is Helper function for MM/DD/YYYY → YYYY-MM-DD (input[type=date] format)
   convertDateForForm(dateStr: string | null): string | null {
     if (!dateStr) return null;
-    const [month, day, year] = dateStr.split('/');
-    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    const [day, month, year] = dateStr.split('-'); // correct order
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`; // YYYY-MM-DD for <input type="date">
   }
 
   // This Methods is used for Handle File Upload

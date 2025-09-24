@@ -1,3 +1,4 @@
+<!-- Movies Section  -->
 <div class="conatiner-fluid mt-5">
   <div class="row g-0">
     <div class="main_container_box d-flex justify-content-center">
@@ -7,36 +8,216 @@
             <h4>Filters</h4>
           </div>
           <div class="col-9">
-            <h4 class="fs-4 fw-500 m-0">Events in</h4>
+            <h4 class="fs-4 fw-500 m-0">
+              Events in {{ commonService.selectedCitySignal() }}
+            </h4>
           </div>
         </div>
         <div class="filter_cards_container d-flex justify-content-between py-4">
           <div class="col-3">
             <div>
+              <!-- Languages -->
               <div class="app_filter_box">
                 <app-filter-accordian
                   [label]="'Languages'"
-                  [filtersList]="['Hindi', 'English', 'Telugu', 'Tamil']"
-                  [clearable]="true"
-                  (filterChange)="onLanguagesFilterChange($event)"
+                  [filtersList]="LanguageNames"
+                  (filterChange)="onFilterChange('Languages', $event)"
+                ></app-filter-accordian>
+              </div>
+
+              <!-- Genres -->
+              <div class="app_filter_box">
+                <app-filter-accordian
+                  [label]="'Genres'"
+                  [filtersList]="GenreNames"
+                  (filterChange)="onFilterChange('Genres', $event)"
+                ></app-filter-accordian>
+              </div>
+
+              <!-- Formats -->
+              <div class="app_filter_box">
+                <app-filter-accordian
+                  [label]="'Formats'"
+                  [filtersList]="FormatNames"
+                  (filterChange)="onFilterChange('Formats', $event)"
+                ></app-filter-accordian>
+              </div>
+
+              <!-- Categories -->
+              <div class="app_filter_box">
+                <app-filter-accordian
+                  [label]="'Categories'"
+                  [filtersList]="CategoriesName"
+                  (filterChange)="onFilterChange('Categories', $event)"
+                ></app-filter-accordian>
+              </div>
+
+              <!-- More Filters -->
+              <div class="app_filter_box">
+                <app-filter-accordian
+                  [label]="'More Filters'"
+                  [filtersList]="moreFiltersName"
+                  (filterChange)="onFilterChange('More Filters', $event)"
+                ></app-filter-accordian>
+              </div>
+
+              <!-- Price -->
+              <div class="app_filter_box">
+                <app-filter-accordian
+                  [label]="'Price'"
+                  [filtersList]="priceName"
+                  (filterChange)="onFilterChange('Price', $event)"
+                ></app-filter-accordian>
+              </div>
+
+              <!-- Tags -->
+              <div class="app_filter_box">
+                <app-filter-accordian
+                  [label]="'Tags'"
+                  [filtersList]="tagsName"
+                  (filterChange)="onFilterChange('Tags', $event)"
+                ></app-filter-accordian>
+              </div>
+
+              <!-- Release Months -->
+              <div class="app_filter_box">
+                <app-filter-accordian
+                  [label]="'Release Months'"
+                  [filtersList]="releaseMonthsName"
+                  (filterChange)="onFilterChange('ReleaseMonths', $event)"
                 ></app-filter-accordian>
               </div>
             </div>
           </div>
           <div class="col-9 d-block">
             <div class="top_bar_Comming_soon d-flex flex-column gap-3">
-              <div class="d-flex gap-2 language_text py-2 flex-wrap">
-                @for (item of languaageArray; track $index) {
-                <button
-                  [ngClass]="{
-                    active: selectedLanguages.includes(item)
-                  }"
-                  class="btn_lang"
-                >
-                  {{ item }}
-                </button>
-                }
+              <div class="d-flex gap-3 language_text py-2 flex-wrap">
+                <!-- Languages -->
+                <ng-container>
+                  @for (lang of selectedFiltersSignal()['Languages']; track
+                  $index) {
+                  <button
+                    class="filter_btn"
+                    [ngClass]="{
+                      active:
+                        selectedFiltersSignal()['Languages'].includes(lang)
+                    }"
+                  >
+                    {{ lang }}
+                  </button>
+                  }
+                </ng-container>
+
+                <!-- Genres -->
+                <ng-container>
+                  @for (genre of selectedFiltersSignal()['Genres']; track
+                  $index) {
+                  <button
+                    class="filter_btn"
+                    [ngClass]="{
+                      active: selectedFiltersSignal()['Genres'].includes(genre)
+                    }"
+                  >
+                    {{ genre }}
+                  </button>
+                  }
+                </ng-container>
+
+                <!-- Format -->
+                <ng-container>
+                  @for (format of selectedFiltersSignal()['Formats']; track
+                  $index) {
+                  <button
+                    class="filter_btn"
+                    [ngClass]="{
+                      active:
+                        selectedFiltersSignal()['Formats'].includes(format)
+                    }"
+                  >
+                    {{ format }}
+                  </button>
+                  }
+                </ng-container>
+
+                <!-- Categories -->
+                <ng-container>
+                  @for (cat of selectedFiltersSignal()['Categories']; track
+                  $index) {
+                  <button
+                    class="filter_btn"
+                    [ngClass]="{
+                      active:
+                        selectedFiltersSignal()['Categories'].includes(cat)
+                    }"
+                  >
+                    {{ cat }}
+                  </button>
+                  }
+                </ng-container>
+
+                <!-- More Filters -->
+                <ng-container>
+                  @for (mf of selectedFiltersSignal()['More Filters']; track
+                  $index) {
+                  <button
+                    class="filter_btn"
+                    [ngClass]="{
+                      active:
+                        selectedFiltersSignal()['More Filters'].includes(mf)
+                    }"
+                  >
+                    {{ mf }}
+                  </button>
+                  }
+                </ng-container>
+
+                <!-- Price -->
+                <ng-container>
+                  @for (price of selectedFiltersSignal()['Price']; track $index)
+                  {
+                  <button
+                    class="filter_btn"
+                    [ngClass]="{
+                      active: selectedFiltersSignal()['Price'].includes(price)
+                    }"
+                  >
+                    {{ price }}
+                  </button>
+                  }
+                </ng-container>
+
+                <!-- Tags -->
+                <ng-container>
+                  @for (price of selectedFiltersSignal()['Tags']; track $index)
+                  {
+                  <button
+                    class="filter_btn"
+                    [ngClass]="{
+                      active: selectedFiltersSignal()['Tags'].includes(price)
+                    }"
+                  >
+                    {{ price }}
+                  </button>
+                  }
+                </ng-container>
+
+                <!-- Date (Release Months) -->
+                <ng-container>
+                  @for (month of selectedFiltersSignal()['ReleaseMonths']; track
+                  $index) {
+                  <button
+                    class="filter_btn"
+                    [ngClass]="{
+                      active:
+                        selectedFiltersSignal()['ReleaseMonths'].includes(month)
+                    }"
+                  >
+                    {{ month }}
+                  </button>
+                  }
+                </ng-container>
               </div>
+
               <div
                 class="d-flex justify-content-between py-4 px-3 rounded-2 comming_soon_bar bg-white align-items-center shadow-sm"
                 style="background: transparent"
@@ -48,6 +229,8 @@
                 ></a>
               </div>
             </div>
+
+            <!-- Movie Cards -->
             <div class="col-12">
               <div class="d-flex justify-content-center g-0">
                 <div class="main_box_crasoule">
@@ -55,38 +238,55 @@
                     <div
                       class="filter_text d-flex flex-wrap gap-5 py-5 justify-content-start"
                     >
-                      <ng-container
-                        *ngFor="let item of dummyMoviesdata; let $index = index"
-                        class="overflow-hidden w-50"
-                      >
-                        <div
-                          class="col"
-                          style="max-width: 200px; min-width: 200px"
-                        >
-                          <div class="card shadow-sm">
-                            <div class="img_container rounded-4">
-                              <img [src]="item.Poster" [alt]="item.Poster" />
-                            </div>
-                            <div class="card-body rounded-bottom bg-dark">
-                              <div class="d-flex gap-2">
-                                <span>
-                                  <i
-                                    class="fa fa-thumbs-up text-success"
-                                    aria-hidden="true"
-                                  ></i>
-                                </span>
-                                <span class="text-white"> 1.5M likes </span>
-                              </div>
-                            </div>
+                      @for(item of filteredMovies; track $index){
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <div class="img_container">
+                            <img
+                              [src]="
+                                commonService.getImageFromBase64(item.imageurl)
+                              "
+                              [alt]="item.name"
+                            />
                           </div>
-                          <div class="bottom_text_movie_card py-3 px-4">
-                            <h6 class="card-text m-0">
-                              {{ item.Title | truncate : 15 }}
-                            </h6>
-                            <span class="m-0">{{ item.Genre }}</span>
+                          <div class="card-body rounded-bottom bg-dark">
+                            <div class="d-flex gap-4">
+                              @if(item.releasedFlag == true){
+                              <div
+                                class="text-white d-flex gap-2 align-items-center"
+                              >
+                                <i-feather
+                                  class="d-flex"
+                                  name="star"
+                                ></i-feather>
+                                <span>{{ item.imdbRating }}</span>
+                              </div>
+                              } @if(item.releasedFlag == true){
+                              <div
+                                class="d-flex gap-2 align-items-center gap-2"
+                              >
+                                <i class="fa fa-thumbs-up text-success"></i>
+                                <span class="text-white"
+                                  >{{ item.votes | numberSuffix }}
+                                </span>
+                                @if(item.releasedFlag == false){
+                                <span class="text-white">{{ item.likes }}</span>
+                                }
+                              </div>
+                              }
+                            </div>
                           </div>
                         </div>
-                      </ng-container>
+                        <div class="bottom_text_movie_card">
+                          <h6 class="card-text m-0">{{ item.name }}</h6>
+                          <div class="d-flex gap-1 flex-wrap">
+                            @for(language of item.languages; track $index) {
+                            <span>{{ language }}</span>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                      }
                     </div>
                   </div>
                 </div>
