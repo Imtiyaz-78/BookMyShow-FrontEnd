@@ -87,6 +87,7 @@
           <section class="py-2 mt-5 w-100 h-100">
             <p class="second_section_heading">Personal Details</p>
 
+            <!-- Full Name -->
             <div class="input_box">
               <div class="title_text"><label>Full Name</label></div>
               <div class="input_field">
@@ -95,10 +96,34 @@
                   class="form-control"
                   placeholder="Enter your Full Name"
                   formControlName="name"
+                  [ngClass]="{
+                    'border-danger':
+                      userProfileForm.get('name')?.invalid &&
+                      (userProfileForm.get('name')?.dirty ||
+                        userProfileForm.get('name')?.touched)
+                  }"
                 />
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    userProfileForm.get('name')?.invalid &&
+                    (userProfileForm.get('name')?.dirty ||
+                      userProfileForm.get('name')?.touched)
+                  "
+                >
+                  <small
+                    *ngIf="userProfileForm.get('name')?.errors?.['required']"
+                    >Name is required.
+                  </small>
+                  <small
+                    *ngIf="userProfileForm.get('name')?.errors?.['maxlength']"
+                    >Maximum 50 characters allowed.</small
+                  >
+                </div>
               </div>
             </div>
 
+            <!-- User Name  -->
             <div class="input_box">
               <div class="title_text"><label>User Name</label></div>
               <div class="input_field">
@@ -226,6 +251,7 @@
               </div>
             </div>
 
+            <!-- City -->
             <div class="input_box">
               <div class="title_text"><label>Town / City</label></div>
               <div class="input_field">
@@ -235,9 +261,22 @@
                   placeholder="E.g. Mumbai"
                   formControlName="city"
                 />
+                <small
+                  class="text-danger"
+                  *ngIf="
+                    userProfileForm.get('city')?.touched &&
+                    userProfileForm.get('city')?.invalid
+                  "
+                >
+                  <span
+                    *ngIf="userProfileForm.get('city')?.errors?.['maxlength']"
+                    >Maximum 25 characters allowed.</span
+                  >
+                </small>
               </div>
             </div>
 
+            <!-- State -->
             <div class="input_box">
               <div class="title_text"><label>State</label></div>
               <div class="input_field">
@@ -248,6 +287,18 @@
                   <option [value]="state.stateKey">{{ state.name }}</option>
                   }
                 </select>
+                <small
+                  class="text-danger"
+                  *ngIf="
+                    userProfileForm.get('state')?.touched &&
+                    userProfileForm.get('state')?.invalid
+                  "
+                >
+                  <span
+                    *ngIf="userProfileForm.get('state')?.errors?.['maxlength']"
+                    >Maximum 25 characters allowed.</span
+                  >
+                </small>
               </div>
             </div>
 
@@ -308,7 +359,7 @@
 
     <div class="modal-footer">
       <button class="btn btn-secondary" (click)="closeModel()">Cancel</button>
-      <button class="btn btn-primary">
+      <button class="btn btn-primary" [disabled]="userProfileForm.invalid">
         Update {{ editValue === "email" ? "Email " : "Mobile Number" }}
       </button>
     </div>

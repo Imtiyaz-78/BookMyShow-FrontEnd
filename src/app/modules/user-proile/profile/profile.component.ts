@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { AuthService } from '../../../auth/AuthService/auth.service';
 import { UsersService } from '../services/users.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastService } from '../../../shared/components/toast/toast.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CommonService } from '../../../services/common.service';
@@ -38,30 +38,54 @@ export class ProfileComponent implements OnInit {
   }
 
   //
+
   initForm(): void {
     this.userProfileForm = this.fb.group({
-      name: [''],
-      username: [''],
-      email: [''],
-      phoneNumber: [''],
-      profileImg: [null],
+      profileImg: [null, [Validators.maxLength(255)]],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(50),
+        ],
+      ],
+      username: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50),
+        ],
+      ],
+      email: ['', [Validators.email]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       dob: [null],
       identity: [null],
       married: [null],
       anniversaryDate: [null],
-      pincode: [0],
-      addressLine1: [null],
-      addressLine2: [null],
-      city: [null],
-      state: [''],
+      pincode: [0, [Validators.pattern(/^\d{6}$/)]],
+      addressLine1: [null, [Validators.maxLength(100)]],
+      addressLine2: [null, [Validators.maxLength(100)]],
+      city: [null, [Validators.maxLength(25)]],
+      state: [null, [Validators.maxLength(25)]],
     });
   }
 
-  // This is Helper function for MM/DD/YYYY → YYYY-MM-DD (input[type=date] format)
+  // This is Helper Function for Date Format
   convertDateForForm(dateStr: string | null): string | null {
     if (!dateStr) return null;
-    const [day, month, year] = dateStr.split('-'); // correct order
-    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`; // YYYY-MM-DD for <input type="date">
+
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return null; // invalid format
+
+    const [day, month, year] = parts;
+
+    // padStart only if day and month are defined
+    const formattedDay = day ? day.padStart(2, '0') : '01';
+    const formattedMonth = month ? month.padStart(2, '0') : '01';
+
+    return `${year}-${formattedMonth}-${formattedDay}`; // YYYY-MM-DD for <input type="date">
   }
 
   // This Methods is used for Handle File Upload
