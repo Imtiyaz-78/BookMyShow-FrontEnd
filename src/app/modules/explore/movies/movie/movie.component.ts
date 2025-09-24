@@ -195,7 +195,7 @@ export class MovieComponent implements OnInit {
             (f) => f.formatName === name || f.name === name
           );
 
-        // 👇 check actual keys from API
+        //  check actual keys from API
         return (
           found?.languageId || found?.genreId || found?.formatId || found?.id
         );

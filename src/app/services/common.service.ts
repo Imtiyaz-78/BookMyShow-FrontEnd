@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { environment } from '../core/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -20,6 +20,9 @@ export class CommonService {
     if (eventValue) {
       this.eventType.set(eventValue);
     }
+    effect(() => {
+      this.selectedCitySignal();
+    });
   }
 
   http = inject(HttpClient);
