@@ -17,58 +17,34 @@ export class EventsService {
     );
   }
 
-  //  Date Filters
+  // Date Filters
   getDateFilters() {
     return this.http.get(`${this.baseUrl}/events/date-filters`);
   }
 
-  //  Languages
+  // Languages
   getLanguages(eventType: string) {
     return this.http.get(
       `${this.baseUrl}/events/languages?eventType=${eventType}`
     );
   }
 
-  //  Categories
+  // Categories
   getCategories(eventType: string) {
     return this.http.get(
       `${this.baseUrl}/events/categories?eventType=${eventType}`
     );
   }
 
-  //  More Filters
+  // More Filters
   getMoreFilters(eventType: string) {
     return this.http.get(
       `${this.baseUrl}/events/more-filters?eventType=${eventType}`
     );
   }
 
-  //  Price Filters
+  // Price Filters
   getPrices() {
     return this.http.get(`${this.baseUrl}/events/prices`);
-  }
-
-  // Tags
-  getTags() {
-    return this.http.get(`${this.baseUrl}/events/tags`);
-  }
-
-  // Release Months
-  getReleaseMonths() {
-    return this.http.get(`${this.baseUrl}/events/release-months`);
-  }
-
-  // Formats
-  getFormats(eventType: string) {
-    return this.http.get(
-      `${this.baseUrl}/events/formats?eventType=${eventType}`
-    );
-  }
-
-  // Genres
-  getGenres(eventType: string) {
-    return this.http.get(
-      `${this.baseUrl}/events/genres?eventType=${eventType}`
-    );
   }
 }

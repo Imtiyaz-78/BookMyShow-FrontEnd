@@ -15,40 +15,29 @@ export class EventHomeComponent implements OnInit {
 
   // lists
   LanguageList: any[] = [];
-  GenresList: any[] = [];
-  FormatList: any[] = [];
-  DateList: any[] = [];
   CategoriesList: any[] = [];
   MoreFiltersList: any[] = [];
   PriceList: any[] = [];
-  TagsList: any[] = [];
-  ReleaseMonthsList: any[] = [];
+  DateList: any[] = [];
 
   // names for UI
   LanguageNames: string[] = [];
-  GenreNames: string[] = [];
-  FormatNames: string[] = [];
-  dateName: string[] = [];
   CategoriesName: string[] = [];
   moreFiltersName: string[] = [];
   priceName: string[] = [];
-  tagsName: string[] = [];
-  releaseMonthsName: string[] = [];
-
+  dateName: string[] = [];
   filteredMovies: any[] = [];
 
-  // Store selected filters for all categories
+  // Store selected filters
   selectedFiltersSignal = signal<{ [key: string]: string[] }>({
     Languages: [],
-    Genres: [],
-    Formats: [],
-    Date: [],
     Categories: [],
     ['More Filters']: [],
     Price: [],
-    Tags: [],
-    ReleaseMonths: [],
+    Date: [],
   });
+
+  dynamicFilterKeys: string[] = ['Languages', 'More Filters', 'Price', 'Date'];
 
   constructor(
     private eventService: EventsService,
@@ -60,14 +49,11 @@ export class EventHomeComponent implements OnInit {
       const type = this.commonService.eventType();
       if (type) {
         this.fetchLanguages(type);
-        this.fetchGenres(type);
-        this.fetchFormats(type);
         this.fetchCategories(type);
         this.fetchMoreFilters(type);
       }
-      this.fetchTags();
-      this.fetchReleaseMonths();
       this.fetchPrices();
+      this.fetchDateFilters();
     });
   }
 
@@ -79,13 +65,9 @@ export class EventHomeComponent implements OnInit {
     const payload = {
       type: 'Event',
       languages: [],
-      genres: [],
-      formats: [],
-      tags: [],
       categories: [],
-      price: [],
       morefilter: [],
-      releaseMonths: [],
+      price: [],
       dateFilters: [],
     };
 
@@ -99,58 +81,22 @@ export class EventHomeComponent implements OnInit {
     });
   }
 
-  // Tags
-  fetchTags() {
-    this.eventService.getTags().subscribe({
+  // Date Filters
+  fetchDateFilters() {
+    this.eventService.getDateFilters().subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.TagsList = res.data;
-          this.tagsName = res.data.map((t: any) => t.tagName);
-        }
-      },
-    });
-  }
-
-  // filters by months
-  fetchReleaseMonths() {
-    this.eventService.getReleaseMonths().subscribe({
-      next: (res: any) => {
-        if (res.success) {
-          this.ReleaseMonthsList = res.data;
-          this.releaseMonthsName = res.data.map((r: any) => r.releaseMonthName); // ✅ Corrected
-          if (!this.selectedFiltersSignal()['ReleaseMonths']?.length) {
+          this.DateList = res.data;
+          this.dateName = res.data.map((d: any) => d.dateFilterName);
+          if (!this.selectedFiltersSignal()['Date']?.length) {
             this.selectedFiltersSignal.update((prev) => ({
               ...prev,
-              ReleaseMonths: [],
+              Date: [],
             }));
           }
         }
       },
       error: (err) => console.error(err),
-    });
-  }
-
-  // By Formats
-  fetchFormats(eventType: string) {
-    this.eventService.getFormats(eventType).subscribe({
-      next: (res: any) => {
-        if (res.success) {
-          this.FormatList = res.data;
-          this.FormatNames = res.data.map((f: any) => f.formatName);
-        }
-      },
-    });
-  }
-
-  // By Genres
-  fetchGenres(eventType: string) {
-    this.eventService.getGenres(eventType).subscribe({
-      next: (res: any) => {
-        if (res.success) {
-          this.GenresList = res.data;
-          this.GenreNames = res.data.map((g: any) => g.genresName);
-        }
-      },
     });
   }
 
@@ -161,15 +107,8 @@ export class EventHomeComponent implements OnInit {
         if (res.success) {
           this.LanguageList = res.data;
           this.LanguageNames = res.data.map((lang: any) => lang.languageName);
-          if (!this.selectedFiltersSignal()['Languages']?.length) {
-            this.selectedFiltersSignal.update((prev) => ({
-              ...prev,
-              Languages: [],
-            }));
-          }
         }
       },
-      error: (err) => console.error(err),
     });
   }
 
@@ -180,15 +119,8 @@ export class EventHomeComponent implements OnInit {
         if (res.success) {
           this.CategoriesList = res.data;
           this.CategoriesName = res.data.map((c: any) => c.categoryName);
-          if (!this.selectedFiltersSignal()['Categories']?.length) {
-            this.selectedFiltersSignal.update((prev) => ({
-              ...prev,
-              Categories: [],
-            }));
-          }
         }
       },
-      error: (err) => console.error(err),
     });
   }
 
@@ -198,16 +130,9 @@ export class EventHomeComponent implements OnInit {
       next: (res: any) => {
         if (res.success) {
           this.MoreFiltersList = res.data;
-          this.moreFiltersName = res.data.map((m: any) => m.moreFilterName); // ✅ Corrected
-          if (!this.selectedFiltersSignal()['More Filters']?.length) {
-            this.selectedFiltersSignal.update((prev) => ({
-              ...prev,
-              ['More Filters']: [],
-            }));
-          }
+          this.moreFiltersName = res.data.map((m: any) => m.moreFilterName);
         }
       },
-      error: (err) => console.error(err),
     });
   }
 
@@ -217,20 +142,13 @@ export class EventHomeComponent implements OnInit {
       next: (res: any) => {
         if (res.success) {
           this.PriceList = res.data;
-          this.priceName = res.data.map((p: any) => p.priceRange); // ✅ Corrected
-          if (!this.selectedFiltersSignal()['Price']?.length) {
-            this.selectedFiltersSignal.update((prev) => ({
-              ...prev,
-              Price: [],
-            }));
-          }
+          this.priceName = res.data.map((p: any) => p.priceRange);
         }
       },
-      error: (err) => console.error(err),
     });
   }
 
-  //  Common filter handler
+  // Common filter handler
   onFilterChange(type: string, selected: string[]) {
     this.selectedFiltersSignal.update((prev) => ({
       ...prev,
@@ -242,9 +160,6 @@ export class EventHomeComponent implements OnInit {
     const payload = {
       type: this.commonService.eventType() || 'Event',
       languages: this.getIdsFromNames(currentFilters['Languages'], 'Languages'),
-      genres: this.getIdsFromNames(currentFilters['Genres'], 'Genres'),
-      formats: this.getIdsFromNames(currentFilters['Formats'], 'Formats'),
-      tags: this.getIdsFromNames(currentFilters['Tags'], 'Tags'),
       categories: this.getIdsFromNames(
         currentFilters['Categories'],
         'Categories'
@@ -253,10 +168,6 @@ export class EventHomeComponent implements OnInit {
       morefilter: this.getIdsFromNames(
         currentFilters['More Filters'],
         'MoreFilters'
-      ),
-      releaseMonths: this.getIdsFromNames(
-        currentFilters['ReleaseMonths'],
-        'ReleaseMonths'
       ),
       dateFilters: this.getIdsFromNames(currentFilters['Date'], 'Date'),
     };
@@ -273,7 +184,7 @@ export class EventHomeComponent implements OnInit {
     });
   }
 
-  // helper mapper (adjust keys as per backend)
+  // Helper mapper
   getIdsFromNames(selectedNames: string[], type: string): number[] {
     if (!selectedNames?.length) return [];
 
@@ -284,18 +195,6 @@ export class EventHomeComponent implements OnInit {
       case 'Languages':
         list = this.LanguageList;
         key = 'languageId';
-        break;
-      case 'Genres':
-        list = this.GenresList;
-        key = 'genreId';
-        break;
-      case 'Formats':
-        list = this.FormatList;
-        key = 'formatId';
-        break;
-      case 'Tags':
-        list = this.TagsList;
-        key = 'tagId';
         break;
       case 'Categories':
         list = this.CategoriesList;
@@ -309,13 +208,9 @@ export class EventHomeComponent implements OnInit {
         list = this.MoreFiltersList;
         key = 'filterId';
         break;
-      case 'ReleaseMonths':
-        list = this.ReleaseMonthsList;
-        key = 'monthId';
-        break;
       case 'Date':
         list = this.DateList;
-        key = 'dateId';
+        key = 'dateFilterId';
         break;
     }
 
@@ -323,7 +218,9 @@ export class EventHomeComponent implements OnInit {
       .map((name) => {
         const found = list.find(
           (item) =>
-            item.name === name || item[`${type.toLowerCase()}Name`] === name
+            item.name === name ||
+            item[`${type.toLowerCase()}Name`] === name ||
+            item.dateFilterName === name
         );
         return found?.[key];
       })

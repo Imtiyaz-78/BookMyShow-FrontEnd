@@ -16,30 +16,21 @@
         <div class="filter_cards_container d-flex justify-content-between py-4">
           <div class="col-3">
             <div>
+              <!-- Date -->
+              <div class="app_filter_box">
+                <app-filter-accordian
+                  [label]="'Date'"
+                  [filtersList]="dateName"
+                  (filterChange)="onFilterChange('Date', $event)"
+                ></app-filter-accordian>
+              </div>
+
               <!-- Languages -->
               <div class="app_filter_box">
                 <app-filter-accordian
                   [label]="'Languages'"
                   [filtersList]="LanguageNames"
                   (filterChange)="onFilterChange('Languages', $event)"
-                ></app-filter-accordian>
-              </div>
-
-              <!-- Genres -->
-              <div class="app_filter_box">
-                <app-filter-accordian
-                  [label]="'Genres'"
-                  [filtersList]="GenreNames"
-                  (filterChange)="onFilterChange('Genres', $event)"
-                ></app-filter-accordian>
-              </div>
-
-              <!-- Formats -->
-              <div class="app_filter_box">
-                <app-filter-accordian
-                  [label]="'Formats'"
-                  [filtersList]="FormatNames"
-                  (filterChange)="onFilterChange('Formats', $event)"
                 ></app-filter-accordian>
               </div>
 
@@ -69,80 +60,14 @@
                   (filterChange)="onFilterChange('Price', $event)"
                 ></app-filter-accordian>
               </div>
-
-              <!-- Tags -->
-              <div class="app_filter_box">
-                <app-filter-accordian
-                  [label]="'Tags'"
-                  [filtersList]="tagsName"
-                  (filterChange)="onFilterChange('Tags', $event)"
-                ></app-filter-accordian>
-              </div>
-
-              <!-- Release Months -->
-              <div class="app_filter_box">
-                <app-filter-accordian
-                  [label]="'Release Months'"
-                  [filtersList]="releaseMonthsName"
-                  (filterChange)="onFilterChange('ReleaseMonths', $event)"
-                ></app-filter-accordian>
-              </div>
             </div>
           </div>
           <div class="col-9 d-block">
             <div class="top_bar_Comming_soon d-flex flex-column gap-3">
               <div class="d-flex gap-3 language_text py-2 flex-wrap">
-                <!-- Languages -->
+                <!-- Categories: Always visible -->
                 <ng-container>
-                  @for (lang of selectedFiltersSignal()['Languages']; track
-                  $index) {
-                  <button
-                    class="filter_btn"
-                    [ngClass]="{
-                      active:
-                        selectedFiltersSignal()['Languages'].includes(lang)
-                    }"
-                  >
-                    {{ lang }}
-                  </button>
-                  }
-                </ng-container>
-
-                <!-- Genres -->
-                <ng-container>
-                  @for (genre of selectedFiltersSignal()['Genres']; track
-                  $index) {
-                  <button
-                    class="filter_btn"
-                    [ngClass]="{
-                      active: selectedFiltersSignal()['Genres'].includes(genre)
-                    }"
-                  >
-                    {{ genre }}
-                  </button>
-                  }
-                </ng-container>
-
-                <!-- Format -->
-                <ng-container>
-                  @for (format of selectedFiltersSignal()['Formats']; track
-                  $index) {
-                  <button
-                    class="filter_btn"
-                    [ngClass]="{
-                      active:
-                        selectedFiltersSignal()['Formats'].includes(format)
-                    }"
-                  >
-                    {{ format }}
-                  </button>
-                  }
-                </ng-container>
-
-                <!-- Categories -->
-                <ng-container>
-                  @for (cat of selectedFiltersSignal()['Categories']; track
-                  $index) {
+                  @for (cat of CategoriesName; track $index) {
                   <button
                     class="filter_btn"
                     [ngClass]="{
@@ -155,66 +80,21 @@
                   }
                 </ng-container>
 
-                <!-- More Filters -->
-                <ng-container>
-                  @for (mf of selectedFiltersSignal()['More Filters']; track
-                  $index) {
-                  <button
-                    class="filter_btn"
-                    [ngClass]="{
-                      active:
-                        selectedFiltersSignal()['More Filters'].includes(mf)
-                    }"
-                  >
-                    {{ mf }}
-                  </button>
-                  }
-                </ng-container>
-
-                <!-- Price -->
-                <ng-container>
-                  @for (price of selectedFiltersSignal()['Price']; track $index)
-                  {
-                  <button
-                    class="filter_btn"
-                    [ngClass]="{
-                      active: selectedFiltersSignal()['Price'].includes(price)
-                    }"
-                  >
-                    {{ price }}
-                  </button>
-                  }
-                </ng-container>
-
-                <!-- Tags -->
-                <ng-container>
-                  @for (price of selectedFiltersSignal()['Tags']; track $index)
-                  {
-                  <button
-                    class="filter_btn"
-                    [ngClass]="{
-                      active: selectedFiltersSignal()['Tags'].includes(price)
-                    }"
-                  >
-                    {{ price }}
-                  </button>
-                  }
-                </ng-container>
-
-                <!-- Date (Release Months) -->
-                <ng-container>
-                  @for (month of selectedFiltersSignal()['ReleaseMonths']; track
-                  $index) {
-                  <button
-                    class="filter_btn"
-                    [ngClass]="{
-                      active:
-                        selectedFiltersSignal()['ReleaseMonths'].includes(month)
-                    }"
-                  >
-                    {{ month }}
-                  </button>
-                  }
+                <!-- Other filters: Only visible if selected -->
+                <ng-container *ngFor="let key of dynamicFilterKeys">
+                  <ng-container>
+                    @for (item of selectedFiltersSignal()[key] || []; track
+                    $index) {
+                    <button
+                      class="filter_btn"
+                      [ngClass]="{
+                        active: selectedFiltersSignal()[key].includes(item)
+                      }"
+                    >
+                      {{ item }}
+                    </button>
+                    }
+                  </ng-container>
                 </ng-container>
               </div>
 
