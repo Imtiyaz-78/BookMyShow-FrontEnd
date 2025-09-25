@@ -201,6 +201,7 @@ export class HeaderComponent implements OnInit {
       case 'Movie':
         this.router.navigate(['explore/movies']);
         break;
+
       case 'Event':
         this.router.navigate(['explore/events']);
         break;
@@ -208,12 +209,15 @@ export class HeaderComponent implements OnInit {
       case 'Plays':
         this.router.navigate(['explore/plays']);
         break;
+
       case 'Sports':
         this.router.navigate(['explore/sports']);
         break;
+
       case 'Users':
         this.router.navigate(['/admin/users'], { state: { data: true } });
         break;
+
       default:
         this.router.navigate([`explore/${menu.toLowerCase()}`]);
         break;

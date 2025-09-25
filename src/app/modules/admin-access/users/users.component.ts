@@ -28,6 +28,7 @@ export class UsersComponent implements OnInit {
   modalRef?: BsModalRef;
   userForm!: FormGroup;
   checkState: any;
+  openedDropdownId: number | null = null;
   searchVal = new FormControl();
 
   constructor(
@@ -38,7 +39,10 @@ export class UsersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Checking State Data
     this.checkState = history.state.data;
+    console.log(this.checkState);
+
     if (this.checkState) {
       this.ongetAllUsers();
     }
@@ -73,14 +77,16 @@ export class UsersComponent implements OnInit {
     this.adminService.getUsers().subscribe({
       next: (res: any) => {
         if (res.success) {
-          console.log(res.data.users);
           this.userData = res.data.users.sort(
             (a: any, b: any) => a.userId - b.userId
           );
         }
       },
       error: (err) => {
-        console.log(err);
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
       },
     });
   }
@@ -106,7 +112,10 @@ export class UsersComponent implements OnInit {
         });
       },
       error: (err) => {
-        console.error('Error fetching user:', err.message);
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
       },
     });
   }
@@ -130,7 +139,10 @@ export class UsersComponent implements OnInit {
           }
         },
         error: (err) => {
-          this.toastService.startToast(err.message);
+          this.toastService.startToast({
+            message: err.message,
+            type: 'error',
+          });
         },
       });
   }
@@ -181,8 +193,6 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  openedDropdownId: number | null = null;
-
   toggleDropdown(userId: number) {
     if (this.openedDropdownId === userId) {
       this.openedDropdownId = null;
@@ -203,7 +213,10 @@ export class UsersComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.toastService.startToast(err.message);
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
       },
     });
   }
@@ -220,7 +233,10 @@ export class UsersComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.toastService.startToast(err.message);
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
       },
     });
   }
