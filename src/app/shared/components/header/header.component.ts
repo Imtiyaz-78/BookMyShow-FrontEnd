@@ -204,6 +204,13 @@ export class HeaderComponent implements OnInit {
       case 'Event':
         this.router.navigate(['explore/events']);
         break;
+
+      case 'Plays':
+        this.router.navigate(['explore/plays']);
+        break;
+      case 'Sports':
+        this.router.navigate(['explore/sports']);
+        break;
       case 'Users':
         this.router.navigate(['/admin/users'], { state: { data: true } });
         break;
