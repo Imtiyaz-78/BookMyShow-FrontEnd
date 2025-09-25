@@ -86,6 +86,7 @@
             <div>
               <div class="app_filter_box">
                 <app-filter-accordian
+                  [isExpand]="false"
                   [label]="'Languages'"
                   [filtersList]="LanguageNames"
                   (filterChange)="onFilterChange('Languages', $event)"
@@ -111,11 +112,10 @@
           </div>
           <div class="col-9 d-block">
             <div class="top_bar_Comming_soon d-flex flex-column gap-3">
-              <div class="d-flex gap-3 language_text py-2 flex-wrap">
-                <!-- Languages -->
+              <div class="d-flex gap-2 language_text py-2 flex-wrap">
+                <!-- Languages: Always visible -->
                 <ng-container>
-                  @for (lang of selectedFiltersSignal()['Languages']; track
-                  $index) {
+                  @for (lang of LanguageNames; track $index) {
                   <button
                     class="filter_btn"
                     [ngClass]="{
@@ -128,9 +128,9 @@
                   }
                 </ng-container>
 
-                <!-- Genres -->
+                <!-- Genres: Only visible if selected -->
                 <ng-container>
-                  @for (genre of selectedFiltersSignal()['Genres']; track
+                  @for (genre of selectedFiltersSignal()['Genres'] || []; track
                   $index) {
                   <button
                     class="filter_btn"
@@ -143,14 +143,15 @@
                   }
                 </ng-container>
 
-                <!-- Format -->
+                <!-- Formats: Only visible if selected -->
                 <ng-container>
-                  @for (format of selectedFiltersSignal()['Format']; track
-                  $index) {
+                  @for (format of selectedFiltersSignal()['Formats'] || [];
+                  track $index) {
                   <button
                     class="filter_btn"
                     [ngClass]="{
-                      active: selectedFiltersSignal()['Format'].includes(format)
+                      active:
+                        selectedFiltersSignal()['Formats'].includes(format)
                     }"
                   >
                     {{ format }}

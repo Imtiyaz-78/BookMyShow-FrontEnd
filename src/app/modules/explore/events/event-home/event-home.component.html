@@ -19,6 +19,7 @@
               <!-- Date -->
               <div class="app_filter_box">
                 <app-filter-accordian
+                  [isExpand]="false"
                   [label]="'Date'"
                   [filtersList]="dateName"
                   (filterChange)="onFilterChange('Date', $event)"

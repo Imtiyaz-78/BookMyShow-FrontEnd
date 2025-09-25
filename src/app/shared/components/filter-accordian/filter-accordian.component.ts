@@ -13,9 +13,9 @@ import { ToastService } from '../toast/toast.service';
   styleUrl: './filter-accordian.component.scss',
 })
 export class FilterAccordianComponent {
-  filterShowButtons: boolean = true;
   @Input() label: string = '';
   @Input() filtersList: string[] = [];
+  @Input() isExpand: boolean = true;
   @Input() clearable: boolean = true;
   @Output() filterChange = new EventEmitter<string[]>();
   selectedFilters: string[] = [];
@@ -26,7 +26,7 @@ export class FilterAccordianComponent {
   ) {}
 
   toggleAccoridan(): void {
-    this.filterShowButtons = !this.filterShowButtons;
+    this.isExpand = !this.isExpand;
   }
 
   onFilterClick(option: string): void {
@@ -40,7 +40,7 @@ export class FilterAccordianComponent {
 
   clearFilters(): void {
     this.selectedFilters = [];
-    this.filterShowButtons = false; // close accordion
+    this.isExpand = false; // close accordion
     this.tostService.startToast({
       message: 'Filters cleared successfully ',
     });

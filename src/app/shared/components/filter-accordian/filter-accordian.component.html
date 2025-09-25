@@ -7,7 +7,7 @@
     <div class="d-flex gap-2 align-items-center">
       <i-feather
         class="chevron_icon"
-        [name]="!filterShowButtons ? 'chevron-right' : 'chevron-down'"
+        [name]="!isExpand ? 'chevron-right' : 'chevron-down'"
       ></i-feather>
       <span class="label">{{ label }}</span>
     </div>
@@ -21,7 +21,7 @@
   </div>
 
   <!-- Accordion Body -->
-  @if (!filterShowButtons) {
+  @if (!isExpand) {
   <div>
     <div class="border border-top-0 filter_button_box bg-white">
       @for (option of filtersList; track option) {
