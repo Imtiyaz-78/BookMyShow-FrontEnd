@@ -153,3 +153,8 @@ i-feather {
 .filter_btn {
   border-radius: 16px;
 }
+
+.filter_text {
+  max-height: 700px;
+  overflow: auto;
+}

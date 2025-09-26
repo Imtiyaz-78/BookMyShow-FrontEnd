@@ -29,6 +29,7 @@ export class MovieComponent implements OnInit {
     Genres: [],
     Format: [],
   });
+  countMovies: number = 0;
 
   constructor(
     public commonService: CommonService,
@@ -47,12 +48,66 @@ export class MovieComponent implements OnInit {
     });
   }
 
+  allMovies: any[] = [];
+  page = 0;
+  pageSize = 8;
+  loading = false;
+  payload = {};
+
   ngOnInit(): void {
-    this.loadAllMovies();
+    this.page = 0;
+    this.loadMovies();
   }
 
-  loadAllMovies(): void {
+  // Load movies from API
+  loadMovies() {
+    if (this.loading) return;
+    this.loading = true;
+
     const payload = {
+      type: this.commonService.eventType() || 'Movie',
+      languages: [],
+      genres: [],
+      formats: [],
+      tags: [],
+      categories: [],
+      price: [],
+      morefilter: [],
+      releaseMonths: [],
+      dateFilters: [],
+    };
+
+    this.movieService
+      .getAllMovies(payload, this.page, this.pageSize)
+      .subscribe({
+        next: (res: any) => {
+          const movies = res.movies || res.data?.content || [];
+          if (movies.length) {
+            this.totalMovies = res.data?.count || 0;
+            this.filteredMovies.push(...movies);
+            this.page++;
+          }
+          this.loading = false;
+        },
+        error: () => {
+          this.loading = false;
+        },
+      });
+  }
+
+  onScroll(event: any) {
+    let isMoviesEqualsCount = this.filteredMovies.length === this.totalMovies;
+    if (isMoviesEqualsCount) return;
+    console.log(`total count`, this.totalMovies, this.filteredMovies.length);
+
+    this.loadMovies(); // load next page
+  }
+
+  totalMovies: number = 0;
+
+  loadAllMovies(page: number = 0, size: number = 5, filterPayload?: any): void {
+    // If no filter provided, sending default payload
+    const payload = filterPayload || {
       type: 'Movie',
       languages: [],
       genres: [],
@@ -65,16 +120,18 @@ export class MovieComponent implements OnInit {
       dateFilters: [],
     };
 
-    this.movieService.getAllMovies(payload).subscribe({
+    this.movieService.getAllMovies(payload, page, size).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.filteredMovies = res.data;
-        } else {
-          console.warn('API returned without success flag', res);
+          this.filteredMovies = Array.isArray(res.data?.content)
+            ? res.data.content
+            : [];
+
+          this.totalMovies = res.data?.count || 0;
         }
       },
       error: (err) => {
-        console.error('Error fetching movies:', err);
+        console.log(err);
       },
     });
   }
@@ -144,9 +201,9 @@ export class MovieComponent implements OnInit {
       [type]: selected,
     }));
 
-    const currentFilters = this.selectedFiltersSignal(); // get latest snapshot
+    const currentFilters = this.selectedFiltersSignal();
 
-    // Prepare payload for API
+    // Prepare payload with filters
     const payload = {
       type: this.commonService.eventType() || 'Movie',
       languages: this.getIdsFromNames(currentFilters['Languages'], 'Languages'),
@@ -160,16 +217,7 @@ export class MovieComponent implements OnInit {
       dateFilters: [],
     };
 
-    console.log('Filter Payload:', payload);
-
-    this.movieService.applyFilters(payload).subscribe({
-      next: (res: any) => {
-        if (res.success) {
-          this.filteredMovies = res.data;
-        }
-      },
-      error: (err) => console.error('Filter API error:', err),
-    });
+    this.loadAllMovies(0, 5, payload);
   }
 
   // Map names to IDs correctly

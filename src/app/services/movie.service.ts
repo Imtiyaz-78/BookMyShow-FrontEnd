@@ -11,15 +11,23 @@ export class MovieService {
 
   constructor(private http: HttpClient) {}
 
-
-   /**
-   * @description Get all movies with applied filters
+  /**
+   * @description Get all movies with applied filters + pagination
    * @author Imtiyaz
    * @param filterPayload filter object containing type, languages, genres, etc.
+   * @param page current page number
+   * @param size number of records per page
    * @returns Observable<any>
    */
-  getAllMovies(filterPayload: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/events/filter`, filterPayload);
+  getAllMovies(
+    payload: any,
+    page: number = 0,
+    size: number = 5
+  ): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}/events/filter?page=${page}&size=${size}`,
+      payload
+    );
   }
 
   // This method is use for get movie Details by Id

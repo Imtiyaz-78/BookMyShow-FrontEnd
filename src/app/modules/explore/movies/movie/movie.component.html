@@ -178,6 +178,7 @@
                 <div class="main_box_crasoule">
                   <div class="main_filter_card overflow-hidden">
                     <div
+                      (scroll)="onScroll($event)"
                       class="filter_text d-flex flex-wrap gap-5 py-5 justify-content-start"
                     >
                       @for(item of filteredMovies; track $index){
