@@ -342,3 +342,13 @@ span {
   object-fit: cover;
   cursor: pointer;
 }
+
+.sub_heder_left_links {
+  a {
+    &.activeMenu {
+      color: rgb(51, 51, 51);
+      font-weight: bold;
+      border-bottom: 2px solid #1177d6c9;
+    }
+  }
+}

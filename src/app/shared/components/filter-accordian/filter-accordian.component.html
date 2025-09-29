@@ -13,7 +13,10 @@
     </div>
     @if (clearable) {
     <div>
-      <span class="clear_btn" (click)="clearFilters(); $event.stopPropagation()"
+      <span
+        [ngClass]="{ disbaled_clear_btn: selectedFilters.length < 1 }"
+        class="clear_btn"
+        (click)="clearFilters(); $event.stopPropagation()"
         >Clear</span
       >
     </div>

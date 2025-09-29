@@ -90,41 +90,53 @@
             <div class="sub_heder_left_links">
               <a
                 (click)="setActiveMenu('Movie')"
-                routerLink="explore/movies"
-                [ngClass]="{ active: activeMenu === 'Movie' }"
-                >Movies</a
+                [ngClass]="{ activeMenu: activeMenu === 'Movie' }"
               >
+                Movies
+              </a>
+
               <a
                 (click)="setActiveMenu('Stream')"
-                [ngClass]="{ active: activeMenu === 'Stream' }"
-                >Stream</a
+                [ngClass]="{ activeMenu: activeMenu === 'Stream' }"
               >
+                Stream
+              </a>
+
               <a
                 (click)="setActiveMenu('Event')"
-                [ngClass]="{ active: activeMenu === 'Event' }"
-                >Events</a
+                [ngClass]="{ activeMenu: activeMenu === 'Event' }"
               >
+                Events
+              </a>
+
               <a
                 (click)="setActiveMenu('Plays')"
-                [ngClass]="{ active: activeMenu === 'Plays' }"
-                >Plays</a
+                [ngClass]="{ activeMenu: activeMenu === 'Plays' }"
               >
+                Plays
+              </a>
+
               <a
                 (click)="setActiveMenu('Sports')"
-                [ngClass]="{ active: activeMenu === 'Sports' }"
-                >Sports</a
+                [ngClass]="{ activeMenu: activeMenu === 'Sports' }"
               >
+                Sports
+              </a>
+
               <a
                 (click)="setActiveMenu('Activities')"
-                [ngClass]="{ active: activeMenu === 'Activities' }"
-                >Activities</a
+                [ngClass]="{ activeMenu: activeMenu === 'Activities' }"
               >
+                Activities
+              </a>
+
               @if (userProfileDetails?.role == 'ADMIN') {
               <a
                 (click)="setActiveMenu('Users')"
-                [ngClass]="{ active: activeMenu === 'Users' }"
-                >Users</a
+                [ngClass]="{ activeMenu: activeMenu === 'Users' }"
               >
+                Users
+              </a>
               }
             </div>
           </div>

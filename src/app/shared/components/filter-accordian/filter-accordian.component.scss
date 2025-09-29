@@ -35,3 +35,7 @@
   height: 20px;
   display: flex;
 }
+
+.disbaled_clear_btn {
+  pointer-events: none;
+}

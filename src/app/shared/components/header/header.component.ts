@@ -193,6 +193,7 @@ export class HeaderComponent implements OnInit {
   }
 
   setActiveMenu(menu: string) {
+    this.activeMenu = menu;
     this.commonService.setEventType(menu);
     sessionStorage.setItem('eventType', menu);
 
