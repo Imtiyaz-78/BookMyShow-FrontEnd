@@ -39,6 +39,12 @@ export class EventHomeComponent implements OnInit {
 
   dynamicFilterKeys: string[] = ['Languages', 'More Filters', 'Price', 'Date'];
 
+  // Pagination state
+  page = 0;
+  pageSize = 8;
+  totalEvents = 0;
+  loading = false;
+
   constructor(
     private eventService: EventsService,
     public commonService: CommonService,
@@ -58,8 +64,73 @@ export class EventHomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadAllMovies();
+    this.page = 0;
+    this.loadEvents();
   }
+
+  /** Load events with filters + pagination */
+  loadEvents() {
+    if (this.loading) return;
+    this.loading = true;
+
+    const currentFilters = this.selectedFiltersSignal();
+
+    const payload = {
+      type: 'Event',
+      languages: this.getIdsFromNames(currentFilters['Languages'], 'Languages'),
+      categories: this.getIdsFromNames(
+        currentFilters['Categories'],
+        'Categories'
+      ),
+      morefilter: this.getIdsFromNames(
+        currentFilters['More Filters'],
+        'MoreFilters'
+      ),
+      price: this.getIdsFromNames(currentFilters['Price'], 'Price'),
+      dateFilters: this.getIdsFromNames(currentFilters['Date'], 'Date'),
+    };
+
+    this.movieService
+      .getAllMovies(payload, this.page, this.pageSize)
+      .subscribe({
+        next: (res: any) => {
+          const events = res.data?.content || res.events || [];
+          if (events.length) {
+            this.totalEvents = res.data?.count || 0;
+            this.filteredMovies.push(...events);
+            this.page++;
+          }
+          this.loading = false;
+        },
+        error: () => {
+          this.loading = false;
+        },
+      });
+  }
+
+  /** Infinite scroll */
+  onScroll(event: any) {
+    const isEventsEqualsCount = this.filteredMovies.length === this.totalEvents;
+    if (isEventsEqualsCount || this.loading) return;
+
+    this.loadEvents();
+  }
+
+  /** Handle filter change */
+  onFilterChange(type: string, selected: string[]) {
+    this.selectedFiltersSignal.update((prev) => ({
+      ...prev,
+      [type]: selected,
+    }));
+
+    // Reset pagination and data
+    this.page = 0;
+    this.filteredMovies = [];
+
+    // Reload events with new filters
+    this.loadEvents();
+  }
+
   // initial movies
   loadAllMovies(): void {
     const payload = {
@@ -82,21 +153,15 @@ export class EventHomeComponent implements OnInit {
   }
 
   // Date Filters
+  /** Helpers to fetch filter data */
   fetchDateFilters() {
     this.eventService.getDateFilters().subscribe({
       next: (res: any) => {
         if (res.success) {
           this.DateList = res.data;
           this.dateName = res.data.map((d: any) => d.dateFilterName);
-          if (!this.selectedFiltersSignal()['Date']?.length) {
-            this.selectedFiltersSignal.update((prev) => ({
-              ...prev,
-              Date: [],
-            }));
-          }
         }
       },
-      error: (err) => console.error(err),
     });
   }
 
@@ -148,43 +213,8 @@ export class EventHomeComponent implements OnInit {
     });
   }
 
-  // Common filter handler
-  onFilterChange(type: string, selected: string[]) {
-    this.selectedFiltersSignal.update((prev) => ({
-      ...prev,
-      [type]: selected,
-    }));
-
-    const currentFilters = this.selectedFiltersSignal();
-
-    const payload = {
-      type: this.commonService.eventType() || 'Event',
-      languages: this.getIdsFromNames(currentFilters['Languages'], 'Languages'),
-      categories: this.getIdsFromNames(
-        currentFilters['Categories'],
-        'Categories'
-      ),
-      price: this.getIdsFromNames(currentFilters['Price'], 'Price'),
-      morefilter: this.getIdsFromNames(
-        currentFilters['More Filters'],
-        'MoreFilters'
-      ),
-      dateFilters: this.getIdsFromNames(currentFilters['Date'], 'Date'),
-    };
-
-    console.log('Final Filter Payload:', payload);
-
-    this.movieService.applyFilters(payload).subscribe({
-      next: (res: any) => {
-        if (res.success) {
-          this.filteredMovies = res.data;
-        }
-      },
-      error: (err) => console.error('Filter API error:', err),
-    });
-  }
-
   // Helper mapper
+  /** Map names → IDs */
   getIdsFromNames(selectedNames: string[], type: string): number[] {
     if (!selectedNames?.length) return [];
 
@@ -216,12 +246,14 @@ export class EventHomeComponent implements OnInit {
 
     return selectedNames
       .map((name) => {
-        const found = list.find(
-          (item) =>
-            item.name === name ||
-            item[`${type.toLowerCase()}Name`] === name ||
-            item.dateFilterName === name
-        );
+        const found =
+          list.find((item) => item.name === name) ||
+          list.find((item) => item.languageName === name) ||
+          list.find((item) => item.categoryName === name) ||
+          list.find((item) => item.moreFilterName === name) ||
+          list.find((item) => item.priceRange === name) ||
+          list.find((item) => item.dateFilterName === name);
+
         return found?.[key];
       })
       .filter((id) => id !== undefined);
