@@ -74,6 +74,10 @@ export class HeaderComponent implements OnInit {
     // this.authService.isLoggedIn$.subscribe((status) => {
     //   this.isLoggedIn = status;
     // });
+
+    this.loadNotifications(this.authService.userDetails().userId);
+    this.loadUnreadCount(this.authService.userDetails().userId);
+    console.log('UserId', this.authService.userDetails().userId);
   }
 
   get userProfileDetails() {
@@ -223,5 +227,48 @@ export class HeaderComponent implements OnInit {
         this.router.navigate([`explore/${menu.toLowerCase()}`]);
         break;
     }
+  }
+
+  showNotifications = false;
+  notifications: any[] = [];
+  notificationCount = 0;
+
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+  }
+
+  loadNotifications(userId: number) {
+    this.commonService.getNotifications(userId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          // this.notificationCount = res.data.count;
+          this.notifications = res.data.content;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching notifications', err);
+      },
+    });
+  }
+
+  loadUnreadCount(userId: number) {
+    this.commonService.getUnreadCount(userId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.notificationCount = res.data;
+        }
+      },
+      error: (err) => {
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
+      },
+    });
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleString();
   }
 }

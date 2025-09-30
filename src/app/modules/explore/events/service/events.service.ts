@@ -47,4 +47,11 @@ export class EventsService {
   getPrices() {
     return this.http.get(`${this.baseUrl}/events/prices`);
   }
+
+  // Genres Filters
+  getGenres(eventType: string) {
+    return this.http.get(
+      `${this.baseUrl}/events/genres?eventType=${eventType}`
+    );
+  }
 }

@@ -11,7 +11,7 @@ export class CommonService {
   storedCity = sessionStorage.getItem('selectedCity');
   selectedCitySignal = signal<string | null>(this.storedCity);
   profileHeaderSignal = signal<any>(false);
-  private baseApiUrl = environment.baseUrl;
+  baseApiUrl = environment.baseUrl;
   eventType = signal<string | null>(null);
 
   constructor() {
@@ -72,5 +72,21 @@ export class CommonService {
   clearEventType() {
     this.eventType.set(null);
     sessionStorage.removeItem('eventType');
+  }
+
+  //  Fetch notifications for a user with pagination
+  getNotifications(
+    userId: number,
+    page: number = 0,
+    size: number = 4
+  ): Observable<any> {
+    const url = `${this.baseApiUrl}/notifications/get-notification/${userId}?page=${page}&size=${size}`;
+    return this.http.get<any>(url);
+  }
+
+  getUnreadCount(userId: number): Observable<any> {
+    return this.http.get(
+      `${this.baseApiUrl}/notifications/get-notification-unread-count/${userId}`
+    );
   }
 }

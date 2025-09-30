@@ -182,7 +182,7 @@ span {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 91%;
+  height: 100%;
 }
 .main_sidebar_data a {
   text-decoration: none;
@@ -349,6 +349,38 @@ span {
       color: rgb(51, 51, 51);
       font-weight: bold;
       border-bottom: 2px solid #1177d6c9;
+      font-weight: 500 !important;
     }
   }
+}
+
+.unread {
+  padding-left: 12px;
+}
+
+.notifation_warpper {
+  position: relative;
+  cursor: pointer;
+
+  .notification_count {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: red;
+    z-index: 10;
+    left: 23px;
+    border-radius: 50%;
+    top: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+  }
+}
+
+.list-unstyled {
+  max-height: 250px;
+  overflow-y: auto;
 }
