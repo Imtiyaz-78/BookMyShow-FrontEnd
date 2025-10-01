@@ -299,25 +299,36 @@
         </a>
 
         <!-- Notifications dropdown -->
-        <div
-          *ngIf="showNotifications"
-          class="notifications-panel shadow-sm p-2 mt-2"
-        >
+        @if (showNotifications) {
+        <div class="notifications-panel shadow-sm p-2 mt-2">
           <h6 class="mb-2">Recent Notifications</h6>
-          <ul class="list-unstyled mb-0">
-            <li
-              *ngFor="let note of notifications"
-              class="py-2 border-bottom"
-              [class.unread]="!note.read"
-            >
-              <div class="fw-semibold">{{ note.title }}</div>
+          <ul
+            class="list-unstyled mb-0"
+            (scroll)="onScroll($event, authService.userDetails().userId)"
+          >
+            @for (note of notifications; track $index) {
+            <li class="py-2 border-bottom" [class.unread]="!note.read">
+              <div class="header_warpper">
+                <span class="fw-semibold">{{ note.title }}</span>
+                @if (!note.read) {
+                <div
+                  class="mark_read"
+                  (click)="onMarkAsRead(authService.userDetails().userId, note)"
+                >
+                  <span> Mark as Read</span>
+                  <i-feather name="check-square"> </i-feather>
+                </div>
+                }
+              </div>
               <div class="text-muted small">{{ note.message }}</div>
               <small class="text-secondary">{{
                 formatDate(note.createdOn)
               }}</small>
             </li>
+            }
           </ul>
         </div>
+        }
       </div>
       <div class="button_section">
         <div>

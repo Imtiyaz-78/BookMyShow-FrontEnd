@@ -84,9 +84,18 @@ export class CommonService {
     return this.http.get<any>(url);
   }
 
+  // Get Notification Count
   getUnreadCount(userId: number): Observable<any> {
     return this.http.get(
       `${this.baseApiUrl}/notifications/get-notification-unread-count/${userId}`
+    );
+  }
+
+  // Mark as read
+  markAsRead(userId: number, notificationId: number): Observable<any> {
+    return this.http.patch(
+      `${this.baseApiUrl}/notifications/${userId}/${notificationId}/read`,
+      {}
     );
   }
 }

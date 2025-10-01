@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit {
     //   this.isLoggedIn = status;
     // });
 
-    this.loadNotifications(this.authService.userDetails().userId);
+    this.onGetAllNotifications(this.authService.userDetails().userId);
     this.loadUnreadCount(this.authService.userDetails().userId);
     console.log('UserId', this.authService.userDetails().userId);
   }
@@ -237,20 +237,75 @@ export class HeaderComponent implements OnInit {
     this.showNotifications = !this.showNotifications;
   }
 
-  loadNotifications(userId: number) {
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleString();
+  }
+
+  // This method to get all Notification
+  onGetAllNotificationsss(userId: number) {
     this.commonService.getNotifications(userId).subscribe({
       next: (res) => {
         if (res.success) {
-          // this.notificationCount = res.data.count;
           this.notifications = res.data.content;
         }
       },
       error: (err) => {
-        console.error('Error fetching notifications', err);
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
       },
     });
   }
 
+  page = 0;
+  size = 4;
+  totalCount = 0;
+  isLoading = false;
+  scrollTimeout: any;
+
+  // This method for get All Notification
+  onGetAllNotifications(userId: number) {
+    if (this.isLoading) return;
+    this.isLoading = true;
+
+    this.commonService
+      .getNotifications(userId, this.page, this.size)
+      .subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.totalCount = res.data.count;
+            this.notifications = [...this.notifications, ...res.data.content];
+          }
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.toastService.startToast({
+            message: err.message,
+            type: 'error',
+          });
+        },
+      });
+  }
+
+  // Scroll handler with tiny debounce
+  onScroll(event: any, userId: number) {
+    clearTimeout(this.scrollTimeout);
+
+    this.scrollTimeout = setTimeout(() => {
+      const isNotificationsEqualsCount =
+        this.notifications.length === this.totalCount;
+
+      if (isNotificationsEqualsCount || this.isLoading) return;
+
+      this.page++;
+      this.onGetAllNotifications(userId);
+    }, 500);
+  }
+
+  // This method for get Notification Count
   loadUnreadCount(userId: number) {
     this.commonService.getUnreadCount(userId).subscribe({
       next: (res) => {
@@ -267,8 +322,28 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleString();
+  // Mark as read
+  onMarkAsRead(userId: number, note: any) {
+    if (!note || note.read) return;
+
+    this.commonService.markAsRead(userId, note.notificationId).subscribe({
+      next: (res) => {
+        if (res?.success) {
+          note.read = true;
+          this.loadUnreadCount(userId);
+          this.onGetAllNotifications(userId);
+          this.toastService.startToast({
+            message: res.message,
+            type: 'success',
+          });
+        }
+      },
+      error: (err) => {
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
+      },
+    });
   }
 }

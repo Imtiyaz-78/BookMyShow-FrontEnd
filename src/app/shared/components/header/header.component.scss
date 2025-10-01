@@ -354,10 +354,6 @@ span {
   }
 }
 
-.unread {
-  padding-left: 12px;
-}
-
 .notifation_warpper {
   position: relative;
   cursor: pointer;
@@ -383,4 +379,39 @@ span {
 .list-unstyled {
   max-height: 250px;
   overflow-y: auto;
+
+  .unread {
+    background-color: #effafe;
+    padding-left: 9px;
+  }
+
+  .header_warpper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 15px;
+    margin-bottom: 7px;
+
+    .mark_read {
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      span {
+        color: rgb(10 125 235);
+        font-weight: 500;
+      }
+
+      i-feather {
+        stroke: rgb(10 125 235);
+        height: 18px;
+        width: 18px;
+        display: flex;
+        stroke-width: 2.2px;
+      }
+    }
+  }
 }
