@@ -8,12 +8,17 @@ export function httpInterceptor(
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> {
   const loader = inject(LoaderService);
+  const bypassLoader = req.context.get(loader.NO_LOADER);
 
-  loader.startLoader();
+  if (!bypassLoader) {
+    loader.startLoader();
+  }
 
   return next(req).pipe(
     finalize(() => {
-      loader.stopLoader();
+      if (!bypassLoader) {
+        loader.stopLoader();
+      }
     })
   );
 }

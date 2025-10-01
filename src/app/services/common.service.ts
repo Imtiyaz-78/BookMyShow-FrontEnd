@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { environment } from '../core/environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LoaderService } from '../core/service/loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class CommonService {
   baseApiUrl = environment.baseUrl;
   eventType = signal<string | null>(null);
 
-  constructor() {
+  constructor(private loaderService: LoaderService) {
     // restore from sessionStorage if available
     const eventValue = sessionStorage.getItem('eventType');
     if (eventValue) {
@@ -75,19 +76,24 @@ export class CommonService {
   }
 
   //  Fetch notifications for a user with pagination
+
   getNotifications(
     userId: number,
     page: number = 0,
     size: number = 4
   ): Observable<any> {
     const url = `${this.baseApiUrl}/notifications/get-notification/${userId}?page=${page}&size=${size}`;
-    return this.http.get<any>(url);
+
+    return this.http.get<any>(url, {
+      context: new HttpContext().set(this.loaderService.NO_LOADER, true),
+    });
   }
 
   // Get Notification Count
   getUnreadCount(userId: number): Observable<any> {
     return this.http.get(
-      `${this.baseApiUrl}/notifications/get-notification-unread-count/${userId}`
+      `${this.baseApiUrl}/notifications/get-notification-unread-count/${userId}`,
+      { context: new HttpContext().set(this.loaderService.NO_LOADER, true) }
     );
   }
 

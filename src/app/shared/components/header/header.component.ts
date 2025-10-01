@@ -75,9 +75,17 @@ export class HeaderComponent implements OnInit {
     //   this.isLoggedIn = status;
     // });
 
-    this.onGetAllNotifications(this.authService.userDetails().userId);
-    this.loadUnreadCount(this.authService.userDetails().userId);
+    const userId = this.authService.userDetails().userId;
+    this.onGetAllNotifications(userId);
+    this.loadUnreadCount(userId);
     console.log('UserId', this.authService.userDetails().userId);
+
+    // Initial fetch
+    this.onGetAllNotifications(userId);
+    this.loadUnreadCount(userId);
+
+    // Start real-time polling
+    this.startNotificationPolling(userId);
   }
 
   get userProfileDetails() {
@@ -233,39 +241,25 @@ export class HeaderComponent implements OnInit {
   notifications: any[] = [];
   notificationCount = 0;
 
-  toggleNotifications() {
-    this.showNotifications = !this.showNotifications;
-  }
-
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleString();
-  }
-
-  // This method to get all Notification
-  onGetAllNotificationsss(userId: number) {
-    this.commonService.getNotifications(userId).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.notifications = res.data.content;
-        }
-      },
-      error: (err) => {
-        this.toastService.startToast({
-          message: err.message,
-          type: 'error',
-        });
-      },
-    });
-  }
-
   page = 0;
   size = 4;
   totalCount = 0;
   isLoading = false;
   scrollTimeout: any;
+  pollingInterval: any;
 
-  // This method for get All Notification
+  // Toggle notifications dropdown
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+  }
+
+  // Format notification date
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleString();
+  }
+
+  // This Method is for to Fetch notifications with pagination
   onGetAllNotifications(userId: number) {
     if (this.isLoading) return;
     this.isLoading = true;
@@ -290,22 +284,20 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-  // Scroll handler with tiny debounce
+  // This method is for to Scroll handler with debounce
   onScroll(event: any, userId: number) {
     clearTimeout(this.scrollTimeout);
 
     this.scrollTimeout = setTimeout(() => {
-      const isNotificationsEqualsCount =
-        this.notifications.length === this.totalCount;
-
-      if (isNotificationsEqualsCount || this.isLoading) return;
+      const allLoaded = this.notifications.length >= this.totalCount;
+      if (allLoaded || this.isLoading) return;
 
       this.page++;
       this.onGetAllNotifications(userId);
     }, 500);
   }
 
-  // This method for get Notification Count
+  // This method is for to Load unread notifications count
   loadUnreadCount(userId: number) {
     this.commonService.getUnreadCount(userId).subscribe({
       next: (res) => {
@@ -322,7 +314,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  // Mark as read
+  // Mark a notification as read
   onMarkAsRead(userId: number, note: any) {
     if (!note || note.read) return;
 
@@ -331,7 +323,6 @@ export class HeaderComponent implements OnInit {
         if (res?.success) {
           note.read = true;
           this.loadUnreadCount(userId);
-          this.onGetAllNotifications(userId);
           this.toastService.startToast({
             message: res.message,
             type: 'success',
@@ -345,5 +336,40 @@ export class HeaderComponent implements OnInit {
         });
       },
     });
+  }
+
+  // Start polling notifications (for real-time updates)
+  startNotificationPolling(userId: number, intervalMs: number = 1000) {
+    this.pollingInterval = setInterval(() => {
+      // Refresh only the first page to check for new notifications
+      this.commonService.getNotifications(userId, 0, this.size).subscribe({
+        next: (res) => {
+          if (res.success) {
+            const newNotifications = res.data.content.filter(
+              (note: any) =>
+                !this.notifications.some(
+                  (n) => n.notificationId === note.notificationId
+                )
+            );
+            if (newNotifications.length) {
+              this.notifications = [...newNotifications, ...this.notifications];
+              this.totalCount = res.data.count;
+              this.notificationCount = res.data.count;
+            }
+          }
+        },
+      });
+    }, intervalMs);
+  }
+
+  // This method is for to Stop polling (on component destroy)
+  stopNotificationPolling() {
+    if (this.pollingInterval) {
+      clearInterval(this.pollingInterval);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.stopNotificationPolling();
   }
 }

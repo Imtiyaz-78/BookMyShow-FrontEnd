@@ -1,9 +1,10 @@
+import { HttpContextToken } from '@angular/common/http';
 import { computed, Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class LoaderService {
   private activeRequests = signal(0);
-
+  NO_LOADER = new HttpContextToken<boolean>(() => false);
   // computed signal (true if requests > 0)
   readonly loading = computed(() => this.activeRequests() > 0);
 
