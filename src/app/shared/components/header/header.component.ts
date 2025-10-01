@@ -231,6 +231,18 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(['/admin/users'], { state: { data: true } });
         break;
 
+      case 'ListYouShow':
+        this.router.navigate(['admin/list-your-show']);
+        break;
+
+      case 'Venue':
+        this.router.navigate(['admin/create-venue']);
+        break;
+
+      case 'Content':
+        this.router.navigate(['admin/content']);
+        break;
+
       default:
         this.router.navigate([`explore/${menu.toLowerCase()}`]);
         break;

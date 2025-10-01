@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './users/users.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ListYourShowComponent } from './list-your-show/list-your-show.component';
+import { CreateVenueComponent } from './create-venue/create-venue.component';
+import { ContentComponent } from './content/content.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'list-your-show', pathMatch: 'full' },
@@ -13,6 +15,14 @@ const routes: Routes = [
   {
     path: 'users',
     component: UsersComponent,
+  },
+  {
+    path: 'create-venue',
+    component: CreateVenueComponent,
+  },
+  {
+    path: 'content',
+    component: ContentComponent,
   },
 ];
 

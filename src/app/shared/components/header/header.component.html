@@ -143,10 +143,21 @@
           <div class="sub_header_right">
             @if (authService.userDetails()?.role == 'ADMIN') {
             <div class="sub_heder_right_links">
-              <a [routerLink]="['/admin/list-your-show']">ListYourShow</a>
-              <a>Corporates</a>
-              <a>Offers</a>
-              <a>GiftCards</a>
+              <a
+                (click)="setActiveMenu('ListYouShow')"
+                [ngClass]="{ activeMenu: activeMenu === 'ListYouShow' }"
+                >ListYourShow</a
+              >
+              <a
+                (click)="setActiveMenu('Venue')"
+                [ngClass]="{ activeMenu: activeMenu === 'Venue' }"
+                >Venue</a
+              >
+              <a
+                (click)="setActiveMenu('Content')"
+                [ngClass]="{ activeMenu: activeMenu === 'Content' }"
+                >Content</a
+              >
             </div>
             }
           </div>
@@ -327,6 +338,11 @@
             </li>
             }
           </ul>
+          @if (isLoading) {
+          <div class="text-center py-2">
+            <small class="text-muted">Loading...</small>
+          </div>
+          }
         </div>
         }
       </div>

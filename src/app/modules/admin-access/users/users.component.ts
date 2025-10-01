@@ -16,6 +16,7 @@ import {
   map,
   switchMap,
 } from 'rxjs';
+import { AuthService } from '../../../auth/AuthService/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -35,6 +36,7 @@ export class UsersComponent implements OnInit {
     private adminService: AdminService,
     private modalService: BsModalService,
     private fb: FormBuilder,
+    private authService: AuthService,
     private toastService: ToastService
   ) {}
 
@@ -44,7 +46,7 @@ export class UsersComponent implements OnInit {
     console.log(this.checkState);
 
     if (this.checkState) {
-      this.ongetAllUsers();
+      this.onGetAllUsers();
     }
     this.initilizeUserForm();
     this.onSearchUserByUserName();
@@ -73,16 +75,42 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  ongetAllUsers() {
-    this.adminService.getUsers().subscribe({
+  // onGetAllUsers() {
+  //   this.adminService.getUsers().subscribe({
+  //     next: (res: any) => {
+  //       if (res.success) {
+  //         this.userData = res.data.users.sort(
+  //           (a: any, b: any) => a.userId - b.userId
+  //         );
+  //       }
+  //     },
+  //     error: (err) => {
+  //       this.toastService.startToast({
+  //         message: err.message,
+  //         type: 'error',
+  //       });
+  //     },
+  //   });
+  // }
+
+  page = 0;
+  size = 10;
+  totalEntries = 0;
+  isLoading = false;
+  scrollTimeout: any;
+
+  onGetAllUsers() {
+    this.isLoading = true;
+    this.adminService.getUsers(this.page, this.size).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.userData = res.data.users.sort(
-            (a: any, b: any) => a.userId - b.userId
-          );
+          this.userData = [...this.userData, ...res.data.users];
+          this.totalEntries = res.data.totalEntries;
         }
+        this.isLoading = false;
       },
       error: (err) => {
+        this.isLoading = false;
         this.toastService.startToast({
           message: err.message,
           type: 'error',
@@ -128,14 +156,17 @@ export class UsersComponent implements OnInit {
 
   onUpdtateUser(): void {
     this.adminService
-      .updateUserRole(this.userForm.value.userId, this.userForm.value.roleName)
+      .updateUserRole(this.authService.userDetails().userId)
       .subscribe({
         next: (res) => {
           if (res.success) {
-            this.toastService.startToast(res.message);
+            this.toastService.startToast({
+              message: res.message,
+              type: 'success',
+            });
             this.userForm.reset();
             this.onCancel();
-            this.ongetAllUsers();
+            this.onGetAllUsers();
           }
         },
         error: (err) => {
@@ -177,7 +208,7 @@ export class UsersComponent implements OnInit {
   // Filter Users By UserRole
   onFilterUserByRole(role: string) {
     if (role === 'ALL') {
-      this.ongetAllUsers();
+      this.onGetAllUsers();
       return;
     }
 
@@ -209,7 +240,7 @@ export class UsersComponent implements OnInit {
           debugger;
           this.toastService.startToast(res.message);
           this.openedDropdownId = null;
-          this.ongetAllUsers();
+          this.onGetAllUsers();
         }
       },
       error: (err) => {
@@ -229,7 +260,7 @@ export class UsersComponent implements OnInit {
           debugger;
           this.toastService.startToast(res.message);
           this.openedDropdownId = null;
-          this.ongetAllUsers();
+          this.onGetAllUsers();
         }
       },
       error: (err) => {
@@ -239,5 +270,19 @@ export class UsersComponent implements OnInit {
         });
       },
     });
+  }
+
+  //
+
+  onScroll(event: any) {
+    clearTimeout(this.scrollTimeout);
+
+    this.scrollTimeout = setTimeout(() => {
+      const allLoaded = this.userData.length >= this.totalEntries;
+      if (allLoaded || this.isLoading) return;
+
+      this.page++;
+      this.onGetAllUsers();
+    }, 300);
   }
 }

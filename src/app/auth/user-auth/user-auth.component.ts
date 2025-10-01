@@ -171,9 +171,10 @@ export class UserAuthComponent implements OnInit {
     this.authService.createNewUser(this.userSignUp.value).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.toastService.startToast(
-            res?.message || 'Account created successfully!'
-          );
+          this.toastService.startToast({
+            message: res.message,
+            type: 'success',
+          });
           this.userSignUp.reset();
           if (this.modalRef) {
             this.modalRef.hide();
@@ -181,7 +182,10 @@ export class UserAuthComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.toastService.startToast(err?.message);
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
       },
     });
   }
@@ -226,13 +230,16 @@ export class UserAuthComponent implements OnInit {
           if (res.success) {
             this.isUserExit = res.message;
             this.toastService.startToast({
-              message: 'Logged in successfully',
+              message: res.message,
               type: 'success',
             });
           }
         },
         error: (err) => {
-          this.toastService.startToast(err.message || 'Validation failed');
+          this.toastService.startToast({
+            message: err.message,
+            type: 'error',
+          });
         },
       });
   }

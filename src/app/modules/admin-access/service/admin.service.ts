@@ -10,8 +10,8 @@ export class AdminService {
   private apiUrl = environment.baseUrl;
   constructor(private http: HttpClient) {}
 
-  getUsers() {
-    return this.http.get(`${this.apiUrl}/users`);
+  getUsers(page: number = 0, size: number = 10) {
+    return this.http.get<any>(`${this.apiUrl}/users?page=${page}&size=${size}`);
   }
 
   editUserById(userId: string, userData: any) {
@@ -32,11 +32,8 @@ export class AdminService {
    * @param {number} userId - ID of the user
    * @returns {Observable<any>}
    */
-  updateUserRole(userId: number, roleName: string): Observable<any> {
-    return this.http.put<any>(
-      `${this.apiUrl}/users/${userId}/role?roleName=${roleName}`,
-      {}
-    );
+  updateUserRole(userId: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/users/${userId}/role`, {});
   }
 
   searchUserByUserName(value: string): Observable<any> {

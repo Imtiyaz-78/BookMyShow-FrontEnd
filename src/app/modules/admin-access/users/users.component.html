@@ -47,87 +47,90 @@
           </div>
         </div>
         <!-- Users Table -->
-        <table class="table table-striped">
-          <thead class="thead-dark">
-            <tr>
-              <th>Id</th>
-              <th>UserName</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>RoleName</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @if (userData.length > 0) { @for (user of userData; track $index) {
-            <tr>
-              <td>{{ user.userId }}</td>
-              <td>{{ user.username }}</td>
-              <td>{{ user.name }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.phoneNumber }}</td>
-              <td>
-                <div
-                  class="rolename badge"
-                  [ngClass]="{
-                    admin: user.roleName === 'ADMIN',
-                    user: user.roleName === 'USER'
-                  }"
-                >
-                  {{ user.roleName }}
-                </div>
-              </td>
-              <td>
-                <button
-                  class="btn btn-secondary"
-                  (click)="toggleDropdown(user.userId)"
-                >
-                  <i-feather name="more-vertical"></i-feather>
-                </button>
-                @if (openedDropdownId === user.userId) {
-                <div
-                  class="position-relative"
-                  appClickOutside
-                  (clickedOutside)="openedDropdownId = null"
-                >
-                  <div class="dropdown">
-                    <label
-                      [ngClass]="{ disabled: user.roleName === 'ADMIN' }"
-                      class="label_field"
-                      (click)="onMakeAdmin(user.userId)"
-                    >
-                      <input
-                        [disabled]="user.roleName === 'ADMIN'"
-                        class="form-check-input"
-                        type="checkbox"
-                        [checked]="user.roleName === 'ADMIN'"
-                      />
-                      <span class="label">Make Admin</span>
-                    </label>
-                    <div
-                      class="label_field"
-                      (click)="onDeleteUser(user.userId)"
-                    >
-                      <i-feather name="trash-2"></i-feather>
+        <div class="table-responsive" (scroll)="onScroll($event)">
+          <table class="table table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th>Id</th>
+                <th>UserName</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>RoleName</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (userData.length > 0) { @for (user of userData; track $index)
+              {
+              <tr>
+                <td>{{ user.userId }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phoneNumber }}</td>
+                <td>
+                  <div
+                    class="rolename badge"
+                    [ngClass]="{
+                      admin: user.roleName === 'ADMIN',
+                      user: user.roleName === 'USER'
+                    }"
+                  >
+                    {{ user.roleName }}
+                  </div>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-secondary"
+                    (click)="toggleDropdown(user.userId)"
+                  >
+                    <i-feather name="more-vertical"></i-feather>
+                  </button>
+                  @if (openedDropdownId === user.userId) {
+                  <div
+                    class="position-relative"
+                    appClickOutside
+                    (clickedOutside)="openedDropdownId = null"
+                  >
+                    <div class="dropdown">
+                      <label
+                        [ngClass]="{ disabled: user.roleName === 'ADMIN' }"
+                        class="label_field"
+                        (click)="onMakeAdmin(user.userId)"
+                      >
+                        <input
+                          [disabled]="user.roleName === 'ADMIN'"
+                          class="form-check-input"
+                          type="checkbox"
+                          [checked]="user.roleName === 'ADMIN'"
+                        />
+                        <span class="label">Make Admin</span>
+                      </label>
+                      <div
+                        class="label_field"
+                        (click)="onDeleteUser(user.userId)"
+                      >
+                        <i-feather name="trash-2"></i-feather>
 
-                      <span class="label">Delete User</span>
+                        <span class="label">Delete User</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                }
-              </td>
-            </tr>
-            } } @else {
-            <tr class="no_data_found_row">
-              <td colspan="7">
-                <div class="no_data_found">No User Found</div>
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
+                  }
+                </td>
+              </tr>
+              } } @else {
+              <tr class="no_data_found_row">
+                <td colspan="7">
+                  <div class="no_data_found">No User Found</div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

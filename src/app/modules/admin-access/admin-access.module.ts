@@ -12,9 +12,11 @@ import { SearchFilterComponent } from '../../shared/components/search-filter/sea
 import { FeatherModule } from 'angular-feather';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside.directive';
+import { CreateVenueComponent } from './create-venue/create-venue.component';
+import { ContentComponent } from './content/content.component';
 
 @NgModule({
-  declarations: [UsersComponent, ListYourShowComponent],
+  declarations: [UsersComponent, ListYourShowComponent, CreateVenueComponent, ContentComponent],
   imports: [
     CommonModule,
     AdminAccessRoutingModule,
