@@ -57,4 +57,11 @@ export class AdminService {
       roleName: 'ADMIN',
     });
   }
+
+  // This method for get All Venue List
+  getAllVenues(): Observable<any> {
+    return this.http.get<any>(
+      `http://172.31.252.101:8080/bookmyshow/venues/getAll`
+    );
+  }
 }

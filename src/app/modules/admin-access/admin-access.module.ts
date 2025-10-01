@@ -14,9 +14,10 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside.directive';
 import { CreateVenueComponent } from './create-venue/create-venue.component';
 import { ContentComponent } from './content/content.component';
+import { VenueListComponent } from './venue-list/venue-list.component';
 
 @NgModule({
-  declarations: [UsersComponent, ListYourShowComponent, CreateVenueComponent, ContentComponent],
+  declarations: [UsersComponent, ListYourShowComponent, CreateVenueComponent, ContentComponent, VenueListComponent],
   imports: [
     CommonModule,
     AdminAccessRoutingModule,

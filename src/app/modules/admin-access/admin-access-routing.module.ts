@@ -5,6 +5,7 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ListYourShowComponent } from './list-your-show/list-your-show.component';
 import { CreateVenueComponent } from './create-venue/create-venue.component';
 import { ContentComponent } from './content/content.component';
+import { VenueListComponent } from './venue-list/venue-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'list-your-show', pathMatch: 'full' },
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path: 'create-venue',
     component: CreateVenueComponent,
+  },
+  {
+    path: 'venue-list',
+    component: VenueListComponent,
   },
   {
     path: 'content',

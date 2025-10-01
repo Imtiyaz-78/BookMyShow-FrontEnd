@@ -236,7 +236,7 @@ export class HeaderComponent implements OnInit {
         break;
 
       case 'Venue':
-        this.router.navigate(['admin/create-venue']);
+        this.router.navigate(['admin/venue-list']);
         break;
 
       case 'Content':

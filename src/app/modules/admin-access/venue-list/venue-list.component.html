@@ -1,0 +1,60 @@
+<div class="animated-table-container bg-white p-3">
+  <div class="container-fluid">
+    <div class="row main_table_container">
+      <div class="col-10">
+        <div class="header">
+          <div class="left">
+            <h5 class="text-start">All Venues List</h5>
+          </div>
+          <div class="right">
+            <div class="search_filter">
+              <app-search-filter
+                [borderRequired]="true"
+                [placeholder]="'Search here..'"
+              >
+              </app-search-filter>
+            </div>
+          </div>
+        </div>
+
+        <!-- Venues Table -->
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th>Id</th>
+                <th>Venue Name</th>
+                <th>Capacity</th>
+                <th>Type</th>
+                <th>Street</th>
+                <th>Pin</th>
+                <th>Categories</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (venues.length > 0) { @for (venue of venues; track $index) {
+              <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ venue.venueName }}</td>
+                <td>{{ venue.venueCapacity }}</td>
+                <td>{{ venue.venueType || "N/A" }}</td>
+                <td>{{ venue.address?.street || "-" }}</td>
+                <td>{{ venue.address?.pin || "-" }}</td>
+                <td>
+                  {{ venue.supportedCategories.join(", ") }}
+                </td>
+              </tr>
+              } } @else {
+              <tr class="no_data_found_row">
+                <td colspan="7">
+                  <div class="no_data_found">No Venue Found</div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
