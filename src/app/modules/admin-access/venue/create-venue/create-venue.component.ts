@@ -6,12 +6,12 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { ToastService } from '../../../../shared/components/toast/toast.service';
 
 @Component({
   selector: 'app-create-venue',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, HttpClientModule],
+  standalone: false,
   templateUrl: './create-venue.component.html',
   styleUrl: './create-venue.component.scss',
 })
@@ -21,7 +21,11 @@ export class CreateVenueComponent implements OnInit {
 
   private apiUrl = 'http://172.31.252.101:8080/bookmyshow/venues/create';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.venueForm = this.fb.group({
@@ -117,8 +121,10 @@ export class CreateVenueComponent implements OnInit {
 
     this.http.post(this.apiUrl, payload).subscribe({
       next: (res) => {
-        console.log('Venue Created Successfully:', res);
-        alert(res);
+        this.toastService.startToast({
+          message: 'Venue Created Successfully',
+          type: 'success',
+        });
         this.venueForm.reset();
       },
       error: (err) => {

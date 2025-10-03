@@ -142,19 +142,16 @@
 
             <!-- Layouts -->
             <div formArrayName="layouts" class="mt-3">
-              <div
-                *ngFor="let layout of getLayouts(s).controls; let l = index"
-                [formGroupName]="l"
-                class="border p-2 mb-2"
-              >
+              @for (layout of getLayouts(s).controls; track $index) {
+              <div [formGroupName]="$index" class="border p-2 mb-2">
                 <div
                   class="d-flex justify-content-between align-items-center mb-2"
                 >
-                  <h6>Category {{ l + 1 }}</h6>
+                  <h6>Category {{ $index + 1 }}</h6>
                   <button
                     class="btn btn-outline-danger btn-sm"
                     type="button"
-                    (click)="removeLayout(s, l)"
+                    (click)="removeLayout(s, $index)"
                     [disabled]="getLayouts(s).length === 1"
                   >
                     Remove
@@ -179,8 +176,8 @@
                           class="form-check-input"
                           type="checkbox"
                           [value]="row"
-                          (change)="toggleRowSelection($event, s, l)"
-                          [checked]="isRowSelected(row, s, l)"
+                          (change)="toggleRowSelection($event, s, $index)"
+                          [checked]="isRowSelected(row, s, $index)"
                         />
                         <span class="ms-1">{{ row }}</span>
                       </div>
@@ -197,6 +194,8 @@
                   </div>
                 </div>
               </div>
+
+              }
 
               <!-- Add Layout Button -->
               <button
