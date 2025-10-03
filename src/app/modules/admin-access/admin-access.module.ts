@@ -12,12 +12,16 @@ import { SearchFilterComponent } from '../../shared/components/search-filter/sea
 import { FeatherModule } from 'angular-feather';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside.directive';
-import { CreateVenueComponent } from './create-venue/create-venue.component';
 import { ContentComponent } from './content/content.component';
-import { VenueListComponent } from './venue-list/venue-list.component';
+import { VenueListComponent } from './venue/venue-list/venue-list.component';
 
 @NgModule({
-  declarations: [UsersComponent, ListYourShowComponent, CreateVenueComponent, ContentComponent, VenueListComponent],
+  declarations: [
+    UsersComponent,
+    ListYourShowComponent,
+    ContentComponent,
+    VenueListComponent,
+  ],
   imports: [
     CommonModule,
     AdminAccessRoutingModule,
@@ -28,6 +32,7 @@ import { VenueListComponent } from './venue-list/venue-list.component';
     FeatherModule,
     BsDropdownModule,
     ClickOutsideDirective,
+    ReactiveFormsModule,
   ],
   providers: [BsModalService],
 })
