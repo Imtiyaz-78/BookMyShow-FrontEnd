@@ -1,7 +1,12 @@
 <div class="container mt-4">
   <div class="card shadow-lg rounded-3">
-    <div class="card-header bg-primary text-white">
+    <div
+      class="card-header bg-primary text-white d-flex justify-content-between"
+    >
       <h4 class="mb-0">Create New Venue</h4>
+      <button [routerLink]="['/admin/venue-list']" class="btn btn-warning">
+        Goto Venue List
+      </button>
     </div>
     <div class="card-body">
       <form [formGroup]="venueForm" (ngSubmit)="onSubmit()">
@@ -214,9 +219,14 @@
           <button type="reset" class="btn btn-outline-secondary me-2">
             Reset
           </button>
+          @if(editMode){
+          <button type="submit" class="btn btn-warning">Update Venue</button>
+          }@else {
           <button type="submit" class="btn btn-primary">
             Create New Venue
           </button>
+
+          }
         </div>
       </form>
     </div>

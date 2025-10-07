@@ -47,6 +47,7 @@
                 <th>Street</th>
                 <th>Pin</th>
                 <th>Categories</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -63,8 +64,18 @@
                 </td>
                 <td>
                   <div class="d-flex gap-2">
-                    <button class="btn btn-primary">Edit</button>
-                    <button class="btn btn-danger">Delete</button>
+                    <button
+                      class="btn btn-primary"
+                      (click)="onEditVenue(venue.id, venue)"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      class="btn btn-danger"
+                      (click)="onDeleteByVenueId(venue.id)"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>

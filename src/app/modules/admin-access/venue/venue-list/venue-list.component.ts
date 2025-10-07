@@ -4,6 +4,7 @@ import { CommonService } from '../../../../services/common.service';
 import { ToastService } from '../../../../shared/components/toast/toast.service';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-venue-list',
@@ -28,7 +29,8 @@ export class VenueListComponent implements OnInit {
   constructor(
     private adminService: AdminService,
     private commonService: CommonService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -44,20 +46,16 @@ export class VenueListComponent implements OnInit {
         this.allVenues = res.data.filter(
           (venue: any) => venue.venueType != null
         );
-
-        // Displayed list initially
         this.venues = [...this.allVenues];
-
-        // Build unique dropdown list
         this.movieDropDownList = [
           ...new Set(this.allVenues.map((venue: any) => venue.venueType)),
         ];
-
-        console.log('All venues:', this.allVenues);
-        console.log('Dropdown list:', this.movieDropDownList);
       },
       error: (err) => {
-        console.log(err);
+        this.toastService.startToast({
+          message: err.message,
+          type: 'error',
+        });
       },
     });
   }
@@ -97,7 +95,10 @@ export class VenueListComponent implements OnInit {
           this.venues = res.data;
         },
         error: (err) => {
-          console.error('Error fetching venues:', err);
+          this.toastService.startToast({
+            message: err.message,
+            type: 'error',
+          });
         },
       });
   }
@@ -106,17 +107,34 @@ export class VenueListComponent implements OnInit {
   filterMovieByType() {
     this.MovieTypeValue.valueChanges.subscribe((selectedType: any) => {
       if (!selectedType) {
-        // If no type selected, show all venues
         this.venues = [...this.allVenues];
         return;
       }
-
-      // Filter frontend array by venueType
       this.venues = this.allVenues.filter(
         (venue) => venue.venueType === selectedType
       );
+    });
+  }
 
-      console.log('Filtered venues:', this.venues);
+  // This Method is used for Edit the Venue
+  onEditVenue(venueId: any, venue: any) {
+    this.router.navigate(['/admin/create-venue'], {
+      queryParams: { venueId },
+      state: { venueData: venue },
+    });
+  }
+
+  // This method is use for Delete Venue
+  onDeleteByVenueId(venueId: any) {
+    this.adminService.deleteVenueById(venueId).subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.toastService.startToast({
+            message: res.message,
+            type: 'success',
+          });
+        }
+      },
     });
   }
 }
