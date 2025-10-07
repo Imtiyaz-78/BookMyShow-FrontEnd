@@ -196,3 +196,46 @@ ul {
     display: none; // Chrome, Safari
   }
 }
+
+// Scrollbar
+:root {
+  --scrollbar-track: #f1f1f3;
+  --scrollbar-thumb: #c9c9d1;
+  --scrollbar-thumb-hover: #a6a6b0;
+  --scrollbar-thumb-active: #888892;
+  --scrollbar-border: rgba(0, 0, 0, 0.06);
+  --scrollbar-corner: transparent;
+  --scrollbar-width: 10px;
+  --scrollbar-width-thin: 8px;
+  --scrollbar-radius: 8px;
+}
+
+/* ----------------- WebKit (Chrome, Edge, Safari) ----------------- */
+*::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--scrollbar-thumb),
+    var(--scrollbar-thumb)
+  );
+  border-radius: var(--scrollbar-radius);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  min-height: 28px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: var(--scrollbar-thumb-active);
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-corner);
+}

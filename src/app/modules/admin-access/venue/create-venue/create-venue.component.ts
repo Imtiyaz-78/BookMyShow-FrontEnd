@@ -18,8 +18,7 @@ import { ToastService } from '../../../../shared/components/toast/toast.service'
 export class CreateVenueComponent implements OnInit {
   seatRows = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   venueForm!: FormGroup;
-
-  private apiUrl = 'http://172.31.252.101:8080/bookmyshow/venues/create';
+  apiUrl = 'http://172.31.252.101:8080/bookmyshow/venues/create';
 
   constructor(
     private fb: FormBuilder,

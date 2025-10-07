@@ -64,4 +64,12 @@ export class AdminService {
       `http://172.31.252.101:8080/bookmyshow/venues/getAll`
     );
   }
+  // http://172.31.252.101:8080/bookmyshow/venues/city/Meerut
+
+  // Filter Venue by City
+  filterVenue(city: any): Observable<any> {
+    return this.http.get<any>(
+      `http://172.31.252.101:8080/bookmyshow/venues/city/${city}`
+    );
+  }
 }

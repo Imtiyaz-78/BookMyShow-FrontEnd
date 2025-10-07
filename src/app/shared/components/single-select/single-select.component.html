@@ -1,4 +1,9 @@
-<div class="custom-select" [class.open]="isOpen">
+<div
+  class="custom-select"
+  [class.open]="isOpen"
+  (clickedOutside)="closeDropdown()"
+  appClickOutside
+>
   <!-- Selected Value -->
   <div class="selected" (click)="toggleDropdown()">
     <span>
@@ -10,10 +15,12 @@
   <!-- Dropdown List -->
   @if (isOpen) {
   <ul class="options">
-    @for (item of optionList; track $index) {
+    @if (optionList.length > 0) { @for (item of optionList; track $index) {
     <li (click)="selectOption(item)">
       {{ item }}
     </li>
+    } } @else {
+    <li class="no-data">No Data Found</li>
     }
   </ul>
   }

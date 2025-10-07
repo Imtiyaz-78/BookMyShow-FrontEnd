@@ -14,6 +14,21 @@
               >
               </app-search-filter>
             </div>
+            <div class="single_select_wrapper">
+              <app-single-select
+                [placeholder]="'Filter by City'"
+                [optionList]="cityList"
+                [formControl]="cityValue"
+              ></app-single-select>
+            </div>
+
+            <div class="single_select_wrapper">
+              <app-single-select
+                [placeholder]="'Filter by Type'"
+                [optionList]="movieDropDownList"
+                [formControl]="MovieTypeValue"
+              ></app-single-select>
+            </div>
             <button class="btn btn-primary" [routerLink]="['../create-venue']">
               Create Venue
             </button>
@@ -45,6 +60,12 @@
                 <td>{{ venue.address?.pin || "-" }}</td>
                 <td>
                   {{ venue.supportedCategories.join(", ") }}
+                </td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-danger">Delete</button>
+                  </div>
                 </td>
               </tr>
               } } @else {

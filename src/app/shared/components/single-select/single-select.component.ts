@@ -1,11 +1,14 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FeatherModule } from 'angular-feather';
+import { ClickOutsideDirective } from '../../directives/click-outside.directive';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-single-select',
   standalone: true,
   templateUrl: './single-select.component.html',
+  imports: [CommonModule, FeatherModule, ClickOutsideDirective],
   styleUrls: ['./single-select.component.scss'],
 
   providers: [
@@ -15,7 +18,6 @@ import { FeatherModule } from 'angular-feather';
       multi: true,
     },
   ],
-  imports: [FeatherModule],
 })
 export class SingleSelectComponent implements ControlValueAccessor {
   @Input() optionList: any[] = [];
@@ -60,5 +62,9 @@ export class SingleSelectComponent implements ControlValueAccessor {
     } else {
       return this.value;
     }
+  }
+
+  closeDropdown() {
+    this.isOpen = false;
   }
 }
