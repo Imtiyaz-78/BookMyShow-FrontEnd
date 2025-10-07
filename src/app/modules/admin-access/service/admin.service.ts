@@ -83,4 +83,9 @@ export class AdminService {
     const url = `http://172.31.252.101:8080/bookmyshow/venues/delete/${venueId}`;
     return this.http.patch<any>(url, {});
   }
+
+  // Get Movie List
+  getAllMovieList() {
+    // this.http.get('');
+  }
 }

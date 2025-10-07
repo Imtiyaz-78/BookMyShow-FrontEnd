@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './users/users.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ListYourShowComponent } from './list-your-show/list-your-show.component';
-import { ContentComponent } from './content/content.component';
 import { VenueListComponent } from './venue/venue-list/venue-list.component';
 import { CreateVenueComponent } from './venue/create-venue/create-venue.component';
+import { ContentListComponent } from './venue/content/content-list/content-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'list-your-show', pathMatch: 'full' },
@@ -27,7 +27,12 @@ const routes: Routes = [
   },
   {
     path: 'content',
-    component: ContentComponent,
+    component: ContentListComponent,
+  },
+
+  {
+    path: 'ceate-content',
+    component: ContentListComponent,
   },
 ];
 

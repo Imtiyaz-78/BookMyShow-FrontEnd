@@ -12,17 +12,20 @@ import { SearchFilterComponent } from '../../shared/components/search-filter/sea
 import { FeatherModule } from 'angular-feather';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ClickOutsideDirective } from '../../shared/directives/click-outside.directive';
-import { ContentComponent } from './content/content.component';
 import { VenueListComponent } from './venue/venue-list/venue-list.component';
 import { CreateVenueComponent } from './venue/create-venue/create-venue.component';
+import { ContentListComponent } from './venue/content/content-list/content-list.component';
+import { CreateContentComponent } from './venue/content/create-content/create-content.component';
 
 @NgModule({
   declarations: [
     UsersComponent,
     ListYourShowComponent,
-    ContentComponent,
+    ContentListComponent,
     VenueListComponent,
     CreateVenueComponent,
+    ContentListComponent,
+    CreateContentComponent,
   ],
   imports: [
     CommonModule,

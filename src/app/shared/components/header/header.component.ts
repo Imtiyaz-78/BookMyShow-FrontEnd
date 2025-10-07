@@ -254,7 +254,7 @@ export class HeaderComponent implements OnInit {
   notificationCount = 0;
 
   page = 0;
-  size = 4;
+  size = 6;
   totalCount = 0;
   isLoading = false;
   scrollTimeout: any;
