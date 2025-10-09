@@ -16,6 +16,7 @@ import { VenueListComponent } from './venue/venue-list/venue-list.component';
 import { CreateVenueComponent } from './venue/create-venue/create-venue.component';
 import { ContentListComponent } from './venue/content/content-list/content-list.component';
 import { CreateContentComponent } from './venue/content/create-content/create-content.component';
+import { NumberSuffixPipe } from '../../core/pipe/number-suffix.pipe';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { CreateContentComponent } from './venue/content/create-content/create-co
     FeatherModule,
     BsDropdownModule,
     ClickOutsideDirective,
+    NumberSuffixPipe,
   ],
   providers: [BsModalService],
 })

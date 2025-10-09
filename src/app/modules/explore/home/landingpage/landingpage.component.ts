@@ -72,11 +72,6 @@ export class LandingPageComponent {
         eventTypes.forEach((type, i) => {
           this.allMoviesEvent[type] = responses[i];
         });
-
-        // console.log('All Events:', this.allMoviesEvent);
-        // var res = this.allMoviesEvent['Movie'].data;
-        // console.log('Moviews Data', res);
-        // console.log('Moviews Id', res[0].imageurl);
       },
       error: (err) => {
         console.error('Error while fetching events:', err);

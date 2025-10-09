@@ -13,5 +13,55 @@
         <button class="btn btn-success">Create New Movie</button>
       </div>
     </div>
+
+    <div class="main_box_crasoule">
+      <div class="main_filter_card overflow-hidden">
+        <div
+          (scroll)="onScroll($event)"
+          class="filter_text d-flex flex-wrap gap-4 py-3 justify-content-start"
+        >
+          @for(item of movieList; track $index){
+          <div class="col">
+            <div class="card shadow-sm">
+              <div class="img_container">
+                <img
+                  [src]="commonService.getImageFromBase64(item.imageurl)"
+                  [alt]="item.name"
+                />
+              </div>
+              <div class="card-body rounded-bottom bg-dark">
+                <div class="d-flex gap-4">
+                  @if(item.releasedFlag == true){
+                  <div class="text-white d-flex gap-2 align-items-center">
+                    <i-feather class="d-flex" name="star"></i-feather>
+                    <span>{{ item.imdbRating }}</span>
+                  </div>
+                  } @if(item.releasedFlag == true){
+                  <div class="d-flex gap-2 align-items-center gap-2">
+                    <i class="fa fa-thumbs-up text-success"></i>
+                    <span class="text-white"
+                      >{{ item.votes | numberSuffix }}
+                    </span>
+                    @if(item.releasedFlag == false){
+                    <span class="text-white">{{ item.likes }}</span>
+                    }
+                  </div>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="bottom_text_movie_card">
+              <h6 class="card-text m-0">{{ item.name }}</h6>
+              <div class="d-flex gap-1 flex-wrap">
+                @for(language of item.languages; track $index) {
+                <span>{{ language }}</span>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
   </div>
 </div>

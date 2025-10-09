@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../core/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -84,8 +84,30 @@ export class AdminService {
     return this.http.patch<any>(url, {});
   }
 
-  // Get Movie List
-  getAllMovieList() {
-    // this.http.get('');
+  // Common API method for all event types
+  getAllEventList(type: string, page: number, size: number): Observable<any> {
+    const url = `${this.apiUrl}/events/filter?page=${page}&size=${size}`;
+    let filter = {};
+
+    switch (type) {
+      case 'Movie':
+        filter = { upcomingMovie: true };
+        break;
+      case 'Plays':
+        filter = { plays: true };
+        break;
+      case 'Sports':
+        filter = { sports: true };
+        break;
+      case 'Activities':
+        filter = { activities: true };
+        break;
+      case 'Events':
+        filter = { events: true };
+        break;
+    }
+
+    console.log('➡️ Final Request URL:', url, 'Body:', filter);
+    return this.http.post(url, filter); 
   }
 }
